@@ -96,24 +96,30 @@ supplied and removed through the port $(u,y)$.
         align=center
     }
 ]
-\node[box] (z) at (-4.2,0) {environment / reservoir\\$z,\ H_z$};
+\node[box] (z) at (-4.8,0) {environment / reservoir\\$z,\ H_z$};
 \node[box] (x) at (0,0) {regulated system\\$x,\ H_x$};
-\node[small] (q) at (4.2,0) {feedback law\\$\mathbf Q$};
-\node[small] (g) at (0,-2.3) {homeostatic condition\\$g(x)=0$};
+\node[small] (q) at (4.8,0) {feedback law\\$\mathbf Q$};
+\node[small] (g) at (0,-2.4) {homeostatic condition\\$g(x)=0$};
 
 \draw[<->, thick]
-    (z.east) -- node[above] {power exchange $\mathbf C$} (x.west);
+    (z.east) --
+    node[midway, above=6pt] {power exchange $\mathbf C$}
+    (x.west);
 
 \draw[->, thick]
-    (x.east) -- node[above] {$y=\mathbf G^\top\nabla_x H$} (q.west);
+    (x.east) --
+    node[midway, below=7pt] {$y=\mathbf G^\top\nabla_x H$}
+    (q.west);
 
 \draw[->, thick]
-    (q.north) -- ++(0,0.8) -|
-    node[pos=0.25,above] {$u=\mathbf Qy$}
+    (q.north) -- ++(0,1.0) -|
+    node[pos=0.25, above=5pt] {$u=\mathbf Qy$}
     (x.north);
 
 \draw[->, thick]
-    (x.south) -- node[right] {$g(x)$} (g.north);
+    (x.south) --
+    node[midway, right=5pt] {$g(x)$}
+    (g.north);
 \end{tikzpicture}
 \caption{Physical interpretation of the constrained feedback. The state
 $x$ is the regulated physical subsystem and $z$ contains environmental,
