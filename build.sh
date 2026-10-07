@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
-cd "$(dirname "$0")/draft"
+repo_root="$(cd "$(dirname "$0")" && pwd)"
+cd "$repo_root"
 
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
+git pull --ff-only
 
-rm -f main.aux main.log main.out main.toc
+cd draft
+latexmk -g -pdf -interaction=nonstopmode -halt-on-error main.tex
