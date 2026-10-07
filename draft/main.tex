@@ -5,6 +5,10 @@
 \let\Bbbk\relax
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[numbers]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
 
 \begin{document}
 
@@ -13,8 +17,19 @@
 
 \section{Port-Hamiltonian dynamics}
 
-Consider two states $x\in\mathbb R^n$ and $z\in\mathbb R^m$ with a
-Hamiltonian $H(x,z)$. We keep the two states explicit and write
+Consider a physical system with internal state $x\in\mathbb R^n$ coupled
+to an environment or regulator state $z\in\mathbb R^m$. Depending on the
+application, $x$ may represent mechanical coordinates, electrical
+variables, concentrations, or other physical degrees of freedom, while
+$z$ may represent a reservoir, an actuator state, or stored controller
+energy. The Hamiltonian
+\begin{equation}
+H(x,z)
+\end{equation}
+is the total stored energy and its gradients are the corresponding
+generalized efforts.
+
+We write the dynamics as
 \begin{align}
 \dot x
 &=
@@ -34,18 +49,22 @@ with
 \qquad
 \mathbf R^\top=\mathbf R\succeq0.
 \end{equation}
-The matrices $\mathbf J$ generate conservative motion, $\mathbf R$
-dissipates energy, and $\mathbf C$ transfers energy between $x$ and $z$.
-The remaining port acts on $x$ through $\mathbf G(x)$, with output
+The skew part $\mathbf J$ describes reversible motion, such as inertial,
+gyroscopic, or circulation effects. The symmetric part $\mathbf R$
+describes irreversible losses such as friction, resistance, or diffusion.
+The matrix $\mathbf C$ connects the two subsystems without creating or
+destroying energy. The matrix $\mathbf G$ specifies which physical
+directions can be actuated through the remaining port
+\cite{vanderschaft2014}.
+
+The variable conjugate to the input is
 \begin{equation}
 y
 =
 \mathbf G^\top(x)\nabla_x H.
 \label{eq:y}
 \end{equation}
-
-The opposite signs of the $\mathbf C$ terms make the $x$--$z$ coupling
-power preserving. Along the full dynamics,
+The product $y^\top u$ has units of power. Along the full dynamics,
 \begin{equation}
 \dot H
 =
@@ -54,12 +73,46 @@ power preserving. Along the full dynamics,
 +y^\top u.
 \label{eq:energy}
 \end{equation}
-Thus $\mathbf C$ only moves energy between the two states, while
-$y^\top u$ is the power exchanged through the remaining port.
+The $\mathbf C$ terms cancel exactly. Energy can therefore be dissipated
+by $\mathbf R$, transferred between $x$ and $z$ through $\mathbf C$, or
+supplied and removed through the port $(u,y)$.
+
+\begin{figure}[htb!]
+\centering
+\begin{tikzpicture}[
+    >=Latex,
+    node distance=2.6cm,
+    box/.style={draw, rounded corners, minimum width=3.0cm, minimum height=1.25cm, align=center},
+    small/.style={draw, rounded corners, minimum width=2.5cm, minimum height=1.0cm, align=center}
+]
+\node[box] (z) {environment / reservoir\\$z,\ H_z$};
+\node[box, right=3.0cm of z] (x) {regulated system\\$x,\ H_x$};
+\node[small, right=3.0cm of x] (q) {feedback\\$\mathbf Q$};
+\node[small, below=1.8cm of x] (g) {homeostatic condition\\$g(x)=0$};
+
+\draw[<->, thick] (z) -- node[above, align=center] {power exchange\\$\mathbf C$} (x);
+\draw[->, thick] (x) -- node[above] {$y=\mathbf G^\top\nabla_x H$} (q);
+\draw[->, thick] (q) to[bend left=22] node[below] {$u=\mathbf Qy$ through $\mathbf G$} (x);
+\draw[->, dashed] (x) -- node[right] {$g(x)$} (g);
+\draw[->, dotted] (g.east) to[bend right=20] node[right, align=left] {sets the required\\feedback} (q.south);
+\end{tikzpicture}
+\caption{Physical interpretation of the constrained feedback. The state
+$x$ is the regulated physical subsystem and $z$ contains environmental,
+reservoir, or controller degrees of freedom. The coupling $\mathbf C$
+moves energy between them without changing the total energy. The
+remaining port measures the conjugate output $y$ and returns the input
+$u=\mathbf Qy$. The condition $g(x)=0$ specifies the physical operating
+surface to be maintained.}
+\label{fig:scheme}
+\end{figure}
 
 \section{Constrained feedback}
 
-Let the desired configurations of $x$ form the manifold
+Let $g(x)$ collect the physical quantities to be regulated after
+subtracting their desired values. Examples include a temperature error,
+a concentration imbalance, a pressure difference, or a mechanical
+displacement from an operating configuration. The homeostatic operating
+surface is
 \begin{equation}
 \mathcal M
 =
@@ -87,15 +140,16 @@ Using Eq.~\eqref{eq:x},
 \label{eq:constraint}
 \end{equation}
 
-Define only the matrix that maps the port into the constraint coordinates,
+Define the map from the actuated port to the regulated observables,
 \begin{equation}
 \mathbf A(x)
 =
 \partial_x g(x)\mathbf G(x).
 \label{eq:A}
 \end{equation}
-If $\mathbf A$ has full row rank, the port can correct every
-constraint-violating direction. The general control is
+If $\mathbf A$ has full row rank, the available actuators can correct
+every instantaneous direction that moves the regulated observables away
+from their target. The general control is
 \begin{align}
 u
 ={}&
@@ -111,11 +165,12 @@ u
 \right)v.
 \label{eq:u}
 \end{align}
-The first term is the minimum-norm correction required to keep
-$\dot g=0$. The second lies in $\ker\mathbf A$ and therefore does not
-affect the constraint.
+The first term is the smallest port input that cancels the transverse
+drift. The second changes motion only in directions invisible to the
+regulated observables.
 
-The same construction can make $\mathcal M$ attractive. Imposing
+Exact invariance assumes that the system already lies on the desired
+operating surface. A homeostatic restoring law is instead
 \begin{equation}
 \dot g
 =
@@ -123,7 +178,7 @@ The same construction can make $\mathcal M$ attractive. Imposing
 \qquad
 \mathbf K\succ0,
 \end{equation}
-gives
+which gives
 \begin{align}
 u
 ={}&
@@ -143,6 +198,8 @@ u
 \right)v.
 \label{eq:restoring}
 \end{align}
+The eigenvalues of $\mathbf K$ set the physical relaxation rates of the
+regulated quantities.
 
 We now restrict the control to a self-feedback through the same port,
 \begin{equation}
@@ -167,16 +224,17 @@ The constraint becomes
 0.
 \label{eq:Qconstraint}
 \end{equation}
-Thus $\mathbf Q$ must map the available output $y$ to one of the control
-vectors allowed by Eq.~\eqref{eq:u}. For $y\neq0$, one such map is
+Thus $\mathbf Q$ converts the generalized effort measured at the port
+into the flow or force required to maintain the regulated observables.
+For $y\neq0$, one map producing a required input $u$ is
 \begin{equation}
 \mathbf Q
 =
 \frac{u y^\top}{y^\top y},
 \label{eq:Q}
 \end{equation}
-since $\mathbf Qy=u$. If $y=0$, this algebraic self-feedback cannot
-generate a nonzero correction.
+although this map is not unique. If $y=0$, an algebraic self-feedback of
+this form cannot generate a nonzero correction.
 
 The energetic effect of the feedback follows directly from
 Eq.~\eqref{eq:energy},
@@ -186,12 +244,45 @@ y^\top u
 y^\top\mathbf Qy.
 \label{eq:Qpower}
 \end{equation}
-If $\mathbf Q^\top=-\mathbf Q$, the self-feedback is power preserving.
-A negative symmetric part removes energy, while a positive symmetric
-part injects it. Maintaining $g$ can therefore require either sign of
-power. The matrix $\mathbf Q$ specifies how the available port is used;
-it is not itself an energy reservoir. Any net energy supplied to or
-removed from $x$ must ultimately be accounted for by the $z$ system or
-by an external source or sink.
+If $\mathbf Q^\top=-\mathbf Q$, the feedback is lossless and only
+redistributes power between port directions. A negative symmetric part
+removes energy. A positive symmetric part injects energy and therefore
+requires an explicit supply. The matrix $\mathbf Q$ is a routing law,
+not an energy source. If the feedback draws energy from the environment,
+that energy must be stored in or supplied through physical degrees of
+freedom such as $z$.
+
+This construction is close to the original cybernetic notion of
+homeostasis. Ashby's essential variables are quantities that must remain
+inside a viable range; the equality $g(x)=0$ is the sharp local version
+of such a requirement, while $\dot g=-\mathbf K g$ describes active
+return toward the viable set \cite{ashby1956}. The port-Hamiltonian form
+adds information that is absent from an abstract regulator diagram: it
+specifies which variables can actually be actuated, which exchanges are
+lossless, where dissipation occurs, and how much power the regulator
+must supply.
+
+The connection to the good regulator theorem is more specific.
+Conant and Ashby showed that, under their optimality assumptions, a
+successful and simple regulator must embody a model of the system being
+regulated \cite{conant1970}. The algebraic map $\mathbf Q$ alone is not
+such a model: it has no internal state and only specifies an instantaneous
+conversion from output to input. In the present physical formulation,
+the natural carrier of an internal model is the dynamical state $z$.
+Its Hamiltonian, dissipation, and coupling can reproduce the system or
+environmental modes that matter for regulation. This is also the
+physical analogue of the later internal model principle, in which robust
+regulation requires the feedback dynamics to contain the relevant
+dynamics of the disturbances or reference signals \cite{francis1976}.
+
+The resulting question is therefore not only whether a regulator exists,
+but which regulator models are physically realizable. A candidate
+internal model must fit inside a dynamical subsystem with finite stored
+energy, admissible dissipation, and ports capable of supplying the power
+required by Eq.~\eqref{eq:Qpower}. This turns the cybernetic requirement
+for a model into an energetic and geometric constraint on the regulator.
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
 
 \end{document}
