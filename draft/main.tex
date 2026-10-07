@@ -1,199 +1,197 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,reqno]{amsart}
 
-\usepackage[a4paper,margin=2.7cm]{geometry}
-\usepackage{amsmath,amssymb}
-
-\title{Constrained port-Hamiltonian dynamics}
-\author{}
-\date{}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\let\Bbbk\relax
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{microtype}
 
 \begin{document}
 
+\title{constrained port-Hamiltonian dynamics}
 \maketitle
 
-\section{Port-Hamiltonian system}
+\section{Port-Hamiltonian dynamics}
 
-Consider two states $x \in \mathbb R^n$ and $z \in \mathbb R^m$ with
-stored energies $H(x)$ and $H(z)$. We write
+Consider two states $x\in\mathbb R^n$ and $z\in\mathbb R^m$ with a
+Hamiltonian $H(x,z)$. We keep the two states explicit and write
 \begin{align}
-    \dot x
-    &=
-    [J(x)-R(x)] \nabla H(x)
-    + C(x,z) \nabla H(z)
-    + G(x)u,
-    \label{eq:x}\\
-    \dot z
-    &=
-    [J(z)-R(z)] \nabla H(z)
-    - C^\top(x,z) \nabla H(x),
-    \label{eq:z}
+\dot x
+&=
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf C(x,z)\nabla_z H
++\mathbf G(x)u,
+\label{eq:x}\\
+\dot z
+&=
+[\mathbf J(z)-\mathbf R(z)]\nabla_z H
+-\mathbf C^\top(x,z)\nabla_x H,
+\label{eq:z}
 \end{align}
 with
 \begin{equation}
-    J^\top = -J,
-    \qquad
-    R^\top = R \succeq 0.
+\mathbf J^\top=-\mathbf J,
+\qquad
+\mathbf R^\top=\mathbf R\succeq0.
 \end{equation}
-The matrices $J$ generate conservative motion, $R$ dissipates energy,
-and $C$ transfers energy between $x$ and $z$. The input $u$ acts on $x$
-through $G(x)$, with conjugate output
+The matrices $\mathbf J$ generate conservative motion, $\mathbf R$
+dissipates energy, and $\mathbf C$ transfers energy between $x$ and $z$.
+The remaining port acts on $x$ through $\mathbf G(x)$, with output
 \begin{equation}
-    y
-    =
-    G^\top(x)\nabla H(x).
-    \label{eq:y}
-\end{equation}
-
-The opposite signs of the coupling terms make the $x$--$z$ interaction
-power preserving. For
-\begin{equation}
-    H_{\mathrm{tot}}
-    =
-    H(x)+H(z),
-\end{equation}
-the two coupling contributions cancel and
-\begin{equation}
-    \dot H_{\mathrm{tot}}
-    =
-    -\nabla H(x)^\top R(x)\nabla H(x)
-    -\nabla H(z)^\top R(z)\nabla H(z)
-    + y^\top u.
-    \label{eq:energy}
-\end{equation}
-Thus $y^\top u$ is the power entering the $x$ system through the
-remaining port.
-
-For the constraint calculation we only abbreviate the part of the
-$x$ dynamics that is present without this port,
-\begin{equation}
-    F(x,z)
-    =
-    [J(x)-R(x)]\nabla H(x)
-    + C(x,z)\nabla H(z),
-\end{equation}
-so that
-\begin{equation}
-    \dot x
-    =
-    F(x,z)+G(x)u.
-    \label{eq:compact}
+y
+=
+\mathbf G^\top(x)\nabla_x H.
+\label{eq:y}
 \end{equation}
 
-\section{Constraint and feedback}
-
-Let the desired configurations satisfy
+The opposite signs of the $\mathbf C$ terms make the $x$--$z$ coupling
+power preserving. Along the full dynamics,
 \begin{equation}
-    \mathcal M
-    =
-    \{x:g(x)=0\},
-    \qquad
-    g:\mathbb R^n \to \mathbb R^r.
+\dot H
+=
+-\nabla_x H^\top\mathbf R(x)\nabla_x H
+-\nabla_z H^\top\mathbf R(z)\nabla_z H
++y^\top u.
+\label{eq:energy}
+\end{equation}
+Thus $\mathbf C$ only moves energy between the two states, while
+$y^\top u$ is the power exchanged through the remaining port.
+
+\section{Constrained feedback}
+
+Let the desired configurations of $x$ form the manifold
+\begin{equation}
+\mathcal M
+=
+\{x:g(x)=0\},
+\qquad
+g:\mathbb R^n\to\mathbb R^r.
 \end{equation}
 If $x$ starts on $\mathcal M$, invariance requires
 \begin{equation}
-    \dot g
-    =
-    Dg(x)\dot x
-    =
-    Dg(x)\bigl[F(x,z)+G(x)u\bigr]
-    =
-    0.
-    \label{eq:constraint}
+\dot g
+=
+\partial_x g\,\dot x
+=
+0.
 \end{equation}
-Hence the input must satisfy
+Using Eq.~\eqref{eq:x},
 \begin{equation}
-    Dg(x)G(x)u
-    =
-    -Dg(x)F(x,z).
-    \label{eq:control}
+\partial_x g\,\mathbf G\,u
+=
+-\partial_x g
+\left(
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf C(x,z)\nabla_z H
+\right).
+\label{eq:constraint}
 \end{equation}
 
-If $Dg\,G$ has full row rank, the port can correct every direction that
-violates the constraint. The general solution is
+Define only the matrix that maps the port into the constraint coordinates,
 \begin{equation}
-    u
-    =
-    -(Dg\,G)^\dagger Dg\,F
-    +
-    \left[I-(Dg\,G)^\dagger Dg\,G\right]v.
-    \label{eq:u}
+\mathbf A(x)
+=
+\partial_x g(x)\mathbf G(x).
+\label{eq:A}
 \end{equation}
-The first term is the minimum-norm correction needed to remain on
-$\mathcal M$. The second lies in the nullspace of $Dg\,G$ and therefore
-does not change $\dot g$.
+If $\mathbf A$ has full row rank, the port can correct every
+constraint-violating direction. The general control is
+\begin{align}
+u
+={}&
+-\mathbf A^\dagger\partial_x g
+\left(
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf C(x,z)\nabla_z H
+\right)
+\nonumber\\
+&+
+\left(
+\mathbf I-\mathbf A^\dagger\mathbf A
+\right)v.
+\label{eq:u}
+\end{align}
+The first term is the minimum-norm correction required to keep
+$\dot g=0$. The second lies in $\ker\mathbf A$ and therefore does not
+affect the constraint.
 
-The same construction can make $\mathcal M$ attractive rather than only
-invariant. Imposing
+The same construction can make $\mathcal M$ attractive. Imposing
 \begin{equation}
-    \dot g
-    =
-    -K_g g,
-    \qquad
-    K_g \succ 0,
+\dot g
+=
+-\mathbf K g,
+\qquad
+\mathbf K\succ0,
 \end{equation}
 gives
-\begin{equation}
-    u
-    =
-    -(Dg\,G)^\dagger
-    \left(Dg\,F+K_g g\right)
-    +
-    \left[I-(Dg\,G)^\dagger Dg\,G\right]v.
-    \label{eq:restore}
-\end{equation}
-On $\mathcal M$ this reduces to Eq.~\eqref{eq:u}; away from it the same
-port also drives $g$ toward zero.
+\begin{align}
+u
+={}&
+-\mathbf A^\dagger
+\left[
+\partial_x g
+\left(
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf C(x,z)\nabla_z H
+\right)
++\mathbf K g
+\right]
+\nonumber\\
+&+
+\left(
+\mathbf I-\mathbf A^\dagger\mathbf A
+\right)v.
+\label{eq:restoring}
+\end{align}
 
-We now require the control to come from the output of the same port,
+We now restrict the control to a self-feedback through the same port,
 \begin{equation}
-    u
-    =
-    Q(x,z)y,
-    \qquad
-    y
-    =
-    G^\top(x)\nabla H(x).
-    \label{eq:self}
+u
+=
+\mathbf Q(x,z)y,
+\qquad
+y
+=
+\mathbf G^\top(x)\nabla_x H.
+\label{eq:self}
 \end{equation}
-The constraint condition becomes
+The constraint becomes
 \begin{equation}
-    Dg\,F
-    +
-    Dg\,GQy
-    =
-    0.
-    \label{eq:Qconstraint}
+\partial_x g
+\left(
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf C(x,z)\nabla_z H
++\mathbf G(x)\mathbf Q(x,z)y
+\right)
+=
+0.
+\label{eq:Qconstraint}
 \end{equation}
-Thus $Q$ only has to map the available output $y$ to one of the control
-vectors allowed by Eq.~\eqref{eq:u}. For $y\neq0$, one simple choice for
-any such $u$ is
+Thus $\mathbf Q$ must map the available output $y$ to one of the control
+vectors allowed by Eq.~\eqref{eq:u}. For $y\neq0$, one such map is
 \begin{equation}
-    Q
-    =
-    \frac{u y^\top}{y^\top y},
-    \label{eq:Q}
+\mathbf Q
+=
+\frac{u y^\top}{y^\top y},
+\label{eq:Q}
 \end{equation}
-since $Qy=u$. If $y=0$, this algebraic self-feedback cannot generate a
-nonzero correction.
+since $\mathbf Qy=u$. If $y=0$, this algebraic self-feedback cannot
+generate a nonzero correction.
 
-The energetic role of $Q$ follows directly from Eq.~\eqref{eq:energy},
+The energetic effect of the feedback follows directly from
+Eq.~\eqref{eq:energy},
 \begin{equation}
-    y^\top u
-    =
-    y^\top Qy.
-    \label{eq:Qpower}
+y^\top u
+=
+y^\top\mathbf Qy.
+\label{eq:Qpower}
 \end{equation}
-Only the symmetric part of $Q$ contributes to this power. If $Q$ is
-skew-symmetric, the feedback only redistributes energy and
-$y^\top Qy=0$. A negative symmetric part removes energy, while a positive
-symmetric part injects it.
-
-The constraint and the energy balance are therefore separate
-requirements. Equation~\eqref{eq:Qconstraint} determines the feedback
-needed to maintain $g$, while Eq.~\eqref{eq:Qpower} determines the power
-required to realize it. At this level $Q$ is an effective feedback law,
-not an energy reservoir. If maintaining the constraint requires net
-injection or removal of energy, the corresponding source or sink must be
-represented explicitly by the $z$ system or by an external port.
+If $\mathbf Q^\top=-\mathbf Q$, the self-feedback is power preserving.
+A negative symmetric part removes energy, while a positive symmetric
+part injects it. Maintaining $g$ can therefore require either sign of
+power. The matrix $\mathbf Q$ specifies how the available port is used;
+it is not itself an energy reservoir. Any net energy supplied to or
+removed from $x$ must ultimately be accounted for by the $z$ system or
+by an external source or sink.
 
 \end{document}
