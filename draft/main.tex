@@ -84,42 +84,42 @@ supplied and removed through the port $(u,y)$.
     box/.style={
         draw,
         rounded corners,
-        minimum width=3.1cm,
-        minimum height=1.15cm,
+        minimum width=2.8cm,
+        minimum height=1.05cm,
         align=center
     },
     small/.style={
         draw,
         rounded corners,
-        minimum width=2.7cm,
-        minimum height=1.0cm,
+        minimum width=2.5cm,
+        minimum height=0.95cm,
         align=center
+    },
+    lab/.style={
+        font=\footnotesize,
+        fill=white,
+        inner sep=2pt
     }
 ]
-\node[box] (z) at (-4.8,0) {environment / reservoir\\$z,\ H_z$};
-\node[box] (x) at (0,0) {regulated system\\$x,\ H_x$};
-\node[small] (q) at (4.8,0) {feedback law\\$\mathbf Q$};
-\node[small] (g) at (0,-2.4) {homeostatic condition\\$g(x)=0$};
+\node[box] (z) at (-4.0,0) {environment / reservoir\\$z$};
+\node[box] (x) at (0,0) {regulated system\\$x$};
+\node[small] (q) at (4.0,0) {feedback law\\$\mathbf Q$};
+\node[small] (g) at (0,-2.2) {homeostatic condition\\$g(x)=0$};
 
-\draw[<->, thick]
-    (z.east) --
-    node[midway, above=6pt] {power exchange $\mathbf C$}
-    (x.west);
+\draw[<->, thick] (z.east) -- (x.west);
+\node[lab, above=7pt] at (-2.0,0) {$\mathbf C$};
+\node[font=\scriptsize, above=20pt] at (-2.0,0) {power exchange};
 
-\draw[->, thick]
-    (x.east) --
-    node[midway, below=7pt] {$y=\mathbf G^\top\nabla_x H$}
-    (q.west);
+\draw[->, thick] (x.east) -- (q.west);
+\node[lab, below=8pt] at (2.0,0)
+    {$y=\mathbf G^\top\nabla_x H$};
 
 \draw[->, thick]
-    (q.north) -- ++(0,1.0) -|
-    node[pos=0.25, above=5pt] {$u=\mathbf Qy$}
-    (x.north);
+    (q.north) -- ++(0,1.05) -| (x.north);
+\node[lab] at (2.0,1.05) {$u=\mathbf Qy$};
 
-\draw[->, thick]
-    (x.south) --
-    node[midway, right=5pt] {$g(x)$}
-    (g.north);
+\draw[->, thick] (x.south) -- (g.north);
+\node[lab, right=6pt] at (0,-1.1) {$g(x)$};
 \end{tikzpicture}
 \caption{Physical interpretation of the constrained feedback. The state
 $x$ is the regulated physical subsystem and $z$ contains environmental,
