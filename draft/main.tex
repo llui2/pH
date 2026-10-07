@@ -1,0 +1,351 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{amsmath,amssymb}
+
+\title{Constrained port-Hamiltonian dynamics}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Port-Hamiltonian dynamics}
+
+We start with a state $x \in \mathbb R^n$ and an energy function
+$H_x : \mathbb R^n \to \mathbb R$. A port-Hamiltonian system with one
+external port is
+\begin{equation}
+    \dot x
+    =
+    \left[ J_x(x) - R_x(x) \right] \nabla H_x(x)
+    + G(x) u,
+\end{equation}
+with
+\begin{equation}
+    J_x^\top = -J_x,
+    \qquad
+    R_x^\top = R_x \succeq 0.
+\end{equation}
+The matrix $J_x$ redistributes energy without changing the total stored
+energy, while $R_x$ dissipates energy.
+
+The input $u \in \mathbb R^p$ acts through the port matrix
+$G(x) \in \mathbb R^{n \times p}$. The conjugate output is
+\begin{equation}
+    y
+    =
+    G^\top(x) \nabla H_x(x).
+\end{equation}
+This definition follows directly from the energy balance. Along the
+dynamics,
+\begin{align}
+    \dot H_x
+    &=
+    \nabla H_x^\top \dot x
+    \nonumber\\
+    &=
+    - \nabla H_x^\top R_x \nabla H_x
+    + y^\top u.
+\end{align}
+The scalar $y^\top u$ is therefore the power entering the $x$ system
+through the port. Positive values inject energy and negative values remove
+energy.
+
+\section{Coupling to a second system}
+
+We now introduce a second state $z \in \mathbb R^m$ with energy
+$H_z(z)$. We keep the two systems explicit and couple them through a
+matrix $C(x,z) \in \mathbb R^{n \times m}$,
+\begin{align}
+    \dot x
+    &=
+    \left[ J_x - R_x \right] \nabla H_x
+    + C \nabla H_z
+    + G u,
+    \label{eq:x}\\
+    \dot z
+    &=
+    \left[ J_z - R_z \right] \nabla H_z
+    - C^\top \nabla H_x,
+    \label{eq:z}
+\end{align}
+where
+\begin{equation}
+    J_z^\top = -J_z,
+    \qquad
+    R_z^\top = R_z \succeq 0.
+\end{equation}
+Arguments such as $J_x(x)$ and $C(x,z)$ are omitted when they are
+unambiguous.
+
+The opposite signs in Eqs.~\eqref{eq:x}--\eqref{eq:z} make the coupling
+power preserving. For the total stored energy
+\begin{equation}
+    H(x,z) = H_x(x) + H_z(z),
+\end{equation}
+the coupling terms cancel,
+\begin{equation}
+    \nabla H_x^\top C \nabla H_z
+    -
+    \nabla H_z^\top C^\top \nabla H_x
+    = 0.
+\end{equation}
+Hence
+\begin{equation}
+    \dot H
+    =
+    - \nabla H_x^\top R_x \nabla H_x
+    - \nabla H_z^\top R_z \nabla H_z
+    + y^\top u.
+    \label{eq:energy}
+\end{equation}
+The $x$--$z$ coupling only transfers energy between the two systems.
+Dissipation occurs through $R_x$ and $R_z$, while the port $(u,y)$ can
+exchange energy with whatever is connected to it.
+
+For the constraint calculation it is useful to collect the uncontrolled
+$x$ dynamics into
+\begin{equation}
+    f_x(x,z)
+    =
+    \left[ J_x(x) - R_x(x) \right] \nabla H_x(x)
+    + C(x,z) \nabla H_z(z).
+    \label{eq:fx}
+\end{equation}
+Equation~\eqref{eq:x} then becomes
+\begin{equation}
+    \dot x = f_x(x,z) + G(x)u.
+    \label{eq:xcompact}
+\end{equation}
+The $z$ dynamics remain explicitly given by Eq.~\eqref{eq:z}.
+
+\section{Constraint on the $x$ dynamics}
+
+Let
+\begin{equation}
+    g : \mathbb R^n \to \mathbb R^r
+\end{equation}
+define a set of observables of the $x$ configuration. We want the
+dynamics to remain on the manifold
+\begin{equation}
+    \mathcal M
+    =
+    \left\{
+        x \in \mathbb R^n :
+        g(x) = 0
+    \right\}.
+\end{equation}
+Assume that $Dg(x)$ has full row rank near $\mathcal M$, so that
+$\mathcal M$ is locally a smooth manifold of codimension $r$.
+
+If a trajectory starts on $\mathcal M$, invariance requires
+\begin{equation}
+    \dot g
+    =
+    Dg(x) \dot x
+    =
+    0.
+\end{equation}
+Using Eq.~\eqref{eq:xcompact},
+\begin{equation}
+    Dg(x) f_x(x,z)
+    +
+    Dg(x)G(x)u
+    =
+    0.
+\end{equation}
+Define
+\begin{equation}
+    A(x)
+    =
+    Dg(x)G(x)
+    \in
+    \mathbb R^{r \times p}.
+    \label{eq:A}
+\end{equation}
+The control input must therefore satisfy
+\begin{equation}
+    A(x)u
+    =
+    -Dg(x)f_x(x,z).
+    \label{eq:constraintcontrol}
+\end{equation}
+
+If $A$ has full row rank, every instantaneous constraint violation can be
+corrected through the port. The minimum-norm correction is
+\begin{equation}
+    u_c
+    =
+    -A^\dagger Dg\, f_x,
+    \label{eq:uc}
+\end{equation}
+where $A^\dagger$ is the Moore--Penrose inverse. More generally,
+\begin{equation}
+    u
+    =
+    -A^\dagger Dg\, f_x
+    +
+    \left( I - A^\dagger A \right)v.
+    \label{eq:ugeneral}
+\end{equation}
+The second term lies in $\ker A$. It can modify the microscopic dynamics
+without changing $\dot g$.
+
+If $A$ does not have full row rank, Eq.~\eqref{eq:constraintcontrol} can
+still be solved when $-Dg\,f_x$ belongs to the image of $A$. Full row
+rank is the stronger condition that guarantees solvability for every
+constraint-violating direction.
+
+\section{Attraction toward the constraint manifold}
+
+Exact invariance assumes that the initial state already satisfies
+$g(x)=0$. A restoring dynamics can instead be imposed directly in the
+observable coordinates,
+\begin{equation}
+    \dot g
+    =
+    -K_g g,
+    \qquad
+    K_g \succ 0.
+    \label{eq:restoring}
+\end{equation}
+Substituting the $x$ dynamics gives
+\begin{equation}
+    A u
+    =
+    -Dg\,f_x
+    -K_g g.
+\end{equation}
+The corresponding family of controls is
+\begin{equation}
+    u
+    =
+    -A^\dagger
+    \left(
+        Dg\,f_x + K_g g
+    \right)
+    +
+    \left( I - A^\dagger A \right)v.
+    \label{eq:urestore}
+\end{equation}
+On the manifold, $g=0$, this reduces to the invariance condition above.
+Away from the manifold, the controller also supplies the correction
+needed to drive $g$ toward zero.
+
+\section{Self-feedback through the port}
+
+The control $u$ in Eq.~\eqref{eq:xcompact} has so far been arbitrary.
+For a self-feedback law we require the input to be generated from the
+conjugate output
+\begin{equation}
+    y
+    =
+    G^\top \nabla H_x.
+\end{equation}
+The simplest linear relation at each state is
+\begin{equation}
+    u
+    =
+    Q(x,z)y,
+    \label{eq:feedback}
+\end{equation}
+where $Q(x,z) \in \mathbb R^{p \times p}$. The $x$ dynamics become
+\begin{equation}
+    \dot x
+    =
+    f_x(x,z)
+    +
+    G Q G^\top \nabla H_x.
+\end{equation}
+
+To maintain the constraint, $Q$ must generate a control vector satisfying
+Eq.~\eqref{eq:constraintcontrol}. Equivalently,
+\begin{equation}
+    A Q y
+    =
+    -Dg\,f_x.
+    \label{eq:Qconstraint}
+\end{equation}
+If $u_c$ is any control satisfying the constraint, the feedback problem
+reduces to
+\begin{equation}
+    Qy = u_c.
+    \label{eq:Qmap}
+\end{equation}
+For $y \neq 0$, one simple solution is
+\begin{equation}
+    Q
+    =
+    \frac{u_c y^\top}{y^\top y}.
+    \label{eq:Qsolution}
+\end{equation}
+This is not the unique solution. It only fixes the action of $Q$ along
+the current output direction $y$.
+
+If $y=0$, an algebraic self-feedback of the form $u=Qy$ cannot produce a
+nonzero correction. Constraint preservation at such a point therefore
+requires
+\begin{equation}
+    Dg\,f_x = 0
+\end{equation}
+unless an additional input or dynamical controller is introduced.
+
+\section{Energy required by the constraint}
+
+The physical role of $Q$ follows from the power balance. Under the
+self-feedback law,
+\begin{equation}
+    y^\top u
+    =
+    y^\top Qy.
+\end{equation}
+Decompose
+\begin{equation}
+    Q
+    =
+    Q_a + Q_s,
+    \qquad
+    Q_a
+    =
+    \frac{Q-Q^\top}{2},
+    \qquad
+    Q_s
+    =
+    \frac{Q+Q^\top}{2}.
+\end{equation}
+Since $y^\top Q_a y=0$,
+\begin{equation}
+    y^\top Qy
+    =
+    y^\top Q_s y.
+    \label{eq:Qpower}
+\end{equation}
+The antisymmetric part of $Q$ is power preserving. A negative
+semidefinite symmetric part removes energy, while a positive direction of
+$Q_s$ injects energy.
+
+The constraint condition and the energetic condition are therefore
+different. Equation~\eqref{eq:Qconstraint} determines which control is
+needed to maintain $g$. Equation~\eqref{eq:Qpower} determines the power
+required to realize that control. A purely power-preserving self-loop,
+$Q^\top=-Q$, can enforce the constraint only when the required correction
+satisfies
+\begin{equation}
+    y^\top u_c = 0.
+\end{equation}
+A general constraint controller may instead require positive or negative
+port power.
+
+In a physical model, $Q$ should not be interpreted as an energy source
+by itself. If the required feedback injects energy into $x$, that energy
+must come from another subsystem or an external supply. The state $z$
+provides a natural place to represent such an environment or controller.
+The combined energy $H_x+H_z$ then keeps track of energy transferred
+between the system and its environment. An algebraic $Q$ can be viewed
+as an effective feedback law, while an explicit dynamical model for $z$
+is needed when the source, storage, and depletion of that energy are part
+of the problem.
+
+\end{document}
