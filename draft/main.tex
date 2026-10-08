@@ -12,136 +12,128 @@
 
 \begin{document}
 
-\title{Open port-Hamiltonian networks}
+\title{Self-maintenance in open chemical networks}
 \maketitle
 
-\section{Physical network}
+\section{Chemical network}
 
-Consider a graph with $N$ vertices and $M$ edges, partitioned into a
-system $V_x$ and an environment $V_z$, with $V=V_x\sqcup V_z$.
-An arbitrary edge orientation defines the incidence matrix
+Consider $N$ species and $M$ reactions, with system amounts
+$x\in\mathbb R^n$ and environmental amounts $z\in\mathbb R^{N-n}$.
+Reactions connect chemical complexes containing one or more species.
+If there are $K$ complexes, let $\mathbf B\in\mathbb R^{K\times M}$
+be their graph incidence matrix and $\mathbf Z\in\mathbb R^{N\times K}$
+their species-composition matrix. The stoichiometric matrix is
 \begin{equation}
-\mathbf B=
-\begin{bmatrix}
-\mathbf B_x\\
-\mathbf B_z
-\end{bmatrix}
-\in\mathbb R^{N\times M}.
-\label{eq:incidence}
+\mathbf S=\mathbf Z\mathbf B=
+\begin{bmatrix}\mathbf S_x\\\mathbf S_z\end{bmatrix}.
+\label{eq:stoichiometry}
 \end{equation}
-Each column has $-1$ at its source and $+1$ at its target; the rows
-are partitioned accordingly. Edge orientation fixes signs, not a
-preferred transport direction \cite{vanderschaft2013graphs}.
+Each column gives the net species change of a reaction. The complex
+graph retains an incidence operator without restricting reactions to
+pairwise transport \cite{vanderschaft2013balanced}.
+
+Writing $v\in\mathbb R^M$ for the signed reaction rates, the dynamics
+are
+\begin{equation}
+\begin{aligned}
+\dot x&=\mathbf S_xv(x,z),\\
+\dot z&=\mathbf S_zv(x,z)+r.
+\end{aligned}
+\label{eq:dynamics}
+\end{equation}
+The flow $r$ replenishes environmental resources and removes waste;
+no external repair acts directly on $x$. Setting $r=0$ gives a closed
+network.
+
+\section{Thermodynamic structure}
+
+At fixed temperature and pressure, let $H(x,z)$ denote the Gibbs free
+energy of the combined network and define the chemical potentials
+\begin{equation}
+\mu=\nabla H=
+\begin{bmatrix}\mu_x\\\mu_z\end{bmatrix},
+\qquad A=-\mathbf S^\top\mu.
+\label{eq:affinity}
+\end{equation}
+The affinities and reaction rates are power-conjugate. For passive
+elementary reactions, the affinity $A_a$ and net rate
+$v_a$ satisfy $A_av_a\geq0$, giving
+\begin{equation}
+\dot H=-A^\top v+\mu_z^\top r.
+\label{eq:balance}
+\end{equation}
+The first term is reaction dissipation and the second is chemical
+power supplied to the environment. A finite closed network with $H$
+bounded below cannot sustain positive mean dissipation indefinitely;
+ongoing turnover requires environmental replenishment
+\cite{vanderschaft2013thermo,rao2016crn}.
+
+\section{Self-maintaining organization}
+
+Catalysts constrain reaction rates without net consumption. They
+cancel from the stoichiometric columns when present on both sides of a
+reaction, but remain in its kinetic law. Stoichiometry alone therefore
+does not describe which components enable a reaction.
+
+Consider two system components $C_1,C_2$, environmental precursors
+$F_1,F_2$, and waste $W_1,W_2$:
+\begin{equation}
+\begin{aligned}
+F_1+C_2&\rightleftharpoons C_1+C_2,
+& C_1&\rightleftharpoons W_1,\\
+F_2+C_1&\rightleftharpoons C_2+C_1,
+& C_2&\rightleftharpoons W_2.
+\end{aligned}
+\label{eq:example}
+\end{equation}
+The production rates $v_1,v_2$ correspond to the first column, top to
+bottom, while $v_3,v_4$ denote degradation in the second column. Each
+component catalyzes the other's production.
 
 \begin{figure}[htb!]
 \centering
 \begin{tikzpicture}[
     >=Latex,
-    vertex/.style={circle, fill=black, inner sep=2.7pt},
-    edge/.style={line width=0.85pt},
-    cross/.style={line width=1.1pt, draw=blue!60!black},
-    label/.style={font=\footnotesize}
+    species/.style={font=\normalsize, inner sep=2pt},
+    lab/.style={font=\footnotesize},
+    rxn/.style={->, line width=0.9pt}
 ]
-\path[use as bounding box] (-3.6,-1.5) rectangle (3.6,1.75);
-\node[label] at (-2.4,1.48) {system $V_x$};
-\node[label] at (2.2,1.48) {environment $V_z$};
-\draw[gray!65, densely dashed] (0,-1.20) -- (0,1.20);
-
-\node[vertex] (xa) at (-3.2,0.82) {};
-\node[vertex] (xb) at (-3.2,-0.65) {};
-\node[vertex] (xc) at (-1.45,0.05) {};
-\node[vertex] (za) at (1.42,0.82) {};
-\node[vertex] (zb) at (3.05,0.45) {};
-\node[vertex] (zc) at (1.45,-0.74) {};
-
-\draw[->,edge] (xa) -- (xc);
-\draw[->,edge] (xc) -- (xb);
-\draw[->,edge] (xb) -- (xa);
-\draw[->,edge] (za) -- (zb);
-\draw[->,edge] (zb) -- (zc);
-\draw[->,edge] (zc) -- (za);
-\draw[->,cross] (xc) -- (za);
-\draw[->,cross] (xc) -- (zc);
-\node[label, text=blue!60!black, anchor=east] at (-0.20,0.77) {$(e,f)$};
-
+\path[use as bounding box] (-4.4,-1.06) rectangle (4.4,1.38);
+\node[lab, text=gray!70!black] at (-3.30,1.18) {environment};
+\node[lab] at (0,1.18) {system};
+\node[lab, text=gray!70!black] at (3.30,1.18) {environment};
+\node[species] (f1) at (-3.30,0.37) {$F_1$};
+\node[species] (c1) at (0,0.37) {$C_1$};
+\node[species] (w1) at (3.30,0.37) {$W_1$};
+\node[species] (f2) at (-3.30,-0.61) {$F_2$};
+\node[species] (c2) at (0,-0.61) {$C_2$};
+\node[species] (w2) at (3.30,-0.61) {$W_2$};
+\draw[rxn,draw=blue!60!black] (f1) -- node[lab,above=3pt] {catalyst $C_2$} (c1);
+\draw[rxn,draw=blue!60!black] (f2) -- node[lab,above=3pt] {catalyst $C_1$} (c2);
+\draw[rxn] (c1) -- node[lab,above=3pt] {degradation} (w1);
+\draw[rxn] (c2) -- node[lab,above=3pt] {degradation} (w2);
 \end{tikzpicture}
-\caption{System--environment partition of an oriented network.
-Blue edges cross the boundary and carry effort--flow pairs $(e,f)$.
-The network exchanges energy through its connections without a
-separate regulatory port.}
-\label{fig:network}
+\caption{Mutual catalytic maintenance. Each system component enables
+the other's production from environmental precursors, while both
+undergo degradation. Arrows show net conversions.}
+\label{fig:maintenance}
 \end{figure}
 
-Node states $x\in\mathbb R^{|V_x|}$ and $z\in\mathbb R^{|V_z|}$
-store one quantity per vertex. With no independent edge storage, the
-energy and node efforts are
+The internal amounts $c_1,c_2$ satisfy
 \begin{equation}
-H=H_x(x)+H_z(z),
-\qquad e_x=\nabla_x H_x,
-\qquad e_z=\nabla_z H_z.
-\label{eq:energy}
+\dot c_1=v_1-v_3,
+\qquad \dot c_2=v_2-v_4.
+\label{eq:maintenance}
 \end{equation}
-The incidence matrix determines the edge efforts,
-\begin{equation}
-e=-\mathbf B^\top
-\begin{bmatrix}e_x\\e_z\end{bmatrix},
-\qquad f\in\mathbb R^M.
-\label{eq:edge-port}
-\end{equation}
-Here $e$ and $f$ are conjugate edge efforts and flows. The sign of
-$f$ follows the chosen orientation. For each edge $a$, allow a local law
-\begin{equation}
-f_a=F_a(e_a;x,z),
-\label{eq:edge-law}
-\end{equation}
-where $F_a$ depends only on the endpoint states. Passivity requires
-$e_af_a\geq0$; the resistive law $f_a=k_ae_a$, $k_a\geq0$, is one
-example. The graph does not prescribe the transport law.
+Stationary maintenance with ongoing turnover requires $v_1=v_3>0$
+and $v_2=v_4>0$. These balances do not establish persistence: kinetics,
+thermodynamics, and dynamical stability must also permit the state.
+No target concentration or external repair is imposed.
 
-\section{Dynamics and power}
-
-The node dynamics are
-\begin{align}
-\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xf,
-\label{eq:x}\\
-\dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zf,
-\label{eq:z}
-\end{align}
-where $\mathbf J_x,\mathbf J_z$ are skew-symmetric and
-$\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite.
-These matrices describe local reversible and dissipative processes;
-any off-diagonal coupling respects the corresponding graph.
-The energy balance is \cite{vanderschaft2014}
-\begin{equation}
-\dot H
-=-e_x^\top\mathbf R_xe_x
--e_z^\top\mathbf R_ze_z
--e^\top f.
-\label{eq:balance}
-\end{equation}
-The system obtains energy through its connections with the environment.
-Let $\mathbf B_x^\partial$ contain the columns of $\mathbf B_x$
-corresponding to edges crossing the partition, with flows $f^\partial$.
-The power entering the system through these edges is
-\begin{equation}
-P_{z\to x}=e_x^\top\mathbf B_x^\partial f^\partial.
-\label{eq:environment-power}
-\end{equation}
-A positive value means that $x$ gains energy from $z$. On a passive
-boundary edge, the energy lost by $z$ is the energy received by $x$
-plus the dissipation at that connection.
-
-With passive edges and internal dissipation, the total energy is
-nonincreasing. A finite environment whose energy is bounded below
-cannot support sustained positive dissipation indefinitely; persistent
-throughput requires the environment to be replenished by a physical
-process. Any such supply must be included in the enlarged physical
-network, rather than introduced as an independent input to $x$.
-
-Adaptive connections may respond to carried flow
-\cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning},
-but self-maintenance is a separate question \cite{montevil2015closure}.
-We leave adaptation and persistence conditions unspecified.
+The question is whether a network's reactions can maintain the
+components that enable those reactions. It connects chemical
+organization theory and closure of constraints
+\cite{dittrich2007organization,montevil2015closure}.
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}
