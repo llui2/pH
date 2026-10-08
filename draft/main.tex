@@ -82,39 +82,29 @@ supplied and removed through the port $(u,y)$.
 \makebox[\textwidth][c]{%
 \begin{tikzpicture}[
     >=Latex,
-    box/.style={
-        draw,
-        rounded corners,
-        minimum width=2.8cm,
-        minimum height=1.05cm,
-        align=center
-    },
-    lab/.style={
-        font=\footnotesize,
-        fill=white,
-        inner sep=2pt
-    }
+    state/.style={align=center, inner sep=3pt},
+    lab/.style={font=\footnotesize, inner sep=1pt}
 ]
-\path[use as bounding box] (-5.4,-2.9) rectangle (5.4,1.7);
+\path[use as bounding box] (-5.4,-2.9) rectangle (5.4,1.8);
 
-\node[box] (z) at (-4.0,0) {environment\\$z$};
-\node[box] (x) at (0,0) {regulated system\\$x$};
-\node[box] (q) at (4.0,0) {feedback\\$\mathbf Q$};
-\node[box] (g) at (0,-2.2) {homeostatic condition\\$g(x)=0$};
+\node[state] (z) at (-4.0,0) {environment\\$z$};
+\node[state] (x) at (0,0) {regulated system\\$x$};
+\node[state] (q) at (4.0,0) {feedback\\$\mathbf Q$};
+\node[state] (g) at (0,-2.2) {homeostatic condition\\$g(x)=0$};
 
 \draw[<->, thick] (z.east) -- (x.west);
 \node[lab] at (-2.0,0.38) {$\mathbf C$};
 \node[font=\scriptsize] at (-2.0,0.72) {power exchange};
 
 \draw[->, thick] (x.east) -- (q.west);
-\node[lab] at (2.0,-0.42) {$y=\mathbf G^\top\nabla_x H$};
+\node[lab] at (2.0,-0.48) {$y=\mathbf G^\top\nabla_x H$};
 
 \draw[->, thick]
-    (q.north) -- (4.0,1.05) -- (0,1.05) -- (x.north);
-\node[lab] at (2.0,1.05) {$u=\mathbf Qy$};
+    (q.north) -- (4.0,1.08) -- (0,1.08) -- (x.north);
+\node[lab, above=2pt] at (2.0,1.08) {$u=\mathbf Qy$};
 
 \draw[->, thick] (x.south) -- (g.north);
-\node[lab] at (0.48,-1.1) {$g(x)$};
+\node[lab, anchor=west] at (0.22,-1.1) {$g(x)$};
 \end{tikzpicture}%
 }
 \caption{Physical interpretation of the constrained feedback. The state
