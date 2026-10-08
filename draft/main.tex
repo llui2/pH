@@ -42,7 +42,7 @@ preferred transport direction \cite{vanderschaft2013graphs}.
     cross/.style={line width=1.1pt, draw=blue!60!black},
     label/.style={font=\footnotesize}
 ]
-\path[use as bounding box] (-5.0,-1.5) rectangle (4.4,1.75);
+\path[use as bounding box] (-3.6,-1.5) rectangle (3.6,1.75);
 \node[label] at (-2.4,1.48) {system $V_x$};
 \node[label] at (2.2,1.48) {environment $V_z$};
 \draw[gray!65, densely dashed] (0,-1.20) -- (0,1.20);
@@ -64,15 +64,11 @@ preferred transport direction \cite{vanderschaft2013graphs}.
 \draw[->,cross] (xc) -- (zc);
 \node[label, text=blue!60!black, anchor=east] at (-0.20,0.77) {$(e,f)$};
 
-\node[label] (q) at (-4.16,0.07) {$\mathbf Q$};
-\draw[->,edge] (xa.west) -- (-4.16,0.82) -- (q.north);
-\node[label, anchor=south] at (-3.73,0.85) {$y$};
-\draw[->,edge] (q.south) -- (-4.16,-0.65) -- (xb.west);
-\node[label, anchor=north] at (-3.73,-0.68) {$u$};
 \end{tikzpicture}
 \caption{System--environment partition of an oriented network.
 Blue edges cross the boundary and carry effort--flow pairs $(e,f)$.
-The internal feedback $\mathbf Q$ returns output $y$ as input $u$.}
+The network exchanges energy through its connections without a
+separate regulatory port.}
 \label{fig:network}
 \end{figure}
 
@@ -104,32 +100,23 @@ example. The graph does not prescribe the transport law.
 
 \section{Dynamics and power}
 
-We write the node dynamics with a feedback port on $x$,
+The node dynamics are
 \begin{align}
-\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xf+\mathbf G u,
+\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xf,
 \label{eq:x}\\
 \dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zf,
 \label{eq:z}
 \end{align}
 where $\mathbf J_x,\mathbf J_z$ are skew-symmetric and
-$\mathbf R_x,\mathbf R_z$ are positive semidefinite. Their
-state-dependent off-diagonal couplings follow existing edges; otherwise
-they bypass $\mathbf B$. Columns of $\mathbf G$ act at individual
-system vertices, with feedback
-\begin{equation}
-y=\mathbf G^\top e_x,
-\qquad u=\mathbf Qy.
-\label{eq:port}
-\end{equation}
-The map $\mathbf Q$ couples ports only at the same or adjacent
-vertices. If feedback redistributes a conserved node quantity, then
-$\mathbf 1^\top\mathbf G u=0$. The energy balance follows from the
-port relations \cite{vanderschaft2014}:
+$\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite.
+These matrices describe local reversible and dissipative processes;
+any off-diagonal coupling respects the corresponding graph.
+The energy balance is \cite{vanderschaft2014}
 \begin{equation}
 \dot H
 =-e_x^\top\mathbf R_xe_x
 -e_z^\top\mathbf R_ze_z
--e^\top f+y^\top\mathbf Qy.
+-e^\top f.
 \label{eq:balance}
 \end{equation}
 The system obtains energy through its connections with the environment.
@@ -144,13 +131,12 @@ A positive value means that $x$ gains energy from $z$. On a passive
 boundary edge, the energy lost by $z$ is the energy received by $x$
 plus the dissipation at that connection.
 
-We take $\mathbf Q+\mathbf Q^\top\preceq0$, so internal feedback only
-redistributes or dissipates available energy; skew $\mathbf Q$ is
-lossless. Any feedback that performs net positive work must instead
-draw that power through an explicitly modeled connection to $z$.
-If the total energy is bounded below, a finite passive environment
-cannot sustain positive dissipation indefinitely. Persistent operation
-requires the environmental energy supply to be maintained.
+With passive edges and internal dissipation, the total energy is
+nonincreasing. A finite environment whose energy is bounded below
+cannot support sustained positive dissipation indefinitely; persistent
+throughput requires the environment to be replenished by a physical
+process. Any such supply must be included in the enlarged physical
+network, rather than introduced as an independent input to $x$.
 
 Adaptive connections may respond to carried flow
 \cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning},
