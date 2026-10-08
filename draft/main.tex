@@ -3,157 +3,148 @@
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
 \let\Bbbk\relax
-\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsmath,amssymb}
 \usepackage{microtype}
-\usepackage[margin=0.95in]{geometry}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta}
+\usepackage[margin=0.98in]{geometry}
 \usepackage[numbers]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue!65!black,citecolor=blue!65!black,urlcolor=blue!65!black]{hyperref}
 
 \begin{document}
-\title{Emergent organization in stochastic chemical networks}
+\title{Thermodynamic compatibility and the emergence of chemical organization}
 \maketitle
 
 \section{Physical reaction space}
 
-Consider a well-mixed chemical system with molecule counts
-$n=(x,z)\in\mathbb N_0^N$, where $x$ denotes its internal species and
-$z$ the environmental resources and products. The admissible elementary
-reactions are fixed by the chemistry. Reaction $r$ converts a reactant
-complex $\alpha_r$ into a product complex $\beta_r$ and changes the
-state by $\nu_r=\beta_r-\alpha_r$. The stoichiometric matrix collects
-these changes. Equivalently, using the incidence matrix $\mathbf B$
-of the graph of chemical complexes and their species-composition matrix
-$\mathbf Z$, it is
+A chemical network has a fixed set of elementary reactions, but its
+present composition determines which of them can occur. We divide the
+species counts into an internal state $x$ and an environment $z$, with
+$n=(x,z)\in\mathbb N_0^N$. Reaction $r$ changes $n$ by a stoichiometric
+vector $\nu_r$. Collecting these vectors gives
 \begin{equation}
-\mathbf S=\begin{bmatrix}\nu_1&\cdots&\nu_M\end{bmatrix}
-=\mathbf Z\mathbf B.
+\mathbf S=\begin{bmatrix}\mathbf S_x\\\mathbf S_z\end{bmatrix}
+=\begin{bmatrix}\nu_1&\cdots&\nu_M\end{bmatrix}=\mathbf Z\mathbf B,
 \label{eq:stoichiometry}
 \end{equation}
-The split $\mathbf S=[\mathbf S_x^\top,\mathbf S_z^\top]^\top$
-distinguishes changes in the internal and environmental species
-\cite{vanderschaft2013balanced}. Reservoir exchange, when present, acts
-on $z$, not by directly replacing internal components.
-
-Each reaction has a propensity $w_r(n)\geq0$. It vanishes when its
-reactants are unavailable. For an elementary well-mixed reaction, the
-stochastic mass-action propensity can be written as
+where $\mathbf B$ is the incidence matrix of the graph of chemical
+complexes and $\mathbf Z$ gives the species composition of each complex
+\cite{vanderschaft2013balanced}. With physical propensities $w_r(n)$,
+the stochastic generator is
 \begin{equation}
-w_r(n)=k_r\prod_{i=1}^{N}(n_i)_{\alpha_{ir}},
-\qquad (m)_q=m(m-1)\cdots(m-q+1),
-\label{eq:propensity}
-\end{equation}
-with $(m)_0=1$ and a rate constant $k_r$ fixed by the reaction
-kinetics. A catalyst appears on both sides of a reaction and cancels
-from $\nu_r$, but remains in $\alpha_r$ and hence in its propensity.
-The current composition can therefore enable or suppress reaction
-channels without changing the underlying chemical laws.
-
-\section{Stochastic dynamics}
-
-The process is a continuous-time Markov jump process. When reaction
-$r$ fires, $n\mapsto n+\nu_r$; its conditional probability of firing
-in a short interval $dt$ is $w_r(n)dt+o(dt)$. Its generator acts on an
-observable $\varphi$ as
-\begin{equation}
-(\mathsf L\varphi)(n)
-=\sum_{r=1}^{M}w_r(n)
+(\mathsf L\varphi)(n)=\sum_r w_r(n)
 \bigl[\varphi(n+\nu_r)-\varphi(n)\bigr].
 \label{eq:generator}
 \end{equation}
-This follows the chemical master equation rather than an independently
-chosen adaptation law \cite{gillespie1977,anderson2015}. The
-\emph{enabled reaction set}
+Reactant availability and catalysis enter through $w_r(n)$; their
+products therefore change subsequent reaction propensities without an
+independent adaptation law \cite{gillespie1977}. The environment is the
+source of chemical resources, not an external repair mechanism for $x$.
+
+\section{Thermodynamic compatibility}
+
+Fix the chemical potentials $\mu_z$ of the maintained environmental
+reservoirs, and let $\mu_x$ denote internal chemical potentials. For
+any selected collection of reactions, orient each column of
+$\mathbf S$ along the direction required for its operation. Their
+affinities are
 \begin{equation}
-\mathsf A(n)=\{r:w_r(n)>0\}
-\label{eq:enabled}
+ a=-\mathbf S_x^\top\mu_x-\mathbf S_z^\top\mu_z.
+\label{eq:affinities}
 \end{equation}
-changes when reactions produce or remove constituents needed by other
-reactions. The generator is fixed as a function of $n$; what changes
-along a trajectory is the effective set of active processes.
-
-\begin{figure}[htb!]
-\centering
-\begin{tikzpicture}[>=Latex, lab/.style={font=\small,inner sep=2pt}]
-\path[use as bounding box] (-4.25,-1.12) rectangle (4.25,1.20);
-\node[lab] (n) at (-2.4,0.72) {$n$};
-\node[lab] (np) at (2.4,0.72) {$n+\nu_r$};
-\draw[->,line width=0.9pt] (n.east) -- node[above,font=\footnotesize]
-{$r$, at rate $w_r(n)$} (np.west);
-\node[lab] (a) at (-2.4,-0.58) {$\mathsf A(n)$};
-\node[lab] (ap) at (2.4,-0.58) {$\mathsf A(n+\nu_r)$};
-\draw[->,line width=0.8pt] (n.south) -- (a.north);
-\draw[->,line width=0.8pt] (np.south) -- (ap.north);
-\draw[->,dashed,draw=blue!60!black,line width=0.9pt]
-(a.east) -- node[above,font=\footnotesize,black] {may change} (ap.west);
-\end{tikzpicture}
-\caption{A chemical event changes the state and can thereby change
-which other reactions are enabled. The catalogue of elementary
-reactions remains fixed.}
-\label{fig:enabling}
-\end{figure}
-
-\newpage
-
-The propensities must also respect thermodynamics. For elementary
-reversible channels, local detailed balance relates forward and reverse
-rates to the free-energy change $\Delta H_r$ and chemical work $W_r$
-provided by maintained reservoirs,
+Strictly positive $a_r$ permits positive net flux in the selected
+direction for a thermodynamically consistent elementary reaction.
+A nonnegative internal turnover flux $q\ne0$ obeys
+$\mathbf S_xq=0$. Its total chemical driving is
 \begin{equation}
-\log\frac{w_r(n)}{w_{\bar r}(n+\nu_r)}
-=-\frac{\Delta H_r(n)-W_r}{k_{\mathrm B}T},
-\label{eq:thermodynamics}
+q^\top a=-\mu_z^\top\mathbf S_zq.
+\label{eq:cycle-work}
 \end{equation}
-where $\bar r$ is the reverse channel, $H(n)$ is the state free
-energy, $\Delta H_r(n)=H(n+\nu_r)-H(n)$, $k_{\mathrm B}$ is
-Boltzmann's constant, and $T$ is temperature. The free energy includes
-mixing contributions; $W_r=0$ in the explicitly modeled closed system. Catalysts can alter barriers and
-rates without changing this thermodynamic balance
+Thus a collection of required directions is impossible if it contains
+such a $q$ with nonpositive environmental work. This is the
+thermodynamic cycle obstruction, not a test for autocatalysis itself
 \cite{rao2016crn}.
 
-\section{Objects of study}
-
-The \emph{reaction-state graph} has configurations $n$ as vertices and
-an edge $n\to n+\nu_r$ wherever $w_r(n)>0$. A state is reachable from
-$n_0$ only if a finite sequence of such transitions exists. In
-particular, a viable organization that cannot be assembled through
-available reaction paths has zero probability of spontaneous formation.
-This separates assembly from the ability to maintain an organization
-once it has formed \cite{peng2022hierarchy}.
-
-To examine persistence, let $C$ be a candidate set of essential
-internal species and define
+The restriction can be expressed through the maximum common affinity
+margin. If the normalized cycle set
+$\{q\geq0:\mathbf S_xq=0,\ \mathbf1^\top q=1\}$ is nonempty, linear
+programming duality yields
 \begin{equation}
-\Omega_C=\{n:n_i>0\ \text{for every }i\in C\},
-\qquad
-\tau_C=\inf\{t\geq0:n(t)\notin\Omega_C\}.
-\label{eq:survival}
+\boxed{\displaystyle
+\delta_*:=\max_{\mu_x}\min_r a_r
+=\min_{\substack{q\geq0,\ \mathbf S_xq=0\\\mathbf1^\top q=1}}
+\bigl(-\mu_z^\top\mathbf S_zq\bigr).}
+\label{eq:margin}
 \end{equation}
-For an initial state in $\Omega_C$, the survival probability
-$\Pr_n(\tau_C>t)$ and mean exit time $\mathbb E_n[\tau_C]$ measure
-how long the essential species remain present. The Markov generator
-restricted to $\Omega_C$, with transitions leaving it treated as absorption, determines these
-quantities. In particular, $T_C(n)=\mathbb E_n[\tau_C]$ satisfies
-\begin{equation}
--\mathsf L T_C(n)=1\quad (n\in\Omega_C),
-\qquad T_C(n)=0\quad (n\notin\Omega_C),
-\label{eq:exit-time}
-\end{equation}
-whenever the mean is finite. For a finite killed state space, the
-leading decay rate also controls long-time survival under standard
-irreducibility assumptions. Presence alone is not maintenance:
-we must additionally verify that internal reactions continually replace
-degraded components using resources from $z$.
+Here internal potentials are allowed to vary without bounds. Positive
+$\delta_*$ is equivalent to simultaneous strict directional feasibility
+under this assumption. The margin is measured in energy per reaction
+event and does not determine reaction rates, stability, or persistence.
+If the normalized cycle set is empty, the margin is unbounded above in
+this unconstrained problem. Finite concentrations, conserved totals,
+and kinetic restrictions can narrow the feasible region.
 
-The problem is to determine which such organizations can be reached
-from an initially unorganized state, and which become long-lived
-without external replacement of their essential components. The
-reaction constraints determine the possible dynamics; their products
-in turn change which reactions are accessible. Chemical organization
-theory and seed-dependent autocatalysis give complementary structural
-starting points \cite{dittrich2007organization,montevil2015closure,peng2022hierarchy}.
+\section{Two competing autocatalytic cores}
+
+Kosc and collaborators identified two autocatalytic cores that share
+reactions and admit compatible stoichiometric production fluxes, yet
+cannot operate simultaneously with thermodynamically consistent
+mass-action kinetics \cite{blokhuis2020,kosc2025}. Their six reaction directions are
+\begin{equation}
+\begin{aligned}
+R_1:&\ X_1\to B+X_2, &R'_1:&\ X'_1\to A+X'_2,\\
+R_2:&\ X_2+X'_2\to X_3, &R_3:&\ X_3\to2X_4,\\
+R_4:&\ A+X_4\to X_1, &R'_4:&\ B+X_4\to X'_1.
+\end{aligned}
+\label{eq:cores}
+\end{equation}
+The cores are $(R_1,R_2,R_3,R_4)$ and
+$(R'_1,R_2,R_3,R'_4)$. One occurrence of every reaction gives zero
+net change in every species, so $\mathbf Sq=0$ for
+$q=(1,1,1,1,1,1)^\top$. Equation~\eqref{eq:cycle-work} forces
+$\sum_r a_r=0$: their six prescribed directions cannot all have
+positive affinity. This recovers the published incompatibility.
+Equivalently, with
+$\theta=\mu_B+\mu_{X_2}-\mu_A-\mu_{X_4}$, the first core
+requires $\theta<0$ whereas the second requires $\theta>0$.
+
+As a separate, illustrative extension, couple $R_1$ to conversion of
+an environmental fuel $F$ into waste $W$,
+$X_1+F\to B+X_2+W$. The internal stoichiometry remains unchanged,
+while the full cycle now consumes one fuel molecule. If
+$\Delta\mu=\mu_F-\mu_W$, its affinity sum is $\Delta\mu$.
+The first core now requires $\theta<\Delta\mu$, allowing its
+necessary potential window to overlap with that of the second core.
+The normalized nonnegative kernel of $\mathbf S_x$ is the single
+vector $\mathbf1/6$, giving the exact margin
+\begin{equation}
+\boxed{\delta_*={\Delta\mu}/{6}.}
+\label{eq:fuel-margin}
+\end{equation}
+Fuel driving can therefore remove the obstruction to simultaneous
+\emph{reaction directions}. It does not establish a kinetically
+maintained state or simultaneous autocatalytic growth.
+
+\section{Dynamical question}
+
+Stoichiometric production, positive affinities, and stochastic
+persistence are distinct properties. The first two restrict the
+organizations that might operate; the generator in
+Eq.~\eqref{eq:generator} determines which can actually form from an
+initial chemical configuration. Let $D$ denote a set of states in
+which a specified core has the required net reaction fluxes, and
+$\tau_D$ its first entry time. Formation probabilities
+$\Pr_n(\tau_D<\infty)$, residence times, and transitions between
+core-dominated regimes are dynamical observables, not consequences of
+$\delta_*$ alone. In particular, core compatibility need not imply
+accessibility or maintenance. Seed-dependent activation provides a
+known mechanism for sequential organization \cite{peng2022hierarchy}.
+
+The question is whether thermodynamic compatibility and reaction
+accessibility constrain the formation and replacement of
+self-maintaining organizations in ways that survive changes in the
+kinetic barriers. The six-reaction example supplies an exact
+thermodynamic baseline; deriving a predictive connection to stochastic
+lifetimes remains open.
 
 \bibliographystyle{unsrtnat}
-\begingroup\footnotesize\setlength{\itemsep}{1pt}\bibliography{refs}\endgroup
+\begingroup\footnotesize\bibliography{refs}\endgroup
 \end{document}
