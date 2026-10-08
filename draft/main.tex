@@ -178,27 +178,45 @@ Fuel driving can therefore remove the obstruction to simultaneous
 \emph{reaction directions}. It does not establish a kinetically
 maintained state or simultaneous autocatalytic growth.
 
-\section{Dynamical question}
+\section{Stochastic baseline and limitation}
 
-Stoichiometric production, positive affinities, and stochastic
-persistence are distinct properties. The first two restrict the
-organizations that might operate; the generator in
-Eq.~\eqref{eq:generator} determines which can actually form from an
-initial chemical configuration. Let $D$ denote a set of states in
-which a specified core has the required net reaction fluxes, and
-$\tau_D$ its first entry time. Formation probabilities
-$\Pr_n(\tau_D<\infty)$, residence times, and transitions between
-core-dominated regimes are dynamical observables, not consequences of
-$\delta_*$ alone. In particular, core compatibility need not imply
-accessibility or maintenance. Seed-dependent activation provides a
-known mechanism for sequential organization \cite{peng2022hierarchy}.
+The six-reaction example contains a conservation law that restricts
+its possible dynamics. With $A,B,F,W$ buffered and the other six
+species internal, the positive vector
+$\ell=(1,1,2,1,1,1)^\top$ obeys
+$\ell^\top\mathbf S_x=0$, so the internal pool
+$m=\ell^\top x$ is fixed. Moreover,
+$\ker\mathbf S_x=\operatorname{span}\{\mathbf1\}$.
+Thus any stationary reaction currents must satisfy
+\begin{equation}
+\langle v_1\rangle=\langle v'_1\rangle
+=\langle v_2\rangle=\langle v_3\rangle
+=\langle v_4\rangle=\langle v'_4\rangle=J.
+\label{eq:one-current}
+\end{equation}
+There are no independent stationary currents associated with the two
+cores. The state $x=0$ is also absorbing: the original reactions
+cannot assemble an internal organization from an empty system.
 
-The question is whether thermodynamic compatibility and reaction
-accessibility constrain the formation and replacement of
-self-maintaining organizations in ways that survive changes in the
-kinetic barriers. The six-reaction example supplies an exact
-thermodynamic baseline; deriving a predictive connection to stochastic
-lifetimes remains open.
+For a dynamical check, we solved the finite-state chemical master
+equation with reversible mass-action rates, buffered
+$A=B=W=1$, $F=\exp(\beta\Delta\mu)$, unit bare rate
+constants, and dimensionless volume $4$. For $m=4,6,8$,
+fuel driving first raises $J$ but subsequently suppresses it
+through depletion of $X'_2$, which is required by the shared
+reaction $X_2+X'_2\rightleftharpoons X_3$.
+This negative differential response is a known chemical phenomenon
+\cite{falasco2019}; the calculation is a baseline, not a novel
+selection mechanism. The exact stationary solver and plotting script
+are in \texttt{experiments/cores.py}.
+
+Thermodynamic feasibility can therefore be separated from
+actual throughput, but this model alone cannot demonstrate spontaneous
+selection among independently maintained organizations. Studying that
+phenomenon requires physical precursor-to-component synthesis and
+turnover that break the conserved internal pool, with rates derived
+from the expanded reaction network rather than a prescribed adaptive
+feedback \cite{peng2022hierarchy}.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
