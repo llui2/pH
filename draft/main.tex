@@ -8,7 +8,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 \usepackage[numbers]{natbib}
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue!65!black,citecolor=blue!65!black,urlcolor=blue!65!black]{hyperref}
 
 \begin{document}
 
@@ -17,33 +17,23 @@
 
 \section{Physical network}
 
-Consider a graph $G=(V,E)$ with $N$ vertices and $M$ edges. We divide
-its vertices into a system and its environment,
+We consider a network with $N$ vertices and $M$ edges, divided into a
+physical system and its environment. The corresponding vertex sets are
+$V_x$ and $V_z$, with $V=V_x\sqcup V_z$. An arbitrary orientation gives
+the incidence matrix
 \begin{equation}
-V = V_x \sqcup V_z,
-\qquad |V_x| = n, \quad |V_z| = N-n.
-\label{eq:partition}
-\end{equation}
-Each vertex stores one physical quantity, such as charge or an amount of
-matter. The vectors $x\in\mathbb R^n$ and $z\in\mathbb R^{N-n}$ collect
-these quantities in the system and environment. Edges describe permitted
-transport between vertices, including connections crossing the
-system--environment boundary.
-
-Give each edge an arbitrary orientation. Its incidence matrix is
-\begin{equation}
-\mathbf B =
+\mathbf B=
 \begin{bmatrix}
 \mathbf B_x\\
 \mathbf B_z
 \end{bmatrix}
-\in\mathbb R^{N\times M},
+\in\mathbb R^{N\times M}.
 \label{eq:incidence}
 \end{equation}
-where each column has $-1$ at the source and $+1$ at the target.
-The rows of $\mathbf B_x$ and $\mathbf B_z$ correspond to $V_x$ and
-$V_z$, respectively. The orientation only sets the signs of edge
-quantities; it does not impose a preferred direction of transport.
+Each column has $-1$ at its source and $+1$ at its target. The rows of
+$\mathbf B_x$ and $\mathbf B_z$ belong to the system and environment,
+respectively. The orientation defines signs, not a preferred direction
+of physical transport \cite{vanderschaft2013graphs}.
 
 \begin{figure}[htb!]
 \centering
@@ -54,10 +44,10 @@ quantities; it does not impose a preferred direction of transport.
     cross/.style={line width=1.1pt, draw=blue!60!black},
     label/.style={font=\footnotesize}
 ]
-\path[use as bounding box] (-5.0,-1.7) rectangle (4.4,1.8);
-\node[label] at (-2.4,1.5) {system $V_x$};
-\node[label] at (2.2,1.5) {environment $V_z$};
-\draw[gray!65, densely dashed] (0,-1.2) -- (0,1.28);
+\path[use as bounding box] (-5.0,-1.5) rectangle (4.4,1.75);
+\node[label] at (-2.4,1.48) {system $V_x$};
+\node[label] at (2.2,1.48) {environment $V_z$};
+\draw[gray!65, densely dashed] (0,-1.20) -- (0,1.20);
 
 \node[vertex] (xa) at (-3.2,0.82) {};
 \node[vertex] (xb) at (-3.2,-0.65) {};
@@ -74,98 +64,77 @@ quantities; it does not impose a preferred direction of transport.
 \draw[->,edge] (zc) -- (za);
 \draw[->,cross] (xc) -- (za);
 \draw[->,cross] (xc) -- (zc);
-\node[label, text=blue!60!black] at (0.25,0.84) {$j_e$};
+\node[label, text=blue!60!black] at (0.13,0.77) {$(\eta,j)$};
 
 \draw[<->,edge] (-4.65,-0.65) -- (xb);
-\node[label] at (-4.0,-0.35) {$(u,y)$};
+\node[label] at (-4.0,-0.34) {$(u,y)$};
 \end{tikzpicture}
-\caption{An oriented network partitioned into system and environment
-vertices. Blue edges cross the boundary and carry fluxes $j_e$.
-Arrows set the sign convention; $(u,y)$ is a separate open port.}
+\caption{An open network partitioned into a system and its environment.
+Edges carry conjugate effort and flux variables $(\eta,j)$; blue edges
+cross the partition. The port $(u,y)$ provides an additional connection
+to the system. Edge orientations specify signs only.}
 \label{fig:network}
 \end{figure}
 
-Let $H_x(x)$ and $H_z(z)$ be the energies stored in the two subsystems.
-For a connection with no independent energy storage, the total energy is
+The states $x\in\mathbb R^{|V_x|}$ and $z\in\mathbb R^{|V_z|}$ collect
+quantities stored at the corresponding vertices. Assuming no independent
+energy storage in the edges, their total energy and conjugate efforts are
 \begin{equation}
-H(x,z) = H_x(x) + H_z(z).
-\label{eq:energy-function}
+H=H_x(x)+H_z(z),
+\qquad e_x=\nabla_x H_x,
+\qquad e_z=\nabla_z H_z.
+\label{eq:energy}
 \end{equation}
-The corresponding efforts are $e_x=\nabla_x H_x$ and
-$e_z=\nabla_z H_z$. For an edge oriented from vertex $i$ to vertex $j$,
-its driving effort is $e_i-e_j$. Collecting all edge differences gives
+The incidence matrix determines the edge effort differences,
 \begin{equation}
-\eta
-= -\mathbf B^\top
+\eta=-\mathbf B^\top
 \begin{bmatrix}e_x\\e_z\end{bmatrix},
-\qquad
-j = \mathbf K\eta,
-\label{eq:edge-law}
+\qquad j\in\mathbb R^M,
+\label{eq:edge-port}
 \end{equation}
-where $j\in\mathbb R^M$ collects the signed fluxes and
-\begin{equation}
-\mathbf K = \operatorname{diag}(k_1,\ldots,k_M),
-\qquad k_e\geq0,
-\label{eq:conductance}
-\end{equation}
-contains the edge conductances. Positive $j_e$ means transport in the
-chosen orientation. Equation~\eqref{eq:edge-law} is the minimal
-resistive constitutive law; it can describe electrical conduction or
-diffusive transport with appropriate choices of state and energy.
+where a positive component of $j$ denotes flux in the chosen edge
+orientation. The relation between $\eta$ and $j$ depends on the physics
+of each connection; the graph alone does not fix it.
 
 \section{Dynamics and power}
 
-The incidence matrix converts edge fluxes into changes of the stored
-quantities. We allow each subsystem to have additional port-Hamiltonian
-dynamics that are not explicitly represented by transport edges:
+We write the node dynamics with a separate open port on $x$,
 \begin{align}
-\dot x
-&= [\mathbf J_x-\mathbf R_x]e_x+\mathbf B_x j+\mathbf G u,
+\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xj+\mathbf G u,
 \label{eq:x}\\
-\dot z
-&= [\mathbf J_z-\mathbf R_z]e_z+\mathbf B_z j.
+\dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zj,
 \label{eq:z}
 \end{align}
-The matrices $\mathbf J_x$ and $\mathbf J_z$ are skew-symmetric, while
-$\mathbf R_x$ and $\mathbf R_z$ are symmetric positive semidefinite.
-They describe reversible internal dynamics and internal dissipation,
-respectively. Their dependence on the state is left implicit. The
-matrix $\mathbf G(x)\in\mathbb R^{n\times p}$ specifies a separate
-open port acting on $x$, with input $u\in\mathbb R^p$ and conjugate
-output $y\in\mathbb R^p$,
+where $\mathbf J_x^\top=-\mathbf J_x$ and
+$\mathbf J_z^\top=-\mathbf J_z$ describe reversible internal dynamics,
+while $\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite and
+describe internal dissipation. These matrices may depend on the state.
+The matrix $\mathbf G$ selects the directions of the additional port,
+whose output is
 \begin{equation}
 y=\mathbf G^\top e_x.
 \label{eq:port}
 \end{equation}
-The product $y^\top u$ is the power exchanged through that port. We
-leave the relation between $u$ and $y$ unspecified: no regulator or
-viability condition is assumed at this stage \cite{vanderschaft2014}.
-
-Since $\mathbf 1^\top\mathbf B=0$, transport alone conserves the total
-stored quantity across the combined graph. With
-$\mathbf L=\mathbf B\mathbf K\mathbf B^\top$, the edge terms in
-Eqs.~\eqref{eq:x}--\eqref{eq:z} can equivalently be written as
-$-\mathbf L[e_x^\top,e_z^\top]^\top$; $\mathbf L$ is the weighted
-graph Laplacian. The full energy balance is
+This is the standard power-conjugate form of an open port-Hamiltonian
+system \cite{vanderschaft2014}. The energy balance follows directly:
 \begin{equation}
 \dot H
-= -e_x^\top\mathbf R_x e_x
-  -e_z^\top\mathbf R_z e_z
-  -\eta^\top\mathbf K\eta
-  +y^\top u.
-\label{eq:energy-balance}
+=-e_x^\top\mathbf R_xe_x
+-e_z^\top\mathbf R_ze_z
+-\eta^\top j+y^\top u.
+\label{eq:balance}
 \end{equation}
-Thus the graph fixes where transport is possible, the conductances
-specify its dissipative response, and the open port accounts for power
-not supplied by the resolved environment. This formulation describes
-resistive edge transport; reversible interconnections require additional
-physical structure, for example energy-storing edge degrees of freedom.
+For a memoryless passive connection, $\eta^\top j\geq0$; a resistive
+example is $j=\mathbf K\eta$ with $\mathbf K\succeq0$. Connections with
+independent energy storage require additional states. The graph and port
+structure therefore remain fixed without selecting a particular
+constitutive law or feedback mechanism \cite{vanderschaft2013graphs}.
 
-The conductances $k_e$ may eventually change with the physical state,
-but Eq.~\eqref{eq:conductance} alone does not define adaptation. If
-changing a connection consumes or stores energy, that process must be
-included in the physical dynamics rather than treated as a free
-modulation of $\mathbf K$.
+Adaptive networks can change their connections in response to the flows
+they carry \cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning}.
+Whether this produces a self-maintaining organization is a separate
+physical question \cite{montevil2015closure}. We leave both the
+adaptation law and the conditions for persistence unspecified here.
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}
