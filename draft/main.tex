@@ -17,65 +17,95 @@
 
 \section{Port-Hamiltonian dynamics}
 
-Consider a physical system with internal state $x\in\mathbb R^n$ coupled
-to an environment or regulator state $z\in\mathbb R^m$. Depending on the
-application, $x$ may represent mechanical coordinates, electrical
-variables, concentrations, or other physical degrees of freedom, while
-$z$ may represent a reservoir, an actuator state, or stored controller
-energy. The Hamiltonian
+Consider a physical system with state $x\in\mathbb R^n$ interacting
+with an environment of state $z\in\mathbb R^m$. The two subsystems store
+energy $H_x(x)$ and $H_z(z)$, respectively. We first assume that the
+coupling stores no additional energy, so that
 \begin{equation}
-H(x,z)
+H(x,z) = H_x(x) + H_z(z).
 \end{equation}
-is the total stored energy and its gradients are the corresponding
-generalized efforts.
+The gradients of $H$ are the generalized efforts. If the coupling itself
+stores energy, its degrees of freedom must be included in $x$ or $z$.
 
-We write the dynamics as
+Each subsystem has internal dynamics and ports through which it
+interacts with other processes:
 \begin{align}
 \dot x
 &=
 [\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf C(x,z)\nabla_z H
++\mathbf B_x(x)u_x
 +\mathbf G(x)u,
 \label{eq:x}\\
 \dot z
 &=
 [\mathbf J(z)-\mathbf R(z)]\nabla_z H
--\mathbf C^\top(x,z)\nabla_x H,
++\mathbf B_z(z)u_z.
 \label{eq:z}
 \end{align}
-with
+For each subsystem,
 \begin{equation}
-\mathbf J^\top=-\mathbf J,
+\mathbf J^\top = -\mathbf J,
 \qquad
-\mathbf R^\top=\mathbf R\succeq0.
+\mathbf R^\top = \mathbf R \succeq 0.
 \end{equation}
-The skew part $\mathbf J$ describes reversible motion, such as inertial,
-gyroscopic, or circulation effects. The symmetric part $\mathbf R$
-describes irreversible losses such as friction, resistance, or diffusion.
-The matrix $\mathbf C$ connects the two subsystems without creating or
-destroying energy. The matrix $\mathbf G$ specifies which physical
-directions can be actuated through the remaining port
-\cite{vanderschaft2014}.
-
-The variable conjugate to the input is
-\begin{equation}
-y
-=
-\mathbf G^\top(x)\nabla_x H.
+The skew part $\mathbf J$ describes reversible motion and $\mathbf R$
+describes intrinsic dissipation. The matrices $\mathbf B_x$ and
+$\mathbf B_z$ specify the environmental ports, while $\mathbf G$
+specifies a separate port used to regulate $x$
+\cite{vanderschaft2014}. Their conjugate outputs are
+\begin{align}
+y_x &= \mathbf B_x^\top(x)\nabla_x H,\\
+y_z &= \mathbf B_z^\top(z)\nabla_z H,\\
+y   &= \mathbf G^\top(x)\nabla_x H.
 \label{eq:y}
-\end{equation}
-The product $y^\top u$ has units of power. Along the full dynamics,
+\end{align}
+Each input-output pair defines a power exchange, with $y_x^\top u_x$,
+$y_z^\top u_z$, and $y^\top u$ measured in units of power.
+
+We connect the environmental ports by
 \begin{equation}
-\dot H
+\begin{bmatrix}
+u_x\\ u_z
+\end{bmatrix}
 =
+\left[
+\begin{bmatrix}
+0 & \mathbf C\\
+-\mathbf C^\top & 0
+\end{bmatrix}
+-\mathbf D
+\right]
+\begin{bmatrix}
+y_x\\ y_z
+\end{bmatrix},
+\qquad
+\mathbf D = \mathbf D^\top \succeq 0.
+\label{eq:interconnection}
+\end{equation}
+The matrices $\mathbf C$ and $\mathbf D$ may depend on $(x,z)$.
+The skew connection $\mathbf C$ transfers energy without losses, whereas
+$\mathbf D$ accounts for dissipation at the connection, including
+dissipation involving both subsystems. Choosing $\mathbf B_x=\mathbf
+B_z=\mathbf I$ and $\mathbf D=0$ recovers the direct lossless coupling.
+
+The resulting energy balance is
+\begin{align}
+\dot H
+={}&
 -\nabla_x H^\top\mathbf R(x)\nabla_x H
 -\nabla_z H^\top\mathbf R(z)\nabla_z H
+\nonumber\\
+&-
+\begin{bmatrix}y_x\\y_z\end{bmatrix}^{\!\top}
+\mathbf D
+\begin{bmatrix}y_x\\y_z\end{bmatrix}
 +y^\top u.
 \label{eq:energy}
-\end{equation}
-The $\mathbf C$ terms cancel exactly. Energy can therefore be dissipated
-by $\mathbf R$, transferred between $x$ and $z$ through $\mathbf C$, or
-supplied and removed through the port $(u,y)$.
+\end{align}
+Intrinsic and interconnection dissipation both lower the total energy.
+The skew connection cancels from the balance. The remaining power
+$y^\top u$ enters through the regulatory port; it must be accounted
+for if that port is closed by a physical feedback mechanism.
 
 \begin{figure}[htb!]
 \centering
@@ -93,8 +123,8 @@ supplied and removed through the port $(u,y)$.
 \node[state] (g) at (0,-2.2) {homeostatic condition\\$g(x)=0$};
 
 \draw[<->, thick] (z.east) -- (x.west);
-\node[lab] at (-2.0,0.38) {$\mathbf C$};
-\node[font=\scriptsize] at (-2.0,0.72) {power exchange};
+\node[lab] at (-2.0,0.38) {$\mathbf C,\mathbf D$};
+\node[font=\scriptsize] at (-2.0,0.72) {interconnection};
 
 \draw[->, thick] (x.east) -- (q.west);
 \node[lab] at (2.0,-0.48) {$y=\mathbf G^\top\nabla_x H$};
@@ -107,13 +137,11 @@ supplied and removed through the port $(u,y)$.
 \node[lab, anchor=west] at (0.22,-1.1) {$g(x)$};
 \end{tikzpicture}%
 }
-\caption{Physical interpretation of the constrained feedback. The state
-$x$ is the regulated physical subsystem and $z$ contains environmental,
-reservoir, or controller degrees of freedom. The coupling $\mathbf C$
-moves energy between them without changing the total energy. The
-remaining port measures the conjugate output $y$ and returns the input
-$u=\mathbf Qy$. The condition $g(x)=0$ specifies the physical operating
-surface to be maintained.}
+\caption{Regulated system $x$ coupled to an environment $z$ through
+the environmental ports. The interconnection combines lossless exchange
+$\mathbf C$ and dissipation $\mathbf D$. The separate regulatory port
+measures $y$ and returns $u=\mathbf Qy$; the condition $g(x)=0$
+specifies the target operating surface.}
 \label{fig:scheme}
 \end{figure}
 
@@ -139,19 +167,25 @@ If $x$ starts on $\mathcal M$, invariance requires
 =
 0.
 \end{equation}
-Using Eq.~\eqref{eq:x},
+Using Eq.~\eqref{eq:x}, define the drift of $x$ with its
+environmental connection in place but without regulatory input,
+\begin{equation}
+f(x,z)
+=
+[\mathbf J(x)-\mathbf R(x)]\nabla_x H
++\mathbf B_x(x)u_x.
+\label{eq:f}
+\end{equation}
+Here $u_x$ is determined by Eq.~\eqref{eq:interconnection}. The
+invariance condition is then
 \begin{equation}
 \partial_x g\,\mathbf G\,u
 =
--\partial_x g
-\left(
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf C(x,z)\nabla_z H
-\right).
+-\partial_x g\,f(x,z).
 \label{eq:constraint}
 \end{equation}
 
-Define the map from the actuated port to the regulated observables,
+Define the map from the regulatory port to the regulated observables,
 \begin{equation}
 \mathbf A(x)
 =
@@ -161,21 +195,14 @@ Define the map from the actuated port to the regulated observables,
 If $\mathbf A$ has full row rank, the available actuators can correct
 every instantaneous direction that moves the regulated observables away
 from their target. The general control is
-\begin{align}
+\begin{equation}
 u
-={}&
--\mathbf A^\dagger\partial_x g
-\left(
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf C(x,z)\nabla_z H
-\right)
-\nonumber\\
-&+
-\left(
-\mathbf I-\mathbf A^\dagger\mathbf A
-\right)v.
+=
+-\mathbf A^\dagger\partial_x g\,f
++
+(\mathbf I-\mathbf A^\dagger\mathbf A)v.
 \label{eq:u}
-\end{align}
+\end{equation}
 The first term is the smallest port input that cancels the transverse
 drift. The second changes motion only in directions invisible to the
 regulated observables.
@@ -190,25 +217,17 @@ operating surface. A homeostatic restoring law is instead
 \mathbf K\succ0,
 \end{equation}
 which gives
-\begin{align}
+\begin{equation}
 u
-={}&
+=
 -\mathbf A^\dagger
 \left[
-\partial_x g
-\left(
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf C(x,z)\nabla_z H
-\right)
-+\mathbf K g
+\partial_x g\,f+\mathbf K g
 \right]
-\nonumber\\
-&+
-\left(
-\mathbf I-\mathbf A^\dagger\mathbf A
-\right)v.
++
+(\mathbf I-\mathbf A^\dagger\mathbf A)v.
 \label{eq:restoring}
-\end{align}
+\end{equation}
 The eigenvalues of $\mathbf K$ set the physical relaxation rates of the
 regulated quantities.
 
@@ -226,11 +245,9 @@ y
 The constraint becomes
 \begin{equation}
 \partial_x g
-\left(
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf C(x,z)\nabla_z H
-+\mathbf G(x)\mathbf Q(x,z)y
-\right)
+\left[
+f(x,z)+\mathbf G(x)\mathbf Q(x,z)y
+\right]
 =
 0.
 \label{eq:Qconstraint}
