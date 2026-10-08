@@ -132,12 +132,25 @@ port relations \cite{vanderschaft2014}:
 -e^\top f+y^\top\mathbf Qy.
 \label{eq:balance}
 \end{equation}
-Passive edges satisfy $e^\top f\geq0$, and passive feedback requires
-$\mathbf Q+\mathbf Q^\top\preceq0$; skew $\mathbf Q$ is lossless.
-If $H$ is bounded below, a finite network with these properties cannot
-sustain positive mean dissipation indefinitely. Energy from $z$ can
-supply $x$ transiently, but persistent throughput needs a maintained
-reservoir or an explicit supply; active feedback cannot create power.
+The system obtains energy through its connections with the environment.
+Let $\mathbf B_x^\partial$ contain the columns of $\mathbf B_x$
+corresponding to edges crossing the partition, with flows $f^\partial$.
+The power entering the system through these edges is
+\begin{equation}
+P_{z\to x}=e_x^\top\mathbf B_x^\partial f^\partial.
+\label{eq:environment-power}
+\end{equation}
+A positive value means that $x$ gains energy from $z$. On a passive
+boundary edge, the energy lost by $z$ is the energy received by $x$
+plus the dissipation at that connection.
+
+We take $\mathbf Q+\mathbf Q^\top\preceq0$, so internal feedback only
+redistributes or dissipates available energy; skew $\mathbf Q$ is
+lossless. Any feedback that performs net positive work must instead
+draw that power through an explicitly modeled connection to $z$.
+If the total energy is bounded below, a finite passive environment
+cannot sustain positive dissipation indefinitely. Persistent operation
+requires the environmental energy supply to be maintained.
 
 Adaptive connections may respond to carried flow
 \cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning},
