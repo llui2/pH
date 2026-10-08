@@ -62,9 +62,11 @@ of physical transport \cite{vanderschaft2013graphs}.
 \draw[->,edge] (za) -- (zb);
 \draw[->,edge] (zb) -- (zc);
 \draw[->,edge] (zc) -- (za);
-\draw[->,cross] (xc) -- (za);
+\draw[->,cross] (xc) -- node[
+    label, pos=0.78, above=3pt, text=blue!60!black,
+    fill=white, inner sep=1pt
+] {$(e,f)$} (za);
 \draw[->,cross] (xc) -- (zc);
-\node[label, text=blue!60!black] at (0.13,0.77) {$(e,f)$};
 
 \draw[<->,edge] (-4.65,-0.65) -- (xb);
 \node[label] at (-4.0,-0.34) {$(u,y)$};
