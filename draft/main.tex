@@ -1,4 +1,4 @@
-\documentclass[11pt,reqno]{amsart}
+\documentclass[10pt,reqno]{amsart}
 
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
@@ -6,6 +6,8 @@
 \usepackage{amsmath,amssymb}
 \usepackage{microtype}
 \usepackage[margin=0.98in]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 \usepackage[numbers]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue!65!black,citecolor=blue!65!black,urlcolor=blue!65!black]{hyperref}
 
@@ -68,10 +70,9 @@ margin. If the normalized cycle set
 $\{q\geq0:\mathbf S_xq=0,\ \mathbf1^\top q=1\}$ is nonempty, linear
 programming duality yields
 \begin{equation}
-\boxed{\displaystyle
 \delta_*:=\max_{\mu_x}\min_r a_r
 =\min_{\substack{q\geq0,\ \mathbf S_xq=0\\\mathbf1^\top q=1}}
-\bigl(-\mu_z^\top\mathbf S_zq\bigr).}
+\bigl(-\mu_z^\top\mathbf S_zq\bigr).
 \label{eq:margin}
 \end{equation}
 Here internal potentials are allowed to vary without bounds. Positive
@@ -116,9 +117,63 @@ necessary potential window to overlap with that of the second core.
 The normalized nonnegative kernel of $\mathbf S_x$ is the single
 vector $\mathbf1/6$, giving the exact margin
 \begin{equation}
-\boxed{\delta_*={\Delta\mu}/{6}.}
+\delta_*={\Delta\mu}/{6}.
 \label{eq:fuel-margin}
 \end{equation}
+The two cores and the chemical-potential window for their joint
+operation are shown in Fig.~\ref{fig:compatibility}. The latter
+compares necessary inequalities; the affinity margin provides the
+stronger simultaneous-direction criterion.
+
+\begin{figure}[htb!]
+\centering
+\begin{minipage}[c]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[font=\footnotesize]
+\path[use as bounding box] (-3.55,-1.35) rectangle (3.55,1.50);
+\fill[blue!9] (-1.15,0) ellipse (2.25cm and 1.03cm);
+\fill[orange!12] (1.15,0) ellipse (2.25cm and 1.03cm);
+\draw[blue!65!black,line width=0.75pt] (-1.15,0) ellipse (2.25cm and 1.03cm);
+\draw[orange!70!black,line width=0.75pt] (1.15,0) ellipse (2.25cm and 1.03cm);
+\node[blue!65!black] at (-2.54,1.18) {$C_1$};
+\node[orange!70!black] at (2.54,1.18) {$C_2$};
+\node at (-2.10,0.36) {$R_1$};
+\node at (-2.10,-0.43) {$R_4$};
+\node at (0,0.36) {$R_2$};
+\node at (0,-0.43) {$R_3$};
+\node at (2.10,0.36) {$R'_1$};
+\node at (2.10,-0.43) {$R'_4$};
+\node[anchor=west] at (-3.52,-1.23) {(a)};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
+\path[use as bounding box] (-0.45,-0.66) rectangle (6.6,2.40);
+\begin{scope}[shift={(1.07,-0.03)},x=1.18cm,y=1.04cm]
+\fill[blue!13] (0,0) -- (0,2.1) -- (2.1,2.1) -- cycle;
+\draw[->,line width=0.8pt] (-0.75,0) -- (3.65,0)
+node[below right] {$\theta$};
+\draw[->,line width=0.8pt] (0,-0.24) -- (0,2.38)
+node[above] {$\Delta\mu$};
+\draw[densely dashed,black!65,line width=0.75pt] (0,0) -- (2.1,2.1)
+node[pos=0.83,below right] {$\Delta\mu=\theta$};
+\node[blue!65!black,align=center] at (0.61,1.70)
+{necessary\\overlap};
+\node[below left] at (0,0) {$0$};
+\end{scope}
+\node[anchor=west] at (-0.43,-0.56) {(b)};
+\end{tikzpicture}
+\end{minipage}
+\caption{Reaction-core overlap and thermodynamic compatibility.
+(a) The cores share reactions $R_2,R_3$; this is a reaction-set
+schematic, not the complex graph. (b) Fuel driving opens the necessary
+window $0<\theta<\Delta\mu$ (blue) for the two sets of forward
+reactions. A positive margin $\delta_*$ is the full directional
+feasibility test under unrestricted internal potentials.}
+\label{fig:compatibility}
+\end{figure}
+
 Fuel driving can therefore remove the obstruction to simultaneous
 \emph{reaction directions}. It does not establish a kinetically
 maintained state or simultaneous autocatalytic growth.
