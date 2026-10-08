@@ -17,10 +17,9 @@
 
 \section{Physical network}
 
-We consider a network with $N$ vertices and $M$ edges, divided into a
-physical system and its environment. The corresponding vertex sets are
-$V_x$ and $V_z$, with $V=V_x\sqcup V_z$. An arbitrary orientation gives
-the incidence matrix
+Consider a graph with $N$ vertices and $M$ edges, partitioned into a
+system $V_x$ and an environment $V_z$, with $V=V_x\sqcup V_z$.
+An arbitrary edge orientation defines the incidence matrix
 \begin{equation}
 \mathbf B=
 \begin{bmatrix}
@@ -30,10 +29,9 @@ the incidence matrix
 \in\mathbb R^{N\times M}.
 \label{eq:incidence}
 \end{equation}
-Each column has $-1$ at its source and $+1$ at its target. The rows of
-$\mathbf B_x$ and $\mathbf B_z$ belong to the system and environment,
-respectively. The orientation defines signs, not a preferred direction
-of physical transport \cite{vanderschaft2013graphs}.
+Each column has $-1$ at its source and $+1$ at its target; the rows
+are partitioned accordingly. Edge orientation fixes signs, not a
+preferred transport direction \cite{vanderschaft2013graphs}.
 
 \begin{figure}[htb!]
 \centering
@@ -72,16 +70,15 @@ of physical transport \cite{vanderschaft2013graphs}.
 \draw[->,edge] (q.south) -- (-4.16,-0.65) -- (xb.west);
 \node[label, anchor=north] at (-3.73,-0.68) {$u$};
 \end{tikzpicture}
-\caption{An open network partitioned into a system and its environment.
-Edges carry conjugate effort and flow variables $(e,f)$; blue edges
-cross the partition. The system output $y$ is returned as input $u$
-through the feedback $\mathbf Q$. Edge orientations specify signs only.}
+\caption{System--environment partition of an oriented network.
+Blue edges cross the boundary and carry effort--flow pairs $(e,f)$.
+The internal feedback $\mathbf Q$ returns output $y$ as input $u$.}
 \label{fig:network}
 \end{figure}
 
-The states $x\in\mathbb R^{|V_x|}$ and $z\in\mathbb R^{|V_z|}$ collect
-quantities stored at the corresponding vertices. Assuming no independent
-energy storage in the edges, their total energy and conjugate efforts are
+Node states $x\in\mathbb R^{|V_x|}$ and $z\in\mathbb R^{|V_z|}$
+store one quantity per vertex. With no independent edge storage, the
+energy and node efforts are
 \begin{equation}
 H=H_x(x)+H_z(z),
 \qquad e_x=\nabla_x H_x,
@@ -95,10 +92,15 @@ e=-\mathbf B^\top
 \qquad f\in\mathbb R^M.
 \label{eq:edge-port}
 \end{equation}
-Here $e\in\mathbb R^M$ is the vector of driving efforts and $f$ contains
-the corresponding edge flows. A positive flow follows the chosen edge
-orientation. Their constitutive relation depends on the physics of
-each connection; it is not fixed by the graph.
+Here $e$ and $f$ are conjugate edge efforts and flows. The sign of
+$f$ follows the chosen orientation. For each edge $a$, allow a local law
+\begin{equation}
+f_a=F_a(e_a;x,z),
+\label{eq:edge-law}
+\end{equation}
+where $F_a$ depends only on the endpoint states. Passivity requires
+$e_af_a\geq0$; the resistive law $f_a=k_ae_a$, $k_a\geq0$, is one
+example. The graph does not prescribe the transport law.
 
 \section{Dynamics and power}
 
@@ -109,19 +111,20 @@ We write the node dynamics with a feedback port on $x$,
 \dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zf,
 \label{eq:z}
 \end{align}
-where $\mathbf J_x^\top=-\mathbf J_x$ and
-$\mathbf J_z^\top=-\mathbf J_z$ describe reversible internal dynamics,
-while $\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite and
-describe internal dissipation. These matrices may depend on the state.
-The matrix $\mathbf G$ selects the port directions. The system uses
-its own conjugate output to determine the input,
+where $\mathbf J_x,\mathbf J_z$ are skew-symmetric and
+$\mathbf R_x,\mathbf R_z$ are positive semidefinite. Their
+state-dependent off-diagonal couplings follow existing edges; otherwise
+they bypass $\mathbf B$. Columns of $\mathbf G$ act at individual
+system vertices, with feedback
 \begin{equation}
 y=\mathbf G^\top e_x,
 \qquad u=\mathbf Qy.
 \label{eq:port}
 \end{equation}
-The map $\mathbf Q$ represents instantaneous feedback, not an external
-source of power. The energy balance follows directly \cite{vanderschaft2014}:
+The map $\mathbf Q$ couples ports only at the same or adjacent
+vertices. If feedback redistributes a conserved node quantity, then
+$\mathbf 1^\top\mathbf G u=0$. The energy balance follows from the
+port relations \cite{vanderschaft2014}:
 \begin{equation}
 \dot H
 =-e_x^\top\mathbf R_xe_x
@@ -129,20 +132,17 @@ source of power. The energy balance follows directly \cite{vanderschaft2014}:
 -e^\top f+y^\top\mathbf Qy.
 \label{eq:balance}
 \end{equation}
-For a memoryless passive edge connection, $e^\top f\geq0$; a resistive
-example is $f=\mathbf K e$ with $\mathbf K\succeq0$. Without a separate
-energy supply, passive feedback requires
-$\mathbf Q+\mathbf Q^\top\preceq0$; lossless feedback has
-$\mathbf Q^\top=-\mathbf Q$. Any active feedback must account for its
-power source through additional physical dynamics. We have not selected
-a particular edge constitutive law or feedback map
-\cite{vanderschaft2013graphs}.
+Passive edges satisfy $e^\top f\geq0$, and passive feedback requires
+$\mathbf Q+\mathbf Q^\top\preceq0$; skew $\mathbf Q$ is lossless.
+If $H$ is bounded below, a finite network with these properties cannot
+sustain positive mean dissipation indefinitely. Energy from $z$ can
+supply $x$ transiently, but persistent throughput needs a maintained
+reservoir or an explicit supply; active feedback cannot create power.
 
-Adaptive networks can change their connections in response to the flows
-they carry \cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning}.
-Whether this produces a self-maintaining organization is a separate
-physical question \cite{montevil2015closure}. We leave both the
-adaptation law and the conditions for persistence unspecified here.
+Adaptive connections may respond to carried flow
+\cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning},
+but self-maintenance is a separate question \cite{montevil2015closure}.
+We leave adaptation and persistence conditions unspecified.
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}
