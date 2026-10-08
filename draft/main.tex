@@ -6,309 +6,166 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{microtype}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning}
+\usetikzlibrary{arrows.meta}
 \usepackage[numbers]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
 
 \begin{document}
 
-\title{constrained port-Hamiltonian dynamics}
+\title{Open port-Hamiltonian networks}
 \maketitle
 
-\section{Port-Hamiltonian dynamics}
+\section{Physical network}
 
-Consider a physical system with state $x\in\mathbb R^n$ interacting
-with an environment of state $z\in\mathbb R^m$. The two subsystems store
-energy $H_x(x)$ and $H_z(z)$, respectively. We first assume that the
-coupling stores no additional energy, so that
+Consider a graph $G=(V,E)$ with $N$ vertices and $M$ edges. We divide
+its vertices into a system and its environment,
 \begin{equation}
-H(x,z) = H_x(x) + H_z(z).
+V = V_x \sqcup V_z,
+\qquad |V_x| = n, \quad |V_z| = N-n.
+\label{eq:partition}
 \end{equation}
-The gradients of $H$ are the generalized efforts. If the coupling itself
-stores energy, its degrees of freedom must be included in $x$ or $z$.
+Each vertex stores one physical quantity, such as charge or an amount of
+matter. The vectors $x\in\mathbb R^n$ and $z\in\mathbb R^{N-n}$ collect
+these quantities in the system and environment. Edges describe permitted
+transport between vertices, including connections crossing the
+system--environment boundary.
 
-Each subsystem has internal dynamics and ports through which it
-interacts with other processes:
-\begin{align}
-\dot x
-&=
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf B_x(x)u_x
-+\mathbf G(x)u,
-\label{eq:x}\\
-\dot z
-&=
-[\mathbf J(z)-\mathbf R(z)]\nabla_z H
-+\mathbf B_z(z)u_z.
-\label{eq:z}
-\end{align}
-For each subsystem,
+Give each edge an arbitrary orientation. Its incidence matrix is
 \begin{equation}
-\mathbf J^\top = -\mathbf J,
-\qquad
-\mathbf R^\top = \mathbf R \succeq 0.
-\end{equation}
-The skew part $\mathbf J$ describes reversible motion and $\mathbf R$
-describes intrinsic dissipation. The matrices $\mathbf B_x$ and
-$\mathbf B_z$ specify the environmental ports, while $\mathbf G$
-specifies a separate port used to regulate $x$
-\cite{vanderschaft2014}. Their conjugate outputs are
-\begin{align}
-y_x &= \mathbf B_x^\top(x)\nabla_x H,\\
-y_z &= \mathbf B_z^\top(z)\nabla_z H,\\
-y   &= \mathbf G^\top(x)\nabla_x H.
-\label{eq:y}
-\end{align}
-Each input-output pair defines a power exchange, with $y_x^\top u_x$,
-$y_z^\top u_z$, and $y^\top u$ measured in units of power.
-
-We connect the environmental ports by
-\begin{equation}
+\mathbf B =
 \begin{bmatrix}
-u_x\\ u_z
+\mathbf B_x\\
+\mathbf B_z
 \end{bmatrix}
-=
-\left[
-\begin{bmatrix}
-0 & \mathbf C\\
--\mathbf C^\top & 0
-\end{bmatrix}
--\mathbf D
-\right]
-\begin{bmatrix}
-y_x\\ y_z
-\end{bmatrix},
-\qquad
-\mathbf D = \mathbf D^\top \succeq 0.
-\label{eq:interconnection}
+\in\mathbb R^{N\times M},
+\label{eq:incidence}
 \end{equation}
-The matrices $\mathbf C$ and $\mathbf D$ may depend on $(x,z)$.
-The skew connection $\mathbf C$ transfers energy without losses, whereas
-$\mathbf D$ accounts for dissipation at the connection, including
-dissipation involving both subsystems. Choosing $\mathbf B_x=\mathbf
-B_z=\mathbf I$ and $\mathbf D=0$ recovers the direct lossless coupling.
-
-The resulting energy balance is
-\begin{align}
-\dot H
-={}&
--\nabla_x H^\top\mathbf R(x)\nabla_x H
--\nabla_z H^\top\mathbf R(z)\nabla_z H
-\nonumber\\
-&-
-\begin{bmatrix}y_x\\y_z\end{bmatrix}^{\!\top}
-\mathbf D
-\begin{bmatrix}y_x\\y_z\end{bmatrix}
-+y^\top u.
-\label{eq:energy}
-\end{align}
-Intrinsic and interconnection dissipation both lower the total energy.
-The skew connection cancels from the balance. The remaining power
-$y^\top u$ enters through the regulatory port; it must be accounted
-for if that port is closed by a physical feedback mechanism.
+where each column has $-1$ at the source and $+1$ at the target.
+The rows of $\mathbf B_x$ and $\mathbf B_z$ correspond to $V_x$ and
+$V_z$, respectively. The orientation only sets the signs of edge
+quantities; it does not impose a preferred direction of transport.
 
 \begin{figure}[htb!]
 \centering
-\makebox[\textwidth][c]{%
 \begin{tikzpicture}[
     >=Latex,
-    state/.style={align=center, inner sep=3pt},
-    lab/.style={font=\footnotesize, inner sep=1pt}
+    vertex/.style={circle, fill=black, inner sep=2.7pt},
+    edge/.style={line width=0.85pt},
+    cross/.style={line width=1.1pt, draw=blue!60!black},
+    label/.style={font=\footnotesize}
 ]
-\path[use as bounding box] (-5.4,-2.9) rectangle (5.4,1.8);
+\path[use as bounding box] (-5.0,-1.7) rectangle (4.4,1.8);
+\node[label] at (-2.4,1.5) {system $V_x$};
+\node[label] at (2.2,1.5) {environment $V_z$};
+\draw[gray!65, densely dashed] (0,-1.2) -- (0,1.28);
 
-\node[state] (z) at (-4.0,0) {environment\\$z$};
-\node[state] (x) at (0,0) {regulated system\\$x$};
-\node[state] (q) at (4.0,0) {feedback\\$\mathbf Q$};
-\node[state] (g) at (0,-2.2) {homeostatic condition\\$g(x)=0$};
+\node[vertex] (xa) at (-3.2,0.82) {};
+\node[vertex] (xb) at (-3.2,-0.65) {};
+\node[vertex] (xc) at (-1.45,0.05) {};
+\node[vertex] (za) at (1.42,0.82) {};
+\node[vertex] (zb) at (3.05,0.45) {};
+\node[vertex] (zc) at (1.45,-0.74) {};
 
-\draw[<->, thick] (z.east) -- (x.west);
-\node[lab] at (-2.0,0.38) {$\mathbf C,\mathbf D$};
-\node[font=\scriptsize] at (-2.0,0.72) {interconnection};
+\draw[->,edge] (xa) -- (xc);
+\draw[->,edge] (xc) -- (xb);
+\draw[->,edge] (xb) -- (xa);
+\draw[->,edge] (za) -- (zb);
+\draw[->,edge] (zb) -- (zc);
+\draw[->,edge] (zc) -- (za);
+\draw[->,cross] (xc) -- (za);
+\draw[->,cross] (xc) -- (zc);
+\node[label, text=blue!60!black] at (0.25,0.84) {$j_e$};
 
-\draw[->, thick] (x.east) -- (q.west);
-\node[lab] at (2.0,-0.48) {$y=\mathbf G^\top\nabla_x H$};
-
-\draw[->, thick]
-    (q.north) -- (4.0,1.08) -- (0,1.08) -- (x.north);
-\node[lab, above=2pt] at (2.0,1.08) {$u=\mathbf Qy$};
-
-\draw[->, thick] (x.south) -- (g.north);
-\node[lab, anchor=west] at (0.22,-1.1) {$g(x)$};
-\end{tikzpicture}%
-}
-\caption{Regulated system $x$ coupled to an environment $z$ through
-the environmental ports. The interconnection combines lossless exchange
-$\mathbf C$ and dissipation $\mathbf D$. The separate regulatory port
-measures $y$ and returns $u=\mathbf Qy$; the condition $g(x)=0$
-specifies the target operating surface.}
-\label{fig:scheme}
+\draw[<->,edge] (-4.65,-0.65) -- (xb);
+\node[label] at (-4.0,-0.35) {$(u,y)$};
+\end{tikzpicture}
+\caption{An oriented network partitioned into system and environment
+vertices. Blue edges cross the boundary and carry fluxes $j_e$.
+Arrows set the sign convention; $(u,y)$ is a separate open port.}
+\label{fig:network}
 \end{figure}
 
-\section{Constrained feedback}
-
-Let $g(x)$ collect the physical quantities to be regulated after
-subtracting their desired values. Examples include a temperature error,
-a concentration imbalance, a pressure difference, or a mechanical
-displacement from an operating configuration. The homeostatic operating
-surface is
+Let $H_x(x)$ and $H_z(z)$ be the energies stored in the two subsystems.
+For a connection with no independent energy storage, the total energy is
 \begin{equation}
-\mathcal M
-=
-\{x:g(x)=0\},
+H(x,z) = H_x(x) + H_z(z).
+\label{eq:energy-function}
+\end{equation}
+The corresponding efforts are $e_x=\nabla_x H_x$ and
+$e_z=\nabla_z H_z$. For an edge oriented from vertex $i$ to vertex $j$,
+its driving effort is $e_i-e_j$. Collecting all edge differences gives
+\begin{equation}
+\eta
+= -\mathbf B^\top
+\begin{bmatrix}e_x\\e_z\end{bmatrix},
 \qquad
-g:\mathbb R^n\to\mathbb R^r.
+j = \mathbf K\eta,
+\label{eq:edge-law}
 \end{equation}
-If $x$ starts on $\mathcal M$, invariance requires
+where $j\in\mathbb R^M$ collects the signed fluxes and
 \begin{equation}
-\dot g
-=
-\partial_x g\,\dot x
-=
-0.
+\mathbf K = \operatorname{diag}(k_1,\ldots,k_M),
+\qquad k_e\geq0,
+\label{eq:conductance}
 \end{equation}
-Using Eq.~\eqref{eq:x}, define the drift of $x$ with its
-environmental connection in place but without regulatory input,
-\begin{equation}
-f(x,z)
-=
-[\mathbf J(x)-\mathbf R(x)]\nabla_x H
-+\mathbf B_x(x)u_x.
-\label{eq:f}
-\end{equation}
-Here $u_x$ is determined by Eq.~\eqref{eq:interconnection}. The
-invariance condition is then
-\begin{equation}
-\partial_x g\,\mathbf G\,u
-=
--\partial_x g\,f(x,z).
-\label{eq:constraint}
-\end{equation}
+contains the edge conductances. Positive $j_e$ means transport in the
+chosen orientation. Equation~\eqref{eq:edge-law} is the minimal
+resistive constitutive law; it can describe electrical conduction or
+diffusive transport with appropriate choices of state and energy.
 
-Define the map from the regulatory port to the regulated observables,
-\begin{equation}
-\mathbf A(x)
-=
-\partial_x g(x)\mathbf G(x).
-\label{eq:A}
-\end{equation}
-If $\mathbf A$ has full row rank, the available actuators can correct
-every instantaneous direction that moves the regulated observables away
-from their target. The general control is
-\begin{equation}
-u
-=
--\mathbf A^\dagger\partial_x g\,f
-+
-(\mathbf I-\mathbf A^\dagger\mathbf A)v.
-\label{eq:u}
-\end{equation}
-The first term is the smallest port input that cancels the transverse
-drift. The second changes motion only in directions invisible to the
-regulated observables.
+\section{Dynamics and power}
 
-Exact invariance assumes that the system already lies on the desired
-operating surface. A homeostatic restoring law is instead
+The incidence matrix converts edge fluxes into changes of the stored
+quantities. We allow each subsystem to have additional port-Hamiltonian
+dynamics that are not explicitly represented by transport edges:
+\begin{align}
+\dot x
+&= [\mathbf J_x-\mathbf R_x]e_x+\mathbf B_x j+\mathbf G u,
+\label{eq:x}\\
+\dot z
+&= [\mathbf J_z-\mathbf R_z]e_z+\mathbf B_z j.
+\label{eq:z}
+\end{align}
+The matrices $\mathbf J_x$ and $\mathbf J_z$ are skew-symmetric, while
+$\mathbf R_x$ and $\mathbf R_z$ are symmetric positive semidefinite.
+They describe reversible internal dynamics and internal dissipation,
+respectively. Their dependence on the state is left implicit. The
+matrix $\mathbf G(x)\in\mathbb R^{n\times p}$ specifies a separate
+open port acting on $x$, with input $u\in\mathbb R^p$ and conjugate
+output $y\in\mathbb R^p$,
 \begin{equation}
-\dot g
-=
--\mathbf K g,
-\qquad
-\mathbf K\succ0,
+y=\mathbf G^\top e_x.
+\label{eq:port}
 \end{equation}
-which gives
-\begin{equation}
-u
-=
--\mathbf A^\dagger
-\left[
-\partial_x g\,f+\mathbf K g
-\right]
-+
-(\mathbf I-\mathbf A^\dagger\mathbf A)v.
-\label{eq:restoring}
-\end{equation}
-The eigenvalues of $\mathbf K$ set the physical relaxation rates of the
-regulated quantities.
+The product $y^\top u$ is the power exchanged through that port. We
+leave the relation between $u$ and $y$ unspecified: no regulator or
+viability condition is assumed at this stage \cite{vanderschaft2014}.
 
-We now restrict the control to a self-feedback through the same port,
+Since $\mathbf 1^\top\mathbf B=0$, transport alone conserves the total
+stored quantity across the combined graph. With
+$\mathbf L=\mathbf B\mathbf K\mathbf B^\top$, the edge terms in
+Eqs.~\eqref{eq:x}--\eqref{eq:z} can equivalently be written as
+$-\mathbf L[e_x^\top,e_z^\top]^\top$; $\mathbf L$ is the weighted
+graph Laplacian. The full energy balance is
 \begin{equation}
-u
-=
-\mathbf Q(x,z)y,
-\qquad
-y
-=
-\mathbf G^\top(x)\nabla_x H.
-\label{eq:self}
+\dot H
+= -e_x^\top\mathbf R_x e_x
+  -e_z^\top\mathbf R_z e_z
+  -\eta^\top\mathbf K\eta
+  +y^\top u.
+\label{eq:energy-balance}
 \end{equation}
-The constraint becomes
-\begin{equation}
-\partial_x g
-\left[
-f(x,z)+\mathbf G(x)\mathbf Q(x,z)y
-\right]
-=
-0.
-\label{eq:Qconstraint}
-\end{equation}
-Thus $\mathbf Q$ converts the generalized effort measured at the port
-into the flow or force required to maintain the regulated observables.
-For $y\neq0$, one map producing a required input $u$ is
-\begin{equation}
-\mathbf Q
-=
-\frac{u y^\top}{y^\top y},
-\label{eq:Q}
-\end{equation}
-although this map is not unique. If $y=0$, an algebraic self-feedback of
-this form cannot generate a nonzero correction.
+Thus the graph fixes where transport is possible, the conductances
+specify its dissipative response, and the open port accounts for power
+not supplied by the resolved environment. This formulation describes
+resistive edge transport; reversible interconnections require additional
+physical structure, for example energy-storing edge degrees of freedom.
 
-The energetic effect of the feedback follows directly from
-Eq.~\eqref{eq:energy},
-\begin{equation}
-y^\top u
-=
-y^\top\mathbf Qy.
-\label{eq:Qpower}
-\end{equation}
-If $\mathbf Q^\top=-\mathbf Q$, the feedback is lossless and only
-redistributes power between port directions. A negative symmetric part
-removes energy. A positive symmetric part injects energy and therefore
-requires an explicit supply. The matrix $\mathbf Q$ is a routing law,
-not an energy source. If the feedback draws energy from the environment,
-that energy must be stored in or supplied through physical degrees of
-freedom such as $z$.
-
-This construction is close to the original cybernetic notion of
-homeostasis. Ashby's essential variables are quantities that must remain
-inside a viable range; the equality $g(x)=0$ is the sharp local version
-of such a requirement, while $\dot g=-\mathbf K g$ describes active
-return toward the viable set \cite{ashby1956}. The port-Hamiltonian form
-adds information that is absent from an abstract regulator diagram: it
-specifies which variables can actually be actuated, which exchanges are
-lossless, where dissipation occurs, and how much power the regulator
-must supply.
-
-The connection to the good regulator theorem is more specific.
-Conant and Ashby showed that, under their optimality assumptions, a
-successful and simple regulator must embody a model of the system being
-regulated \cite{conant1970}. The algebraic map $\mathbf Q$ alone is not
-such a model: it has no internal state and only specifies an instantaneous
-conversion from output to input. In the present physical formulation,
-the natural carrier of an internal model is the dynamical state $z$.
-Its Hamiltonian, dissipation, and coupling can reproduce the system or
-environmental modes that matter for regulation. This is also the
-physical analogue of the later internal model principle, in which robust
-regulation requires the feedback dynamics to contain the relevant
-dynamics of the disturbances or reference signals \cite{francis1976}.
-
-The resulting question is therefore not only whether a regulator exists,
-but which regulator models are physically realizable. A candidate
-internal model must fit inside a dynamical subsystem with finite stored
-energy, admissible dissipation, and ports capable of supplying the power
-required by Eq.~\eqref{eq:Qpower}. This turns the cybernetic requirement
-for a model into an energetic and geometric constraint on the regulator.
+The conductances $k_e$ may eventually change with the physical state,
+but Eq.~\eqref{eq:conductance} alone does not define adaptation. If
+changing a connection consumes or stores energy, that process must be
+included in the physical dynamics rather than treated as a free
+modulation of $\mathbf K$.
 
 \bibliographystyle{unsrtnat}
 \bibliography{refs}
