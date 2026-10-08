@@ -66,13 +66,16 @@ of physical transport \cite{vanderschaft2013graphs}.
 \draw[->,cross] (xc) -- (zc);
 \node[label, text=blue!60!black, anchor=east] at (-0.20,0.77) {$(e,f)$};
 
-\draw[<->,edge] (-4.65,-0.65) -- (xb);
-\node[label] at (-4.0,-0.34) {$(u,y)$};
+\node[label] (q) at (-4.16,0.07) {$\mathbf Q$};
+\draw[->,edge] (xa.west) -- (-4.16,0.82) -- (q.north);
+\node[label, anchor=south] at (-3.73,0.85) {$y$};
+\draw[->,edge] (q.south) -- (-4.16,-0.65) -- (xb.west);
+\node[label, anchor=north] at (-3.73,-0.68) {$u$};
 \end{tikzpicture}
 \caption{An open network partitioned into a system and its environment.
 Edges carry conjugate effort and flow variables $(e,f)$; blue edges
-cross the partition. The port $(u,y)$ provides an additional connection
-to the system. Edge orientations specify signs only.}
+cross the partition. The system output $y$ is returned as input $u$
+through the feedback $\mathbf Q$. Edge orientations specify signs only.}
 \label{fig:network}
 \end{figure}
 
@@ -99,7 +102,7 @@ each connection; it is not fixed by the graph.
 
 \section{Dynamics and power}
 
-We write the node dynamics with a separate open port on $x$,
+We write the node dynamics with a feedback port on $x$,
 \begin{align}
 \dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xf+\mathbf G u,
 \label{eq:x}\\
@@ -110,26 +113,30 @@ where $\mathbf J_x^\top=-\mathbf J_x$ and
 $\mathbf J_z^\top=-\mathbf J_z$ describe reversible internal dynamics,
 while $\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite and
 describe internal dissipation. These matrices may depend on the state.
-The matrix $\mathbf G$ selects the directions of the additional port,
-whose output is
+The matrix $\mathbf G$ selects the port directions. The system uses
+its own conjugate output to determine the input,
 \begin{equation}
-y=\mathbf G^\top e_x.
+y=\mathbf G^\top e_x,
+\qquad u=\mathbf Qy.
 \label{eq:port}
 \end{equation}
-This is the standard power-conjugate form of an open port-Hamiltonian
-system \cite{vanderschaft2014}. The energy balance follows directly:
+The map $\mathbf Q$ represents instantaneous feedback, not an external
+source of power. The energy balance follows directly \cite{vanderschaft2014}:
 \begin{equation}
 \dot H
 =-e_x^\top\mathbf R_xe_x
 -e_z^\top\mathbf R_ze_z
--e^\top f+y^\top u.
+-e^\top f+y^\top\mathbf Qy.
 \label{eq:balance}
 \end{equation}
-For a memoryless passive connection, $e^\top f\geq0$; a resistive
-example is $f=\mathbf K e$ with $\mathbf K\succeq0$. Connections with
-independent energy storage require additional states. The graph and port
-structure therefore remain fixed without selecting a particular
-constitutive law or feedback mechanism \cite{vanderschaft2013graphs}.
+For a memoryless passive edge connection, $e^\top f\geq0$; a resistive
+example is $f=\mathbf K e$ with $\mathbf K\succeq0$. Without a separate
+energy supply, passive feedback requires
+$\mathbf Q+\mathbf Q^\top\preceq0$; lossless feedback has
+$\mathbf Q^\top=-\mathbf Q$. Any active feedback must account for its
+power source through additional physical dynamics. We have not selected
+a particular edge constitutive law or feedback map
+\cite{vanderschaft2013graphs}.
 
 Adaptive networks can change their connections in response to the flows
 they carry \cite{gross2008adaptive,berner2023adaptive,hu2013adaptation,stern2023learning}.
