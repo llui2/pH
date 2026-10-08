@@ -64,13 +64,13 @@ of physical transport \cite{vanderschaft2013graphs}.
 \draw[->,edge] (zc) -- (za);
 \draw[->,cross] (xc) -- (za);
 \draw[->,cross] (xc) -- (zc);
-\node[label, text=blue!60!black] at (0.13,0.77) {$(\eta,j)$};
+\node[label, text=blue!60!black] at (0.13,0.77) {$(e,f)$};
 
 \draw[<->,edge] (-4.65,-0.65) -- (xb);
 \node[label] at (-4.0,-0.34) {$(u,y)$};
 \end{tikzpicture}
 \caption{An open network partitioned into a system and its environment.
-Edges carry conjugate effort and flux variables $(\eta,j)$; blue edges
+Edges carry conjugate effort and flow variables $(e,f)$; blue edges
 cross the partition. The port $(u,y)$ provides an additional connection
 to the system. Edge orientations specify signs only.}
 \label{fig:network}
@@ -85,24 +85,25 @@ H=H_x(x)+H_z(z),
 \qquad e_z=\nabla_z H_z.
 \label{eq:energy}
 \end{equation}
-The incidence matrix determines the edge effort differences,
+The incidence matrix determines the edge efforts,
 \begin{equation}
-\eta=-\mathbf B^\top
+e=-\mathbf B^\top
 \begin{bmatrix}e_x\\e_z\end{bmatrix},
-\qquad j\in\mathbb R^M,
+\qquad f\in\mathbb R^M.
 \label{eq:edge-port}
 \end{equation}
-where a positive component of $j$ denotes flux in the chosen edge
-orientation. The relation between $\eta$ and $j$ depends on the physics
-of each connection; the graph alone does not fix it.
+Here $e\in\mathbb R^M$ is the vector of driving efforts and $f$ contains
+the corresponding edge flows. A positive flow follows the chosen edge
+orientation. Their constitutive relation depends on the physics of
+each connection; it is not fixed by the graph.
 
 \section{Dynamics and power}
 
 We write the node dynamics with a separate open port on $x$,
 \begin{align}
-\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xj+\mathbf G u,
+\dot x &= (\mathbf J_x-\mathbf R_x)e_x+\mathbf B_xf+\mathbf G u,
 \label{eq:x}\\
-\dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zj,
+\dot z &= (\mathbf J_z-\mathbf R_z)e_z+\mathbf B_zf,
 \label{eq:z}
 \end{align}
 where $\mathbf J_x^\top=-\mathbf J_x$ and
@@ -121,11 +122,11 @@ system \cite{vanderschaft2014}. The energy balance follows directly:
 \dot H
 =-e_x^\top\mathbf R_xe_x
 -e_z^\top\mathbf R_ze_z
--\eta^\top j+y^\top u.
+-e^\top f+y^\top u.
 \label{eq:balance}
 \end{equation}
-For a memoryless passive connection, $\eta^\top j\geq0$; a resistive
-example is $j=\mathbf K\eta$ with $\mathbf K\succeq0$. Connections with
+For a memoryless passive connection, $e^\top f\geq0$; a resistive
+example is $f=\mathbf K e$ with $\mathbf K\succeq0$. Connections with
 independent energy storage require additional states. The graph and port
 structure therefore remain fixed without selecting a particular
 constitutive law or feedback mechanism \cite{vanderschaft2013graphs}.
