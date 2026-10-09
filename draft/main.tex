@@ -188,10 +188,22 @@ $\mathbf R_x-\mathbf G(\mathbf Q+\mathbf Q^\top)
 \mathbf G^\top/2$ is positive semidefinite, whereas
 the remaining closed-loop matrix is skew-symmetric.
 Their projections along the constraint normals must
-therefore vanish separately. Dissipation cannot act in
-these normal directions if passive feedback is to make
-the surface invariant for every Hamiltonian. This is
-related to the dissipation obstacle in port-Hamiltonian
+therefore vanish separately. The reversible part must
+also satisfy
+\begin{equation}
+\left[
+\mathbf J_x+
+\tfrac12\mathbf G(\mathbf Q-\mathbf Q^\top)\mathbf G^\top
+\right](\partial_x g)^\top=0.
+\label{eq:reversible}
+\end{equation}
+Thus passive structural invariance requires the constraint
+normals to be null directions of both the dissipative and
+effective reversible generators. When the effective
+skew matrix satisfies the Jacobi identity, the
+components of $g$ are its Casimir functions.
+The dissipative restriction is related to the
+dissipation obstacle in port-Hamiltonian
 control by interconnection \cite{zhang2015}.
 
 
