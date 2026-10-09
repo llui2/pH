@@ -196,6 +196,30 @@ $\mathbf A\mathbf E_x=0$. This is a structural restriction
 on the environmental port, independent of the chosen
 Hamiltonian.
 
+A two-state example makes the distinction explicit.
+Let $x=(q,a)$, $H_x=(q^2+a^2)/2$,
+$\mathbf J_x=0$, and
+$\mathbf R_x=\operatorname{diag}(0,\gamma)$ with
+$\gamma>0$. Choose the self-feedback port
+$\mathbf B=(a,0)^\top$ and environmental inputs
+$d>0$ and $j$, giving
+\begin{equation}
+\dot q=d+au,\qquad
+\dot a=-\gamma a+j,\qquad y=aq.
+\label{eq:example}
+\end{equation}
+For the constraint $q=1$ and $a>0$, the required
+feedback is $u_*=-d/a$, realized by the dissipative
+law $u=\mathbf Qy$ with $\mathbf Q=-d/a^2$
+on the constraint. The gain bound becomes
+$a^2\ge d/\kappa$. With $j=0$, the resource
+$a$ decreases and reaches this limit in finite
+time, even though $\dot q=0$ until that point.
+At the boundary, sustaining feedback capacity
+requires $j\ge\gamma a$. Thus preservation of the
+regulated variable does not imply preservation of
+the physical ability to regulate it.
+
 The preservation of feedback capacity is one possible
 mathematical expression of self-maintenance. Its link to
 organizational closure \cite{montevil2015} requires a
