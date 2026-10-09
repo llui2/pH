@@ -12,47 +12,35 @@
 
 \begin{document}
 
-\title{Self-maintaining motion in port-Hamiltonian systems}
+\title{Persistence of constrained motion in port-Hamiltonian systems}
 \maketitle
 
 \section{System and environment}
 
-Consider a physical system with state $x\in\mathbb R^n$ and an
-environment with state $z\in\mathbb R^m$. Their stored energies are
-$H_x(x)$ and $H_z(z)$, with $H=H_x+H_z$. Degrees of freedom that
-store energy in a connection are included in these states.
-We write
+Consider a physical system with state $x\in\mathbb R^n$ coupled
+to an environment with state $z\in\mathbb R^m$. Their energies
+are $H_x(x)$ and $H_z(z)$, with $H=H_x+H_z$. We write
 \begin{align}
-\dot x
-&=(\mathbf J_x-\mathbf R_x)\nabla_x H
-+\mathbf B_xu_x+\mathbf G u,
-\label{eq:x}\\
-\dot z
-&=(\mathbf J_z-\mathbf R_z)\nabla_z H
-+\mathbf B_zu_z,
-\label{eq:z}
+\dot x&=(\mathbf J_x-\mathbf R_x)\nabla_x H
++\mathbf B u+\mathbf E_xu_x, \label{eq:x}\\
+\dot z&=(\mathbf J_z-\mathbf R_z)\nabla_z H
++\mathbf E_zu_z, \label{eq:z}
 \end{align}
-where $\mathbf J_x$ and $\mathbf J_z$ are skew-symmetric and
+where $\mathbf J_x,\mathbf J_z$ are skew-symmetric and
 $\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite.
-The skew matrices describe reversible motion; the other terms
-describe dissipation and exchange \cite{vanderschaft2014}.
-Skew symmetry alone does not ensure a Poisson bracket:
-its Jacobi identity must also hold.
-
-The pair $(u,y)$ is a self-feedback port on $x$, while
-$(u_x,y_x)$ and $(u_z,y_z)$ are the two sides of its
-environmental connection. Their conjugate outputs are
+The self-feedback port $(u,y)$ acts on $x$ through $\mathbf B(x)$.
+The ports $(u_x,y_x)$ and $(u_z,y_z)$ represent the environmental
+connection through $\mathbf E_x(x)$ and $\mathbf E_z(z)$.
+Their outputs are
 \begin{equation}
-y=\mathbf G^\top\nabla_x H,\qquad
-y_x=\mathbf B_x^\top\nabla_x H,\qquad
-y_z=\mathbf B_z^\top\nabla_z H.
+y=\mathbf B^\top\nabla_x H,\qquad
+y_x=\mathbf E_x^\top\nabla_x H,\qquad
+y_z=\mathbf E_z^\top\nabla_z H.
 \label{eq:outputs}
 \end{equation}
-No interconnection law is assumed between the environmental
-ports. A possible self-feedback is $u=\mathbf Q(x)y$; we impose
-no skew-symmetry or dissipativity condition on $\mathbf Q$.
-More general feedback laws can be used without changing the
-open-system description.
+Neither port connection is assumed lossless. In particular,
+a collocated self-feedback $u=\mathbf Q(x)y$ may both redistribute
+and dissipate or inject power \cite{vanderschaft2014}.
 
 \begin{figure}[htb!]
 \centering
@@ -73,17 +61,12 @@ open-system description.
     node[lab,below] {self-feedback $(u,y)$}
     ++(0.76,0) -- ([xshift=0.38cm]x.south);
 \end{tikzpicture}
-\caption{The system exchanges power with its environment and
-has a separate self-feedback port. Neither connection is assumed
-lossless or specified by a particular constitutive law.}
+\caption{A self-feedback port on $x$ and a separate
+system--environment exchange, without prescribed connection laws.}
 \label{fig:scheme}
 \end{figure}
 
-The skew part of $\mathbf Q$ changes the reversible motion
-without contributing port power; its symmetric part determines
-$y^\top u$.
-
-The total energy balance is
+The corresponding energy balance is
 \begin{align}
 \dot H={}&
 -(\nabla_x H)^\top\mathbf R_x\nabla_x H
@@ -91,146 +74,134 @@ The total energy balance is
 &+y^\top u+y_x^\top u_x+y_z^\top u_z.
 \label{eq:power}
 \end{align}
-Thus feedback may inject or dissipate power. Its physical
-realization must account for that power through the actual
-connection or another explicitly represented source.
+The balance accounts for power entering the system through
+self-feedback and environmental exchange; an active feedback
+law requires a corresponding physical energy source.
 
-\section{Viable motion}
+\section{Constrained flow}
 
-Let $V\subset\mathbb R^{n+m}$ be a closed set of
-system--environment states where the mechanisms needed for the
-motion remain functional. The set $V$ specifies the physical
-conditions of continued operation, such as admissible operating
-ranges, available resources, and active exchange pathways.
-
-Once the feedback and the environmental connection are fixed,
-Eqs.~\eqref{eq:x}--\eqref{eq:z} define a vector field.
-For the entire set $V$ to remain viable, that field must satisfy
+Let $c(x)=0$ define a regular constraint manifold, with
+$\mathbf A(x)=\partial_x c(x)$ of full row rank. The tangent
+space is $\ker\mathbf A$. For a fixed environmental input,
+the velocity without self-feedback is
 \begin{equation}
-(\dot x,\dot z)\in T_V(x,z),
-\qquad (x,z)\in V,
-\label{eq:viability}
+v=(\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf E_xu_x.
+\label{eq:drift}
 \end{equation}
-where $T_V$ is the contingent tangent cone of $V$.
-For a locally Lipschitz vector field with forward solutions,
-this condition is also sufficient for forward invariance
-under the usual Nagumo hypotheses \cite{aubin2009}.
-Requiring it on all of $V$ is stronger than demanding a single
-trajectory remain viable.
-
-For a regular equality constraint $g(x)=0$, the tangent
-condition reads
+Preserving the constraint requires
 \begin{equation}
-\partial_x g\left[
-(\mathbf J_x-\mathbf R_x)\nabla_x H
-+\mathbf B_xu_x+\mathbf G u
-\right]=0.
-\label{eq:constraint}
+\mathbf A\mathbf B u=-\mathbf A v.
+\label{eq:tangency}
 \end{equation}
-For a viable region specified by a smooth inequality,
-the velocity must point inward or tangent at its boundary.
-
-A stronger, structural requirement is that the same constraint
-be preserved for every local energy gradient and every
-independent environmental input $u_x$. With the collocated
-self-feedback $u=\mathbf Q(x)y$, Eq.~\eqref{eq:constraint}
-then reduces, on $g(x)=0$, to
+If $\mathbf A\mathbf B$ has full row rank, the minimum-norm
+correction and the resulting flow are
 \begin{align}
-\partial_x g\left(
-\mathbf J_x-\mathbf R_x+\mathbf G\mathbf Q\mathbf G^\top
-\right)&=0,
-\label{eq:structural}\\
-\partial_x g\,\mathbf B_x&=0.
+u_*&=-(\mathbf A\mathbf B)^\dagger\mathbf A v,
+\label{eq:correction}\\
+\dot x&=\mathbf P v,\qquad
+\mathbf P=\mathbf I-\mathbf B(\mathbf A\mathbf B)^\dagger\mathbf A.
+\label{eq:projector}
+\end{align}
+Since $\mathbf A\mathbf P=0$ and $\mathbf P^2=\mathbf P$,
+the matrix $\mathbf P$ projects onto the tangent space
+along directions accessible through the self-feedback port.
+It is generally oblique; $\mathbf B=\mathbf A^\top$
+recovers the Euclidean orthogonal projector. The projection
+is a kinematic construction, not an automatic port-Hamiltonian
+interconnection. Its correction contributes the actual power
+$y^\top u_*$ to Eq.~\eqref{eq:power}.
+
+Full row rank is sufficient, not necessary, for a specified
+drift. More generally, Eq.~\eqref{eq:tangency} is solvable
+exactly when
+\begin{equation}
+-\mathbf A v\in\operatorname{im}(\mathbf A\mathbf B).
+\label{eq:image}
+\end{equation}
+Thus the constraint fixes the admissible directions, while
+the self-feedback port determines which transverse motions
+can be corrected.
+
+\section{Persistence of feedback capacity}
+
+A finite feedback gain provides a physical restriction
+beyond instantaneous tangency. Suppose a collocated
+feedback $u=\mathbf Qy$ satisfies
+$\|\mathbf Q\|_2\le\kappa$, where $\kappa>0$ is fixed.
+Under the full-row-rank assumption above, a matrix
+$\mathbf Q$ satisfying both the gain bound and
+Eq.~\eqref{eq:tangency} exists at a given state precisely when
+\begin{equation}
+\|u_*\|^2\le\kappa^2\|y\|^2.
+\label{eq:gain}
+\end{equation}
+Indeed, $u_*$ is the smallest input satisfying tangency,
+and $\|\mathbf Qy\|\le\kappa\|y\|$.
+Conversely, for $y\ne0$ the choice
+$\mathbf Q=u_*y^\top/(y^\top y)$ achieves the correction
+with the smallest possible operator norm; when $y=0$,
+feasibility requires $u_*=0$. This criterion is
+pointwise: an $x$-only feedback law may face additional
+restrictions if $u_x$ depends on the unobserved environment.
+
+The available feedback margin can be written without
+introducing another matrix,
+\begin{equation}
+\phi(x,z)=\kappa^2 y^\top y-u_*^\top u_*.
+\label{eq:margin}
+\end{equation}
+Here the environmental connection is assumed to specify
+smooth inputs $u_x(x,z)$ and $u_z(x,z)$.
+On the full-row-rank region, $\phi\ge0$ characterizes
+states where a bounded collocated correction is available.
+At $\phi=0$, every input preserving the constraint obeys
+$u=u_*+w$ with $w\in\ker(\mathbf A\mathbf B)$ and
+$u_*^\top w=0$. The gain bound forces $w=0$.
+Consequently, all feasible feedback laws produce the
+same $x$-velocity $\mathbf P v$ at that boundary.
+
+A self-maintaining motion must also preserve the
+availability of this correction. At a regular boundary
+$\phi=0$, its necessary tangency condition is therefore
+\begin{equation}
+\partial_x\phi\,\mathbf P v
++\partial_z\phi\,\dot z\ge0,
+\qquad c(x)=0,\quad\phi(x,z)=0.
+\label{eq:persistence}
+\end{equation}
+This relates the constrained flow to the evolution of its
+own control capacity. A negative left-hand side means
+that the system inevitably loses feasible feedback,
+even though it can preserve $c(x)=0$ at the current state.
+The condition is necessary, not sufficient, for indefinite
+persistence: the gain bound, rank, power balance, and
+all other viability boundaries must remain satisfied.
+Related recursive-feasibility conditions arise in
+constrained control \cite{xiao2022}.
+
+There is also a distinction between a correction chosen
+from the full state $(x,z)$ and an autonomous self-feedback
+$\mathbf Q(x)y(x)$. For the same $x$ and any two possible
+environmental states $z_1,z_2$, the latter requires
+\begin{equation}
+\mathbf A\mathbf E_x
+\left[u_x(x,z_1)-u_x(x,z_2)\right]=0.
 \label{eq:environment}
-\end{align}
-The first identity concerns internal dynamics and feedback;
-the second requires an unrestricted environmental input to
-act tangentially. This is structural controlled invariance,
-a stronger requirement than viability for one Hamiltonian
-and one environmental connection \cite{vanderschaft1985}.
-
-The first identity has a direct algebraic compatibility
-criterion. A matrix $\mathbf Q$, without restrictions on
-its symmetric part, exists at a given state if and only if
-\begin{align}
-\operatorname{im}\left[
-\partial_x g(\mathbf J_x-\mathbf R_x)
-\right]
-&\subseteq \operatorname{im}(\partial_x g\,\mathbf G),
-\label{eq:actuation}\\
-\ker\mathbf G^\top
-&\subseteq
-\ker\left[\partial_x g(\mathbf J_x-\mathbf R_x)\right].
-\label{eq:observation}
-\end{align}
-Indeed, Eq.~\eqref{eq:structural} requires the matrix
-$\partial_x g(\mathbf J_x-\mathbf R_x)$ to factor through
-$\partial_x g\,\mathbf G$ on the left and $\mathbf G^\top$
-on the right. The image condition states that every
-transverse internal motion can be corrected by the
-available self-feedback directions. The kernel condition
-states that an energy-gradient direction invisible at the
-feedback output cannot generate a transverse motion.
-The equivalence holds pointwise. Constant ranks of
-$\partial_x g\,\mathbf G$ and $\mathbf G$ locally permit
-a smooth choice of $\mathbf Q$.
-
-Passivity imposes a further restriction on the matrices.
-If $\mathbf Q+\mathbf Q^\top\preceq0$, the symmetric part
-of Eq.~\eqref{eq:structural}, multiplied on the right by
-$(\partial_x g)^\top$, yields
-\begin{equation}
-\mathbf R_x(\partial_x g)^\top=0.
-\label{eq:dissipation}
 \end{equation}
-To see this, the closed-loop dissipation matrix
-$\mathbf R_x-\mathbf G(\mathbf Q+\mathbf Q^\top)
-\mathbf G^\top/2$ is positive semidefinite, whereas
-the remaining closed-loop matrix is skew-symmetric.
-Their projections along the constraint normals must
-therefore vanish separately. The reversible part must
-also satisfy
-\begin{equation}
-\left[
-\mathbf J_x+
-\tfrac12\mathbf G(\mathbf Q-\mathbf Q^\top)\mathbf G^\top
-\right](\partial_x g)^\top=0.
-\label{eq:reversible}
-\end{equation}
-Thus passive structural invariance requires the constraint
-normals to be null directions of both the dissipative and
-effective reversible generators. When the effective
-skew matrix satisfies the Jacobi identity, the
-components of $g$ are its Casimir functions.
-The dissipative restriction is related to the
-dissipation obstacle in port-Hamiltonian
-control by interconnection \cite{zhang2015}.
+An unobserved change in the environmental input cannot
+produce a change in transverse motion that an $x$-only
+feedback is expected to cancel. If $u_x$ can vary freely,
+Eq.~\eqref{eq:environment} reduces to
+$\mathbf A\mathbf E_x=0$. This is a structural restriction
+on the environmental port, independent of the chosen
+Hamiltonian.
 
-
-The Hamiltonian structure makes viability a physical
-restriction, rather than only a geometric one. For example,
-suppose continued operation requires $H_x(x)\ge E_*$.
-At a viable state where $H_x=E_*$, Eq.~\eqref{eq:viability}
-requires $\dot H_x\ge0$. Equation~\eqref{eq:x} then yields
-\begin{equation}
-y^\top u+y_x^\top u_x
-\ge
-(\nabla_x H)^\top\mathbf R_x\nabla_x H.
-\label{eq:energetic}
-\end{equation}
-The environmental exchange and self-feedback must jointly
-compensate the system's dissipation at this boundary.
-This inequality is necessary, not sufficient: the
-same motion must also respect every other active constraint.
-Other physically defined viable sets give other conditions.
-
-A closed dynamics is \emph{self-maintaining} when it
-preserves a physically defined set in which its regulating
-mechanisms remain available. Geometric viability,
-feedback compatibility, and the power balance constrain
-that behavior at different levels. Their relation to
-organizational closure \cite{montevil2015} depends on
-the physical processes that maintain those mechanisms.
+The preservation of feedback capacity is one possible
+mathematical expression of self-maintenance. Its link to
+organizational closure \cite{montevil2015} requires a
+physical model in which the mechanisms underlying
+$\mathbf B$, the environmental connection, and the
+available power are themselves sustained by the dynamics.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
