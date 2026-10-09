@@ -1,222 +1,202 @@
-\documentclass[10pt,reqno]{amsart}
+\documentclass[11pt,reqno]{amsart}
 
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
 \let\Bbbk\relax
 \usepackage{amsmath,amssymb}
 \usepackage{microtype}
-\usepackage[margin=0.98in]{geometry}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 \usepackage[numbers]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue!65!black,citecolor=blue!65!black,urlcolor=blue!65!black]{hyperref}
 
 \begin{document}
-\title{Thermodynamic compatibility and the emergence of chemical organization}
+
+\title{Energetic conditions for constrained regulation}
 \maketitle
 
-\section{Physical reaction space}
+\section{A physical system and its regulator}
 
-A chemical network has a fixed set of elementary reactions, but its
-present composition determines which of them can occur. We divide the
-species counts into an internal state $x$ and an environment $z$, with
-$n=(x,z)\in\mathbb N_0^N$. Reaction $r$ changes $n$ by a stoichiometric
-vector $\nu_r$. Collecting these vectors gives
+Consider a physical system with state $x\in\mathbb R^n$ coupled to a
+regulator or environment with state $z\in\mathbb R^m$. They store
+energies $H_x(x)$ and $H_z(z)$. We assume that their connections have
+no independent energy storage, so that $H=H_x+H_z$. Write
+$e_x=\nabla H_x$ and $e_z=\nabla H_z$ for the generalized efforts.
+A port-Hamiltonian description is
+\begin{align}
+\dot x &= (J_x-R_x)e_x+C e_z+G u, \label{eq:x}\\
+\dot z &= (J_z-R_z)e_z-C^\top e_x+B v, \label{eq:z}
+\end{align}
+where the matrices can depend on the state, and
 \begin{equation}
-\mathbf S=\begin{bmatrix}\mathbf S_x\\\mathbf S_z\end{bmatrix}
-=\begin{bmatrix}\nu_1&\cdots&\nu_M\end{bmatrix}=\mathbf Z\mathbf B,
-\label{eq:stoichiometry}
+J_x^\top=-J_x,\qquad J_z^\top=-J_z,\qquad
+R_x=R_x^\top\succeq0,\qquad R_z=R_z^\top\succeq0.
 \end{equation}
-where $\mathbf B$ is the incidence matrix of the graph of chemical
-complexes and $\mathbf Z$ gives the species composition of each complex
-\cite{vanderschaft2013balanced}. With physical propensities $w_r(n)$,
-the stochastic generator is
+The skew terms describe reversible motion, the positive semidefinite
+terms describe dissipation, and $C(x,z)$ transfers energy between the
+two subsystems without storing it. The port matrices $G(x)$ and
+$B(z)$ specify where the regulator can act and where its energetic
+reaction enters. Their conjugate outputs are
 \begin{equation}
-(\mathsf L\varphi)(n)=\sum_r w_r(n)
-\bigl[\varphi(n+\nu_r)-\varphi(n)\bigr].
-\label{eq:generator}
+y=G^\top e_x,\qquad h=B^\top e_z.
+\label{eq:outputs}
 \end{equation}
-Reactant availability and catalysis enter through $w_r(n)$; their
-products therefore change subsequent reaction propensities without an
-independent adaptation law \cite{gillespie1977}. The environment is the
-source of chemical resources, not an external repair mechanism for $x$.
-
-\section{Thermodynamic compatibility}
-
-Fix the chemical potentials $\mu_z$ of the maintained environmental
-reservoirs, and let $\mu_x$ denote internal chemical potentials. For
-any selected collection of reactions, orient each column of
-$\mathbf S$ along the direction required for its operation. Their
-affinities are
+The pairs $(u,y)$ and $(v,h)$ carry powers $y^\top u$ and $h^\top v$,
+respectively \cite{vanderschaft2014}. The energy balance is
 \begin{equation}
- a=-\mathbf S_x^\top\mu_x-\mathbf S_z^\top\mu_z.
-\label{eq:affinities}
+\dot H=-e_x^\top R_xe_x-e_z^\top R_ze_z+y^\top u+h^\top v.
+\label{eq:energy}
 \end{equation}
-Strictly positive $a_r$ permits positive net flux in the selected
-direction for a thermodynamically consistent elementary reaction.
-A nonnegative internal turnover flux $q\ne0$ obeys
-$\mathbf S_xq=0$. Its total chemical driving is
-\begin{equation}
-q^\top a=-\mu_z^\top\mathbf S_zq.
-\label{eq:cycle-work}
-\end{equation}
-Thus a collection of required directions is impossible if it contains
-such a $q$ with nonpositive environmental work. This is the
-thermodynamic cycle obstruction, not a test for autocatalysis itself
-\cite{rao2016crn}.
-
-The restriction can be expressed through the maximum common affinity
-margin. If the normalized cycle set
-$\{q\geq0:\mathbf S_xq=0,\ \mathbf1^\top q=1\}$ is nonempty, linear
-programming duality yields
-\begin{equation}
-\delta_*:=\max_{\mu_x}\min_r a_r
-=\min_{\substack{q\geq0,\ \mathbf S_xq=0\\\mathbf1^\top q=1}}
-\bigl(-\mu_z^\top\mathbf S_zq\bigr).
-\label{eq:margin}
-\end{equation}
-Here internal potentials are allowed to vary without bounds. Positive
-$\delta_*$ is equivalent to simultaneous strict directional feasibility
-under this assumption. The margin is measured in energy per reaction
-event and does not determine reaction rates, stability, or persistence.
-If the normalized cycle set is empty, the margin is unbounded above in
-this unconstrained problem. Finite concentrations, conserved totals,
-and kinetic restrictions can narrow the feasible region.
-
-\section{Two competing autocatalytic cores}
-
-Kosc and collaborators identified two autocatalytic cores that share
-reactions and admit compatible stoichiometric production fluxes, yet
-cannot operate simultaneously with thermodynamically consistent
-mass-action kinetics \cite{blokhuis2020,kosc2025}. Their six reaction directions are
-\begin{equation}
-\begin{aligned}
-R_1:&\ X_1\to B+X_2, &R'_1:&\ X'_1\to A+X'_2,\\
-R_2:&\ X_2+X'_2\to X_3, &R_3:&\ X_3\to2X_4,\\
-R_4:&\ A+X_4\to X_1, &R'_4:&\ B+X_4\to X'_1.
-\end{aligned}
-\label{eq:cores}
-\end{equation}
-The cores are $(R_1,R_2,R_3,R_4)$ and
-$(R'_1,R_2,R_3,R'_4)$. One occurrence of every reaction gives zero
-net change in every species, so $\mathbf Sq=0$ for
-$q=(1,1,1,1,1,1)^\top$. Equation~\eqref{eq:cycle-work} forces
-$\sum_r a_r=0$: their six prescribed directions cannot all have
-positive affinity. This recovers the published incompatibility.
-Equivalently, with
-$\theta=\mu_B+\mu_{X_2}-\mu_A-\mu_{X_4}$, the first core
-requires $\theta<0$ whereas the second requires $\theta>0$.
-
-As a separate, illustrative extension, couple $R_1$ to conversion of
-an environmental fuel $F$ into waste $W$,
-$X_1+F\to B+X_2+W$. The internal stoichiometry remains unchanged,
-while the full cycle now consumes one fuel molecule. If
-$\Delta\mu=\mu_F-\mu_W$, its affinity sum is $\Delta\mu$.
-The first core now requires $\theta<\Delta\mu$, allowing its
-necessary potential window to overlap with that of the second core.
-The normalized nonnegative kernel of $\mathbf S_x$ is the single
-vector $\mathbf1/6$, giving the exact margin
-\begin{equation}
-\delta_*={\Delta\mu}/{6}.
-\label{eq:fuel-margin}
-\end{equation}
-The two cores and the chemical-potential window for their joint
-operation are shown in Fig.~\ref{fig:compatibility}. The latter
-compares necessary inequalities; the affinity margin provides the
-stronger simultaneous-direction criterion.
+The terms involving $C$ cancel exactly. Equation~\eqref{eq:energy}
+accounts for both sides of the regulatory connection: $u$ cannot
+supply energy to $x$ without a corresponding energetic cost in $z$
+or an explicitly modeled external source.
 
 \begin{figure}[htb!]
 \centering
-\begin{minipage}[c]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[font=\footnotesize]
-\path[use as bounding box] (-3.55,-1.35) rectangle (3.55,1.50);
-\fill[blue!9] (-1.15,0) ellipse (2.25cm and 1.03cm);
-\fill[orange!12] (1.15,0) ellipse (2.25cm and 1.03cm);
-\draw[blue!65!black,line width=0.75pt] (-1.15,0) ellipse (2.25cm and 1.03cm);
-\draw[orange!70!black,line width=0.75pt] (1.15,0) ellipse (2.25cm and 1.03cm);
-\node[blue!65!black] at (-2.54,1.18) {$C_1$};
-\node[orange!70!black] at (2.54,1.18) {$C_2$};
-\node at (-2.10,0.36) {$R_1$};
-\node at (-2.10,-0.43) {$R_4$};
-\node at (0,0.36) {$R_2$};
-\node at (0,-0.43) {$R_3$};
-\node at (2.10,0.36) {$R'_1$};
-\node at (2.10,-0.43) {$R'_4$};
-\node[anchor=west] at (-3.52,-1.23) {(a)};
+\begin{tikzpicture}[>=Latex,font=\small,
+  state/.style={align=center,inner sep=4pt},
+  lab/.style={font=\footnotesize,inner sep=2pt}]
+\node[state] (x) at (-3,0) {regulated system\\$x,\ H_x$};
+\node[state] (z) at (3,0) {regulator / environment\\$z,\ H_z$};
+\node[state] (g) at (-3,-1.55) {target condition\\$g(x)=0$};
+\draw[<->,thick] (-1.55,0.42)--(1.55,0.42);
+\node[lab,above] at (0,0.42) {lossless exchange $C$};
+\draw[<->,thick] (-1.55,-0.40)--(1.55,-0.40);
+\node[lab,below] at (0,-0.40) {regulatory ports $(u,y)$, $(v,h)$};
+\draw[->,thick] (x.south)--(g.north);
 \end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[font=\footnotesize,x=1cm,y=1cm]
-\path[use as bounding box] (-0.45,-0.66) rectangle (6.6,2.40);
-\begin{scope}[shift={(1.07,-0.03)},x=1.18cm,y=1.04cm]
-\fill[blue!13] (0,0) -- (0,2.1) -- (2.1,2.1) -- cycle;
-\draw[->,line width=0.8pt] (-0.75,0) -- (3.65,0)
-node[below right] {$\theta$};
-\draw[->,line width=0.8pt] (0,-0.24) -- (0,2.38)
-node[above] {$\Delta\mu$};
-\draw[densely dashed,black!65,line width=0.75pt] (0,0) -- (2.1,2.1)
-node[pos=0.83,below right] {$\Delta\mu=\theta$};
-\node[blue!65!black,align=center] at (0.61,1.70)
-{necessary\\overlap};
-\node[below left] at (0,0) {$0$};
-\end{scope}
-\node[anchor=west] at (-0.43,-0.56) {(b)};
-\end{tikzpicture}
-\end{minipage}
-\caption{Reaction-core overlap and thermodynamic compatibility.
-(a) The cores share reactions $R_2,R_3$; this is a reaction-set
-schematic, not the complex graph. (b) Fuel driving opens the necessary
-window $0<\theta<\Delta\mu$ (blue) for the two sets of forward
-reactions. A positive margin $\delta_*$ is the full directional
-feasibility test under unrestricted internal potentials.}
-\label{fig:compatibility}
+\caption{The system $x$ interacts with a dynamical regulator $z$.
+The coupling $C$ exchanges power reversibly. Regulation acts through
+separate ports whose net power must be accounted for. The condition
+$g(x)=0$ specifies the operating surface, not an additional energy
+source.}
+\label{fig:scheme}
 \end{figure}
 
-Fuel driving can therefore remove the obstruction to simultaneous
-\emph{reaction directions}. It does not establish a kinetically
-maintained state or simultaneous autocatalytic growth.
+\section{The constraint and available actuation}
 
-\section{Stochastic baseline and limitation}
-
-The six-reaction example contains a conservation law that restricts
-its possible dynamics. With $A,B,F,W$ buffered and the other six
-species internal, the positive vector
-$\ell=(1,1,2,1,1,1)^\top$ obeys
-$\ell^\top\mathbf S_x=0$, so the internal pool
-$m=\ell^\top x$ is fixed. Moreover,
-$\ker\mathbf S_x=\operatorname{span}\{\mathbf1\}$.
-Thus any stationary reaction currents must satisfy
+Let $g:\mathbb R^n\to\mathbb R^r$ describe regulated observables
+relative to their target values. The operating surface is
 \begin{equation}
-\langle v_1\rangle=\langle v'_1\rangle
-=\langle v_2\rangle=\langle v_3\rangle
-=\langle v_4\rangle=\langle v'_4\rangle=J.
-\label{eq:one-current}
+M=\{x:g(x)=0\}.
 \end{equation}
-There are no independent stationary currents associated with the two
-cores. The state $x=0$ is also absorbing: the original reactions
-cannot assemble an internal organization from an empty system.
+We assume that $Dg(x)$ has full row rank near $M$, so the surface
+is locally smooth. Invariance of $M$ requires $\dot g=0$ for
+every initial condition on it. Define the drift of $x$ without the
+regulatory input and the map from its port to the observables,
+\begin{equation}
+f(x,z)=(J_x-R_x)e_x+C e_z,\qquad
+A(x)=Dg(x)G(x).
+\label{eq:drift}
+\end{equation}
+Substitution into Eq.~\eqref{eq:x} gives the exact tangency condition
+\begin{equation}
+A(x)u=-Dg(x)f(x,z),\qquad x\in M.
+\label{eq:tangency}
+\end{equation}
+A regulating input exists at a given $(x,z)$ precisely when
+$-Dg f$ belongs to the image of $A$. Full row rank of $A$ guarantees
+solvability for any transverse drift. Under this assumption the
+inputs have the form
+\begin{equation}
+u=-A^\dagger Dg f+(I-A^\dagger A)w,
+\label{eq:controls}
+\end{equation}
+where $A^\dagger$ is the Moore--Penrose inverse. The first term is
+the minimum Euclidean-norm correction; the second changes the motion
+without changing $\dot g$. This is instantaneous invariance, not
+attraction to $M$ or a stability result for the coupled system.
 
-For a dynamical check, we solved the finite-state chemical master
-equation with reversible mass-action rates, buffered
-$A=B=W=1$, $F=\exp(\beta\Delta\mu)$, unit bare rate
-constants, and dimensionless volume $4$. For $m=4,6,8$,
-fuel driving first raises $J$ but subsequently suppresses it
-through depletion of $X'_2$, which is required by the shared
-reaction $X_2+X'_2\rightleftharpoons X_3$.
-This negative differential response is a known chemical phenomenon
-\cite{falasco2019}; the calculation is a baseline, not a novel
-selection mechanism. The exact stationary solver and plotting script
-are in \texttt{experiments/cores.py}.
+\section{Feedback and power}
 
-Thermodynamic feasibility can therefore be separated from
-actual throughput, but this model alone cannot demonstrate spontaneous
-selection among independently maintained organizations. Studying that
-phenomenon requires physical precursor-to-component synthesis and
-turnover that break the conserved internal pool, with rates derived
-from the expanded reaction network rather than a prescribed adaptive
-feedback \cite{peng2022hierarchy}.
+To describe an algebraic feedback through the measured port, write
+\begin{equation}
+u=Q(x,z)y,\qquad y=G^\top e_x.
+\label{eq:feedback}
+\end{equation}
+Combining Eqs.~\eqref{eq:tangency} and \eqref{eq:feedback},
+the feedback must satisfy
+\begin{equation}
+AQy=-Dg f.
+\label{eq:qconstraint}
+\end{equation}
+For $y\ne0$, any feasible input $u$ can be represented by
+$Q=u y^\top/(y^\top y)$. This representation does not establish
+physical realizability: its power is
+\begin{equation}
+y^\top u=y^\top Q_s y,\qquad
+Q_s=\tfrac12(Q+Q^\top).
+\label{eq:feedbackpower}
+\end{equation}
+The skew part of $Q$ transfers power between port components but
+cannot inject energy. An input requiring $y^\top u>0$ cannot be
+realized by skew feedback alone. If $y=0$, the law $u=Qy$ cannot
+produce any nonzero correction, even when Eq.~\eqref{eq:tangency}
+admits one.
+
+The two requirements can conflict even when the actuation matrix
+has full row rank. Let $u_c=-A^\dagger Dg f$. A power-neutral
+correction requires both $Au=-Dg f$ and $y^\top u=0$. When
+$y^\top(I-A^\dagger A)\ne0$, the free term in
+Eq.~\eqref{eq:controls} can make the correction power-neutral.
+Otherwise its power is fixed at $y^\top u_c$, so a lossless
+correction exists only if this quantity vanishes. For $y\ne0$
+and $y^\top u=0$, the skew map
+\begin{equation}
+Q=\frac{u y^\top-y u^\top}{y^\top y}
+\label{eq:skew}
+\end{equation}
+indeed satisfies $Qy=u$. These are algebraic feasibility
+statements; they do not imply that $Q$ can be implemented by
+an autonomous regulator.
+
+For a physical connection between the two systems with no external
+power supply, the regulatory ports must obey
+\begin{equation}
+y^\top u+h^\top v\leq0.
+\label{eq:closure}
+\end{equation}
+Equality represents lossless exchange and a strict inequality
+allows dissipation in the connection. A positive power demand
+$y^\top u$ must therefore be paid for through the $z$ port.
+In particular, if $h=0$, an input with $y^\top u>0$ is
+impossible under this passive closure. The inequality is necessary
+for energetic consistency, not sufficient to construct an
+interconnection or stabilize $M$.
+
+If $H$ is bounded below by $H_{\min}$, Eq.~\eqref{eq:closure}
+also gives the finite-energy restriction
+\begin{equation}
+\int_0^T\!
+\left(e_x^\top R_xe_x+e_z^\top R_ze_z\right)dt
+\leq H(0)-H_{\min}.
+\label{eq:budget}
+\end{equation}
+Thus an isolated, finite-energy regulator cannot support strictly
+positive dissipation indefinitely. Sustained homeostasis against
+persistent losses requires an energy supply represented in the
+model, rather than hidden in the feedback matrix.
+
+\section{Interpretation}
+
+The operating surface $M$ is a local representation of the
+essential variables in Ashby's account of regulation
+\cite{ashby1956}. The good regulator theorem links effective
+regulation to an internal model under its own assumptions
+\cite{conant1970}. Here $z$ is a candidate physical carrier of
+regulatory dynamics, but the existence of the state $z$ or the
+feedback matrix $Q$ does not establish that it contains an
+internal model in the sense of the theorem or of the internal
+model principle \cite{francis1976}.
+
+The immediate problem is to determine whether a closed $x$--$z$
+dynamics can satisfy both the tangency condition
+\eqref{eq:tangency} and the power condition \eqref{eq:closure},
+and whether the resulting trajectories remain near $M$ under
+perturbations. The present equations identify the geometric and
+energetic requirements, but do not yet provide a dynamical
+regulation theorem or a new physical mechanism.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
