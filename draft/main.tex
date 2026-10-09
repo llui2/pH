@@ -97,14 +97,11 @@ connection or another explicitly represented source.
 
 \section{Viable motion}
 
-We do not prescribe viability by an equality such as $g(x)=0$.
-Instead, let $V\subset\mathbb R^{n+m}$ be a closed set of
+Let $V\subset\mathbb R^{n+m}$ be a closed set of
 system--environment states where the mechanisms needed for the
-motion remain functional. Depending on the model, $V$ may
-express operating ranges, available resources, or the existence
-of active exchange pathways. Its physical definition is an input
-to the theory, rather than a consequence of the port-Hamiltonian
-notation.
+motion remain functional. The set $V$ specifies the physical
+conditions of continued operation, such as admissible operating
+ranges, available resources, and active exchange pathways.
 
 Once the feedback and the environmental connection are fixed,
 Eqs.~\eqref{eq:x}--\eqref{eq:z} define a vector field.
@@ -121,8 +118,7 @@ under the usual Nagumo hypotheses \cite{aubin2009}.
 Requiring it on all of $V$ is stronger than demanding a single
 trajectory remain viable.
 
-The former manifold construction is a special case. If
-$V$ includes a regular equality $g(x)=0$, its tangent
+For a regular equality constraint $g(x)=0$, the tangent
 condition reads
 \begin{equation}
 \partial_x g\left[
@@ -131,9 +127,8 @@ condition reads
 \right]=0.
 \label{eq:constraint}
 \end{equation}
-For a viable region specified instead by a smooth inequality,
+For a viable region specified by a smooth inequality,
 the velocity must point inward or tangent at its boundary.
-Neither form requires lossless feedback.
 
 The Hamiltonian structure makes viability a physical
 restriction, rather than only a geometric one. For example,
@@ -152,18 +147,15 @@ This inequality is necessary, not sufficient: the
 same motion must also respect every other active constraint.
 Other physically defined viable sets give other conditions.
 
-We use \emph{self-maintaining} to describe a closed dynamics
-that keeps the system in a domain where its own regulating
-mechanisms remain available. This corresponds to invariance
-of a physically justified viable set, not simply to the
-existence of a feasible correction at one instant.
-The distinction is related to organizational closure
-\cite{montevil2015}, but Eqs.~\eqref{eq:viability} and
-\eqref{eq:energetic} are established viability and energy
-conditions, not a new theorem of self-organization.
-A specific mechanism is still needed to show how the
-processes supported by the system maintain the constraints
-that support those processes.
+A closed dynamics is \emph{self-maintaining} when it
+preserves a physically defined set in which its regulating
+mechanisms remain available. The geometric condition
+\eqref{eq:viability} and energetic condition
+\eqref{eq:energetic} characterize two requirements for this
+behavior using established viability and energy balances.
+Their relation to organizational closure \cite{montevil2015}
+depends on the physical mechanisms that sustain the conditions
+of continued operation.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
