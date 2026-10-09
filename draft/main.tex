@@ -130,6 +130,71 @@ condition reads
 For a viable region specified by a smooth inequality,
 the velocity must point inward or tangent at its boundary.
 
+A stronger, structural requirement is that the same constraint
+be preserved for every local energy gradient and every
+independent environmental input $u_x$. With the collocated
+self-feedback $u=\mathbf Q(x)y$, Eq.~\eqref{eq:constraint}
+then reduces, on $g(x)=0$, to
+\begin{align}
+\partial_x g\left(
+\mathbf J_x-\mathbf R_x+\mathbf G\mathbf Q\mathbf G^\top
+\right)&=0,
+\label{eq:structural}\\
+\partial_x g\,\mathbf B_x&=0.
+\label{eq:environment}
+\end{align}
+The first identity concerns internal dynamics and feedback;
+the second requires an unrestricted environmental input to
+act tangentially. This is structural controlled invariance,
+a stronger requirement than viability for one Hamiltonian
+and one environmental connection \cite{vanderschaft1985}.
+
+The first identity has a direct algebraic compatibility
+criterion. A matrix $\mathbf Q$, without restrictions on
+its symmetric part, exists at a given state if and only if
+\begin{align}
+\operatorname{im}\left[
+\partial_x g(\mathbf J_x-\mathbf R_x)
+\right]
+&\subseteq \operatorname{im}(\partial_x g\,\mathbf G),
+\label{eq:actuation}\\
+\ker\mathbf G^\top
+&\subseteq
+\ker\left[\partial_x g(\mathbf J_x-\mathbf R_x)\right].
+\label{eq:observation}
+\end{align}
+Indeed, Eq.~\eqref{eq:structural} requires the matrix
+$\partial_x g(\mathbf J_x-\mathbf R_x)$ to factor through
+$\partial_x g\,\mathbf G$ on the left and $\mathbf G^\top$
+on the right. The image condition states that every
+transverse internal motion can be corrected by the
+available self-feedback directions. The kernel condition
+states that an energy-gradient direction invisible at the
+feedback output cannot generate a transverse motion.
+The equivalence holds pointwise. Constant ranks of
+$\partial_x g\,\mathbf G$ and $\mathbf G$ locally permit
+a smooth choice of $\mathbf Q$.
+
+Passivity imposes a further restriction on the matrices.
+If $\mathbf Q+\mathbf Q^\top\preceq0$, the symmetric part
+of Eq.~\eqref{eq:structural}, multiplied on the right by
+$(\partial_x g)^\top$, yields
+\begin{equation}
+\mathbf R_x(\partial_x g)^\top=0.
+\label{eq:dissipation}
+\end{equation}
+To see this, the closed-loop dissipation matrix
+$\mathbf R_x-\mathbf G(\mathbf Q+\mathbf Q^\top)
+\mathbf G^\top/2$ is positive semidefinite, whereas
+the remaining closed-loop matrix is skew-symmetric.
+Their projections along the constraint normals must
+therefore vanish separately. Dissipation cannot act in
+these normal directions if passive feedback is to make
+the surface invariant for every Hamiltonian. This is
+related to the dissipation obstacle in port-Hamiltonian
+control by interconnection \cite{zhang2015}.
+
+
 The Hamiltonian structure makes viability a physical
 restriction, rather than only a geometric one. For example,
 suppose continued operation requires $H_x(x)\ge E_*$.
@@ -149,13 +214,11 @@ Other physically defined viable sets give other conditions.
 
 A closed dynamics is \emph{self-maintaining} when it
 preserves a physically defined set in which its regulating
-mechanisms remain available. The geometric condition
-\eqref{eq:viability} and energetic condition
-\eqref{eq:energetic} characterize two requirements for this
-behavior using established viability and energy balances.
-Their relation to organizational closure \cite{montevil2015}
-depends on the physical mechanisms that sustain the conditions
-of continued operation.
+mechanisms remain available. Geometric viability,
+feedback compatibility, and the power balance constrain
+that behavior at different levels. Their relation to
+organizational closure \cite{montevil2015} depends on
+the physical processes that maintain those mechanisms.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
