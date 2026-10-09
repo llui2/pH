@@ -15,39 +15,38 @@
 \title{Energetic conditions for constrained regulation}
 \maketitle
 
-\section{A physical system and its regulator}
+\section{\mathbf A physical system and its regulator}
 
 Consider a physical system with state $x\in\mathbb R^n$ coupled to a
 regulator or environment with state $z\in\mathbb R^m$. They store
 energies $H_x(x)$ and $H_z(z)$. We assume that their connections have
-no independent energy storage, so that $H=H_x+H_z$. Write
-$e_x=\nabla H_x$ and $e_z=\nabla H_z$ for the generalized efforts.
-A port-Hamiltonian description is
+no independent energy storage, so that $H=H_x+H_z$. The gradients $\nabla_x H$ and $\nabla_z H$ are the generalized efforts.
+\mathbf A port-Hamiltonian description is
 \begin{align}
-\dot x &= (J_x-R_x)e_x+C e_z+G u, \label{eq:x}\\
-\dot z &= (J_z-R_z)e_z-C^\top e_x+B v, \label{eq:z}
+\dot x &= (\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf C \nabla_z H+\mathbf G u, \label{eq:x}\\
+\dot z &= (\mathbf J_z-\mathbf R_z)\nabla_z H-\mathbf C^\top \nabla_x H+\mathbf B v, \label{eq:z}
 \end{align}
 where the matrices can depend on the state, and
 \begin{equation}
-J_x^\top=-J_x,\qquad J_z^\top=-J_z,\qquad
-R_x=R_x^\top\succeq0,\qquad R_z=R_z^\top\succeq0.
+\mathbf J_x^\top=-\mathbf J_x,\qquad \mathbf J_z^\top=-\mathbf J_z,\qquad
+\mathbf R_x=\mathbf R_x^\top\succeq0,\qquad \mathbf R_z=\mathbf R_z^\top\succeq0.
 \end{equation}
 The skew terms describe reversible motion, the positive semidefinite
-terms describe dissipation, and $C(x,z)$ transfers energy between the
-two subsystems without storing it. The port matrices $G(x)$ and
-$B(z)$ specify where the regulator can act and where its energetic
+terms describe dissipation, and $\mathbf C(x,z)$ transfers energy between the
+two subsystems without storing it. The port matrices $\mathbf G(x)$ and
+$\mathbf B(z)$ specify where the regulator can act and where its energetic
 reaction enters. Their conjugate outputs are
 \begin{equation}
-y=G^\top e_x,\qquad h=B^\top e_z.
+y=\mathbf G^\top \nabla_x H,\qquad h=\mathbf B^\top \nabla_z H.
 \label{eq:outputs}
 \end{equation}
 The pairs $(u,y)$ and $(v,h)$ carry powers $y^\top u$ and $h^\top v$,
 respectively \cite{vanderschaft2014}. The energy balance is
 \begin{equation}
-\dot H=-e_x^\top R_xe_x-e_z^\top R_ze_z+y^\top u+h^\top v.
+\dot H=-\nabla_x H^\top \mathbf R_x\nabla_x H-\nabla_z H^\top \mathbf R_z\nabla_z H+y^\top u+h^\top v.
 \label{eq:energy}
 \end{equation}
-The terms involving $C$ cancel exactly. Equation~\eqref{eq:energy}
+The terms involving $\mathbf C$ cancel exactly. Equation~\eqref{eq:energy}
 accounts for both sides of the regulatory connection: $u$ cannot
 supply energy to $x$ without a corresponding energetic cost in $z$
 or an explicitly modeled external source.
@@ -61,13 +60,13 @@ or an explicitly modeled external source.
 \node[state] (z) at (4,0) {regulator / environment\\$z,\ H_z$};
 \node[state] (g) at (-4,-1.55) {target condition\\$g(x)=0$};
 \draw[<->,thick] ([yshift=0.2cm]x.east) --
-  node[lab,above] {lossless exchange $C$} ([yshift=0.2cm]z.west);
+  node[lab,above] {lossless exchange $\mathbf C$} ([yshift=0.2cm]z.west);
 \draw[<->,thick] ([yshift=-0.2cm]x.east) --
   node[lab,below] {ports $(u,y)$, $(v,h)$} ([yshift=-0.2cm]z.west);
 \draw[->,thick] (x.south)--(g.north);
 \end{tikzpicture}
 \caption{The system $x$ interacts with a dynamical regulator $z$.
-The coupling $C$ exchanges power reversibly. Regulation acts through
+The coupling $\mathbf C$ exchanges power reversibly. Regulation acts through
 separate ports whose net power must be accounted for. The condition
 $g(x)=0$ specifies the operating surface, not an additional energy
 source.}
@@ -81,29 +80,29 @@ relative to their target values. The operating surface is
 \begin{equation}
 M=\{x:g(x)=0\}.
 \end{equation}
-We assume that $Dg(x)$ has full row rank near $M$, so the surface
+We assume that $\partial_x g(x)$ has full row rank near $M$, so the surface
 is locally smooth. Invariance of $M$ requires $\dot g=0$ for
 every initial condition on it. Define the drift of $x$ without the
 regulatory input and the map from its port to the observables,
 \begin{equation}
-f(x,z)=(J_x-R_x)e_x+C e_z,\qquad
-A(x)=Dg(x)G(x).
+f(x,z)=(\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf C \nabla_z H,\qquad
+\mathbf A(x)=\partial_x g(x)\mathbf G(x).
 \label{eq:drift}
 \end{equation}
 Substitution into Eq.~\eqref{eq:x} gives the exact tangency condition
 \begin{equation}
-A(x)u=-Dg(x)f(x,z),\qquad x\in M.
+\mathbf A(x)u=-\partial_x g(x)f(x,z),\qquad x\in M.
 \label{eq:tangency}
 \end{equation}
-A regulating input exists at a given $(x,z)$ precisely when
-$-Dg f$ belongs to the image of $A$. Full row rank of $A$ guarantees
+\mathbf A regulating input exists at a given $(x,z)$ precisely when
+$-\partial_x g\,f$ belongs to the image of $\mathbf A$. Full row rank of $\mathbf A$ guarantees
 solvability for any transverse drift. Under this assumption the
 inputs have the form
 \begin{equation}
-u=-A^\dagger Dg f+(I-A^\dagger A)w,
+u=-\mathbf A^\dagger \partial_x g\,f+(\mathbf I-\mathbf A^\dagger \mathbf A)w,
 \label{eq:controls}
 \end{equation}
-where $A^\dagger$ is the Moore--Penrose inverse. The first term is
+where $\mathbf A^\dagger$ is the Moore--Penrose inverse. The first term is
 the minimum Euclidean-norm correction; the second changes the motion
 without changing $\dot g$. This is instantaneous invariance, not
 attraction to $M$ or a stability result for the coupled system.
@@ -112,43 +111,43 @@ attraction to $M$ or a stability result for the coupled system.
 
 To describe an algebraic feedback through the measured port, write
 \begin{equation}
-u=Q(x,z)y,\qquad y=G^\top e_x.
+u=\mathbf Q(x,z)y,\qquad y=\mathbf G^\top \nabla_x H.
 \label{eq:feedback}
 \end{equation}
 Combining Eqs.~\eqref{eq:tangency} and \eqref{eq:feedback},
 the feedback must satisfy
 \begin{equation}
-AQy=-Dg f.
+AQy=-\partial_x g\,f.
 \label{eq:qconstraint}
 \end{equation}
 For $y\ne0$, any feasible input $u$ can be represented by
-$Q=u y^\top/(y^\top y)$. This representation does not establish
+$\mathbf Q=u y^\top/(y^\top y)$. This representation does not establish
 physical realizability: its power is
 \begin{equation}
-y^\top u=y^\top Q_s y,\qquad
-Q_s=\tfrac12(Q+Q^\top).
+y^\top u=y^\top \mathbf Q_s y,\qquad
+\mathbf Q_s=\tfrac12(\mathbf Q+\mathbf Q^\top).
 \label{eq:feedbackpower}
 \end{equation}
-The skew part of $Q$ transfers power between port components but
+The skew part of $\mathbf Q$ transfers power between port components but
 cannot inject energy. An input requiring $y^\top u>0$ cannot be
 realized by skew feedback alone. If $y=0$, the law $u=Qy$ cannot
 produce any nonzero correction, even when Eq.~\eqref{eq:tangency}
 admits one.
 
 The two requirements can conflict even when the actuation matrix
-has full row rank. Let $u_c=-A^\dagger Dg f$. A power-neutral
-correction requires both $Au=-Dg f$ and $y^\top u=0$. When
-$y^\top(I-A^\dagger A)\ne0$, the free term in
+has full row rank. Let $u_c=-\mathbf A^\dagger \partial_x g\,f$. \mathbf A power-neutral
+correction requires both $Au=-\partial_x g\,f$ and $y^\top u=0$. When
+$y^\top(\mathbf I-\mathbf A^\dagger \mathbf A)\ne0$, the free term in
 Eq.~\eqref{eq:controls} can make the correction power-neutral.
 Otherwise its power is fixed at $y^\top u_c$, so a lossless
 correction exists only if this quantity vanishes. For $y\ne0$
 and $y^\top u=0$, the skew map
 \begin{equation}
-Q=\frac{u y^\top-y u^\top}{y^\top y}
+\mathbf Q=\frac{u y^\top-y u^\top}{y^\top y}
 \label{eq:skew}
 \end{equation}
 indeed satisfies $Qy=u$. These are algebraic feasibility
-statements; they do not imply that $Q$ can be implemented by
+statements; they do not imply that $\mathbf Q$ can be implemented by
 an autonomous regulator.
 
 For a physical connection between the two systems with no external
@@ -158,7 +157,7 @@ y^\top u+h^\top v\leq0.
 \label{eq:closure}
 \end{equation}
 Equality represents lossless exchange and a strict inequality
-allows dissipation in the connection. A positive power demand
+allows dissipation in the connection. \mathbf A positive power demand
 $y^\top u$ must therefore be paid for through the $z$ port.
 In particular, if $h=0$, an input with $y^\top u>0$ is
 impossible under this passive closure. The inequality is necessary
@@ -169,7 +168,7 @@ If $H$ is bounded below by $H_{\min}$, Eq.~\eqref{eq:closure}
 also gives the finite-energy restriction
 \begin{equation}
 \int_0^T\!
-\left(e_x^\top R_xe_x+e_z^\top R_ze_z\right)dt
+\left(\nabla_x H^\top \mathbf R_x\nabla_x H+\nabla_z H^\top \mathbf R_z\nabla_z H\right)dt
 \leq H(0)-H_{\min}.
 \label{eq:budget}
 \end{equation}
@@ -186,7 +185,7 @@ essential variables in Ashby's account of regulation
 regulation to an internal model under its own assumptions
 \cite{conant1970}. Here $z$ is a candidate physical carrier of
 regulatory dynamics, but the existence of the state $z$ or the
-feedback matrix $Q$ does not establish that it contains an
+feedback matrix $\mathbf Q$ does not establish that it contains an
 internal model in the sense of the theorem or of the internal
 model principle \cite{francis1976}.
 
