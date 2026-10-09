@@ -205,6 +205,98 @@ positive dissipation indefinitely. Sustained homeostasis against
 persistent losses requires an energy supply represented in the
 model, rather than hidden in the feedback matrix.
 
+\section{Self-maintaining regulation}
+
+Preserving $g(x)=0$ at one instant does not guarantee that
+self-feedback will remain possible later. We impose a minimal
+self-maintenance requirement: the actual motion must preserve both
+the constraint and the existence of an admissible self-feedback
+that can continue to enforce it. This distinguishes the motion
+from the physical conditions that permit that motion
+\cite{montevil2015}.
+
+To obtain a definite restriction, first consider a lossless
+self-feedback, $\mathbf Q^\top=-\mathbf Q$. The $x$ dynamics can
+then be written as
+\begin{equation}
+\dot x=(\mathbf P-\mathbf R_x)\nabla_x H+\mathbf B_x u_x,
+\qquad
+\mathbf P=\mathbf J_x+\mathbf G\mathbf Q\mathbf G^\top.
+\label{eq:structure}
+\end{equation}
+The matrix $\mathbf P$ is skew-symmetric and defines the
+reversible part of the closed $x$ dynamics. It defines a
+Poisson bracket only if it also satisfies the Jacobi identity;
+skew symmetry alone does not suffice. With the bracket notation
+$\{a,H\}_{\mathbf P}=\partial_x a\,\mathbf P\nabla_x H$,
+preservation of the operating surface requires
+\begin{equation}
+\{g,H\}_{\mathbf P}
+=
+\partial_x g\,(\mathbf R_x\nabla_x H-\mathbf B_xu_x).
+\label{eq:poissonconstraint}
+\end{equation}
+The reversible motion must cancel the transverse drift
+caused by dissipation and environmental exchange.
+
+Not every such cancellation can be produced by lossless
+self-feedback. At a state with $y\ne0$, skew symmetry of
+$\mathbf Q$ implies $y^\top u=0$. Conversely, every input
+orthogonal to $y$ can be written as $u=\mathbf Qy$ for some
+skew-symmetric matrix. Define
+\begin{equation}
+\mathbf L(x)
+=\mathbf A(x)\left(\mathbf I-\frac{yy^\top}{y^\top y}\right),
+\qquad
+c(x,z)=(\mathbf I-\mathbf L\mathbf L^\dagger)
+\partial_x g\,f(x,u_x).
+\label{eq:obstruction}
+\end{equation}
+Here we assume that the environmental connection supplies
+smooth inputs $u_x(x,z)$, without choosing a particular
+connection law. The condition $c(x,z)=0$ is necessary and
+sufficient for the existence of a \emph{pointwise} lossless
+self-feedback input satisfying Eq.~\eqref{eq:tangency}.
+It does not guarantee a single smooth law $\mathbf Q(x)$
+that works across different environmental states. In
+particular, if $y=0$, algebraic self-feedback cannot produce
+a nonzero input, and feasibility instead requires
+$\partial_x g\,f=0$.
+
+The states where the constraint and the lossless correction
+are simultaneously feasible form
+\begin{equation}
+K=\{(x,z):g(x)=0,\ c(x,z)=0\}.
+\label{eq:capacity}
+\end{equation}
+For $y\ne0$ and constant rank of $\mathbf L$, the obstruction
+$c$ is smooth. A self-maintaining closed dynamics must leave
+$K$ invariant, not merely start inside it. Writing its
+vector field as $(F_x,F_z)$, a necessary condition is
+\begin{equation}
+\partial_x c\,F_x+\partial_z c\,F_z=0,
+\qquad (x,z)\in K.
+\label{eq:selfmaintenance}
+\end{equation}
+Together with $\dot g=0$, this is the tangency condition
+for the continued feasibility of regulation. When $K$ is a
+regular submanifold and the closed vector field is smooth,
+tangency everywhere on $K$ also gives local invariance
+\cite{aubin2009}. The second condition is not automatic
+from the first: dynamics can preserve the regulated
+observable while leaving the set where future corrections
+are available.
+
+Equations~\eqref{eq:obstruction} and
+\eqref{eq:selfmaintenance} supply an algebraic obstruction
+and a dynamical compatibility condition. They express a
+minimal form of self-maintenance, not yet the preservation
+of every admissible motion or a general theorem of
+organizational closure. The obstruction may vanish
+identically when the available self-port directions are
+sufficient; in that case this criterion imposes no further
+restriction beyond constraint invariance.
+
 \section{Interpretation}
 
 The operating surface $M$ is a local representation of the
