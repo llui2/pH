@@ -15,65 +15,85 @@
 \title{Energetic conditions for constrained regulation}
 \maketitle
 
-\section{A physical system and its regulator}
+\section{A system with two kinds of ports}
 
-Consider a physical system with state $x\in\mathbb R^n$ coupled to a
-regulator or environment with state $z\in\mathbb R^m$. They store
-energies $H_x(x)$ and $H_z(z)$. We assume that their connections have
-no independent energy storage, so that $H=H_x+H_z$. The gradients
-$\nabla_x H$ and $\nabla_z H$ are the generalized efforts.
-A port-Hamiltonian description is
+Consider a physical system with state $x\in\mathbb R^n$ interacting
+with an environment of state $z\in\mathbb R^m$. Their stored energies
+are $H_x(x)$ and $H_z(z)$, with $H=H_x+H_z$. Any energy stored in a
+connection is included in these states. We write their port-Hamiltonian
+dynamics as
 \begin{align}
-\dot x &= (\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf C \nabla_z H+\mathbf G u, \label{eq:x}\\
-\dot z &= (\mathbf J_z-\mathbf R_z)\nabla_z H-\mathbf C^\top \nabla_x H+\mathbf B v, \label{eq:z}
+\dot x
+&= (\mathbf J_x-\mathbf R_x)\nabla_x H
++\mathbf B_x u_x+\mathbf G u,
+\label{eq:x}\\
+\dot z
+&= (\mathbf J_z-\mathbf R_z)\nabla_z H
++\mathbf B_z u_z,
+\label{eq:z}
 \end{align}
-where the matrices can depend on the state, and
+where the matrices may depend on their respective states, and
 \begin{equation}
-\mathbf J_x^\top=-\mathbf J_x,\qquad \mathbf J_z^\top=-\mathbf J_z,\qquad
-\mathbf R_x=\mathbf R_x^\top\succeq0,\qquad \mathbf R_z=\mathbf R_z^\top\succeq0.
+\mathbf J_x^\top=-\mathbf J_x,\qquad
+\mathbf J_z^\top=-\mathbf J_z,\qquad
+\mathbf R_x=\mathbf R_x^\top\succeq0,\qquad
+\mathbf R_z=\mathbf R_z^\top\succeq0.
 \end{equation}
-The skew terms describe reversible motion, the positive semidefinite
-terms describe dissipation, and $\mathbf C(x,z)$ transfers energy between the
-two subsystems without storing it. The port matrices $\mathbf G(x)$ and
-$\mathbf B(z)$ specify where the regulator can act and where its energetic
-reaction enters. Their conjugate outputs are
+The skew matrices describe reversible internal motion and the positive
+semidefinite matrices describe internal dissipation
+\cite{vanderschaft2014}.
+
+The matrix $\mathbf G(x)$ defines a self-feedback port on $x$, with
+input $u$ and conjugate output $y$. The matrices $\mathbf B_x(x)$
+and $\mathbf B_z(z)$ define the two sides of a separate connection
+between the system and its environment. Their conjugate outputs are
 \begin{equation}
-y=\mathbf G^\top \nabla_x H,\qquad h=\mathbf B^\top \nabla_z H.
+y=\mathbf G^\top\nabla_x H,\qquad
+y_x=\mathbf B_x^\top\nabla_x H,\qquad
+y_z=\mathbf B_z^\top\nabla_z H.
 \label{eq:outputs}
 \end{equation}
-The pairs $(u,y)$ and $(v,h)$ carry powers $y^\top u$ and $h^\top v$,
-respectively \cite{vanderschaft2014}. The energy balance is
+The self-feedback closes a relation between $u$ and $y$ within $x$.
+The environmental inputs $u_x$ and $u_z$ are instead determined by
+the connection between $(u_x,y_x)$ and $(u_z,y_z)$. We leave this
+connection unspecified: it may describe lossless exchange,
+dissipative transport, or a driven process.
+
+The energy balance follows directly from the two subsystems,
 \begin{align}
 \dot H ={}&
--(\nabla_x H)^\top \mathbf R_x\nabla_x H
--(\nabla_z H)^\top \mathbf R_z\nabla_z H \nonumber\\
-&+y^\top u+h^\top v.
+-(\nabla_x H)^\top\mathbf R_x\nabla_x H
+-(\nabla_z H)^\top\mathbf R_z\nabla_z H
+\nonumber\\
+&+y^\top u+y_x^\top u_x+y_z^\top u_z.
 \label{eq:energy}
 \end{align}
-The terms involving $\mathbf C$ cancel exactly. Equation~\eqref{eq:energy}
-accounts for both sides of the regulatory connection: $u$ cannot
-supply energy to $x$ without a corresponding energetic cost in $z$
-or an explicitly modeled external source.
+The last three terms are port powers, not prescribed sources or
+sinks. Their values depend on how the ports are connected.
 
 \begin{figure}[htb!]
 \centering
-\begin{tikzpicture}[>=Latex,font=\small,
-  state/.style={align=center,inner sep=4pt},
-  lab/.style={font=\footnotesize,inner sep=2pt}]
-\node[state] (x) at (-4,0) {regulated system\\$x,\ H_x$};
-\node[state] (z) at (4,0) {regulator / environment\\$z,\ H_z$};
-\node[state] (g) at (-4,-1.55) {target condition\\$g(x)=0$};
-\draw[<->,thick] ([yshift=0.2cm]x.east) --
-  node[lab,above] {lossless exchange $\mathbf C$} ([yshift=0.2cm]z.west);
-\draw[<->,thick] ([yshift=-0.2cm]x.east) --
-  node[lab,below] {ports $(u,y)$, $(v,h)$} ([yshift=-0.2cm]z.west);
-\draw[->,thick] (x.south)--(g.north);
+\begin{tikzpicture}[
+    >=Latex,
+    font=\small,
+    state/.style={align=center,inner sep=3pt},
+    lab/.style={font=\footnotesize,inner sep=2pt}
+]
+\node[state] (x) at (-3.6,0.5) {system\\$x,\ H_x$};
+\node[state] (z) at (3.6,0.5) {environment\\$z,\ H_z$};
+\draw[<->,thick] (x.east) --
+    node[lab,above] {environmental connection}
+    node[lab,below] {$(u_x,y_x),\ (u_z,y_z)$}
+    (z.west);
+\draw[->,thick] ([xshift=-0.38cm]x.south) --
+    ++(0,-1.05) --
+    node[lab,below] {self-feedback $(u,y)$}
+    ++(0.76,0) -- ([xshift=0.38cm]x.south);
 \end{tikzpicture}
-\caption{The system $x$ interacts with a dynamical regulator $z$.
-The coupling $\mathbf C$ exchanges power reversibly. Regulation acts through
-separate ports whose net power must be accounted for. The condition
-$g(x)=0$ specifies the operating surface, not an additional energy
-source.}
+\caption{The system has a self-feedback port and a separate
+connection to its environment. The latter consists of two conjugate
+port pairs whose interconnection law is not specified. The diagram
+does not assume a particular exchange or dissipation mechanism.}
 \label{fig:scheme}
 \end{figure}
 
@@ -86,16 +106,17 @@ M=\{x:g(x)=0\}.
 \end{equation}
 We assume that $\partial_x g(x)$ has full row rank near $M$, so the surface
 is locally smooth. Invariance of $M$ requires $\dot g=0$ for
-every initial condition on it. Define the drift of $x$ without the
-regulatory input and the map from its port to the observables,
+every initial condition on it. Define the drift of $x$ without self-feedback, for a given
+environmental input $u_x$, and the map from the self-feedback port
+to the observables,
 \begin{equation}
-f(x,z)=(\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf C \nabla_z H,\qquad
+f(x,u_x)=(\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf B_x u_x,\qquad
 \mathbf A(x)=\partial_x g(x)\mathbf G(x).
 \label{eq:drift}
 \end{equation}
 Substitution into Eq.~\eqref{eq:x} gives the exact tangency condition
 \begin{equation}
-\mathbf A(x)u=-\partial_x g(x)f(x,z),\qquad x\in M.
+\mathbf A(x)u=-\partial_x g(x)f(x,u_x),\qquad x\in M.
 \label{eq:tangency}
 \end{equation}
 A regulating input exists at a given $(x,z)$ precisely when
@@ -115,7 +136,7 @@ attraction to $M$ or a stability result for the coupled system.
 
 To describe an algebraic feedback through the measured port, write
 \begin{equation}
-u=\mathbf Q(x,z)y,\qquad y=\mathbf G^\top \nabla_x H.
+u=\mathbf Q(x)y,\qquad y=\mathbf G^\top \nabla_x H.
 \label{eq:feedback}
 \end{equation}
 Combining Eqs.~\eqref{eq:tangency} and \eqref{eq:feedback},
@@ -154,19 +175,19 @@ indeed satisfies $\mathbf Q y=u$. These are algebraic feasibility
 statements; they do not imply that $\mathbf Q$ can be implemented by
 an autonomous regulator.
 
-For a physical connection between the two systems with no external
-power supply, the regulatory ports must obey
+Closing the ports requires a physical connection law. The
+self-feedback contributes $y^\top u$ and the environmental connection
+contributes $y_x^\top u_x+y_z^\top u_z$. If these connections have
+no unmodeled energy supply or storage and are passive as a whole,
+their combined power must satisfy
 \begin{equation}
-y^\top u+h^\top v\leq0.
+y^\top u+y_x^\top u_x+y_z^\top u_z\leq0.
 \label{eq:closure}
 \end{equation}
-Equality represents lossless exchange and a strict inequality
-allows dissipation in the connection. A positive power demand
-$y^\top u$ must therefore be paid for through the $z$ port.
-In particular, if $h=0$, an input with $y^\top u>0$ is
-impossible under this passive closure. The inequality is necessary
-for energetic consistency, not sufficient to construct an
-interconnection or stabilize $M$.
+This is a conditional energy requirement, not a definition of the
+connections. Positive power entering through the self-feedback
+port must be accounted for by another physical process; choosing
+$\mathbf Q$ alone does not supply it.
 
 If $H$ is bounded below by $H_{\min}$, Eq.~\eqref{eq:closure}
 also gives the finite-energy restriction
@@ -189,11 +210,10 @@ The operating surface $M$ is a local representation of the
 essential variables in Ashby's account of regulation
 \cite{ashby1956}. The good regulator theorem links effective
 regulation to an internal model under its own assumptions
-\cite{conant1970}. Here $z$ is a candidate physical carrier of
-regulatory dynamics, but the existence of the state $z$ or the
-feedback matrix $\mathbf Q$ does not establish that it contains an
-internal model in the sense of the theorem or of the internal
-model principle \cite{francis1976}.
+\cite{conant1970}. Here $x$ has a self-feedback mechanism and $z$ represents its
+environment. Neither the feedback matrix $\mathbf Q$ nor the state
+$z$ by itself establishes an internal model in the sense of the
+theorem or of the internal model principle \cite{francis1976}.
 
 The immediate problem is to determine whether a closed $x$--$z$
 dynamics can satisfy both the tangency condition
