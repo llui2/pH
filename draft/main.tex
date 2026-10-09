@@ -36,6 +36,8 @@ where $\mathbf J_x$ and $\mathbf J_z$ are skew-symmetric and
 $\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite.
 The skew matrices describe reversible motion; the other terms
 describe dissipation and exchange \cite{vanderschaft2014}.
+Skew symmetry alone does not ensure a Poisson bracket:
+its Jacobi identity must also hold.
 
 The pair $(u,y)$ is a self-feedback port on $x$, while
 $(u_x,y_x)$ and $(u_z,y_z)$ are the two sides of its
@@ -76,6 +78,10 @@ has a separate self-feedback port. Neither connection is assumed
 lossless or specified by a particular constitutive law.}
 \label{fig:scheme}
 \end{figure}
+
+The skew part of $\mathbf Q$ changes the reversible motion
+without contributing port power; its symmetric part determines
+$y^\top u$.
 
 The total energy balance is
 \begin{align}
