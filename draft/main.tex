@@ -106,10 +106,13 @@ Since $\mathbf A\mathbf P=0$ and $\mathbf P^2=\mathbf P$,
 the matrix $\mathbf P$ projects onto the tangent space
 along directions accessible through the self-feedback port.
 It is generally oblique; $\mathbf B=\mathbf A^\top$
-recovers the Euclidean orthogonal projector. The projection
-is a kinematic construction, not an automatic port-Hamiltonian
-interconnection. Its correction contributes the actual power
-$y^\top u_*$ to Eq.~\eqref{eq:power}.
+recovers the Euclidean orthogonal projector. This choice
+minimizes the Euclidean norm of the input, not a physical
+cost specified by the model. Other corrections can preserve
+the same constraint and generate different tangential motions.
+The projection is a kinematic construction, not an automatic
+port-Hamiltonian interconnection. Its correction contributes
+the actual power $y^\top u_*$ to Eq.~\eqref{eq:power}.
 
 Full row rank is sufficient, not necessary, for a specified
 drift. More generally, Eq.~\eqref{eq:tangency} is solvable
