@@ -12,64 +12,45 @@
 
 \begin{document}
 
-\title{Energetic conditions for constrained regulation}
+\title{Self-maintaining motion in port-Hamiltonian systems}
 \maketitle
 
-\section{A system with two kinds of ports}
+\section{System and environment}
 
-Consider a physical system with state $x\in\mathbb R^n$ interacting
-with an environment of state $z\in\mathbb R^m$. Their stored energies
-are $H_x(x)$ and $H_z(z)$, with $H=H_x+H_z$. Any energy stored in a
-connection is included in these states. We write their port-Hamiltonian
-dynamics as
+Consider a physical system with state $x\in\mathbb R^n$ and an
+environment with state $z\in\mathbb R^m$. Their stored energies are
+$H_x(x)$ and $H_z(z)$, with $H=H_x+H_z$. Degrees of freedom that
+store energy in a connection are included in these states.
+We write
 \begin{align}
 \dot x
-&= (\mathbf J_x-\mathbf R_x)\nabla_x H
-+\mathbf B_x u_x+\mathbf G u,
+&=(\mathbf J_x-\mathbf R_x)\nabla_x H
++\mathbf B_xu_x+\mathbf G u,
 \label{eq:x}\\
 \dot z
-&= (\mathbf J_z-\mathbf R_z)\nabla_z H
-+\mathbf B_z u_z,
+&=(\mathbf J_z-\mathbf R_z)\nabla_z H
++\mathbf B_zu_z,
 \label{eq:z}
 \end{align}
-where the matrices may depend on their respective states, and
-\begin{equation}
-\mathbf J_x^\top=-\mathbf J_x,\qquad
-\mathbf J_z^\top=-\mathbf J_z,\qquad
-\mathbf R_x=\mathbf R_x^\top\succeq0,\qquad
-\mathbf R_z=\mathbf R_z^\top\succeq0.
-\end{equation}
-The skew matrices describe reversible internal motion and the positive
-semidefinite matrices describe internal dissipation
-\cite{vanderschaft2014}.
+where $\mathbf J_x$ and $\mathbf J_z$ are skew-symmetric and
+$\mathbf R_x,\mathbf R_z$ are symmetric positive semidefinite.
+The skew matrices describe reversible motion; the other terms
+describe dissipation and exchange \cite{vanderschaft2014}.
 
-The matrix $\mathbf G(x)$ defines a self-feedback port on $x$, with
-input $u$ and conjugate output $y$. The matrices $\mathbf B_x(x)$
-and $\mathbf B_z(z)$ define the two sides of a separate connection
-between the system and its environment. Their conjugate outputs are
+The pair $(u,y)$ is a self-feedback port on $x$, while
+$(u_x,y_x)$ and $(u_z,y_z)$ are the two sides of its
+environmental connection. Their conjugate outputs are
 \begin{equation}
 y=\mathbf G^\top\nabla_x H,\qquad
 y_x=\mathbf B_x^\top\nabla_x H,\qquad
 y_z=\mathbf B_z^\top\nabla_z H.
 \label{eq:outputs}
 \end{equation}
-The self-feedback closes a relation between $u$ and $y$ within $x$.
-The environmental inputs $u_x$ and $u_z$ are instead determined by
-the connection between $(u_x,y_x)$ and $(u_z,y_z)$. We leave this
-connection unspecified: it may describe lossless exchange,
-dissipative transport, or a driven process.
-
-The energy balance follows directly from the two subsystems,
-\begin{align}
-\dot H ={}&
--(\nabla_x H)^\top\mathbf R_x\nabla_x H
--(\nabla_z H)^\top\mathbf R_z\nabla_z H
-\nonumber\\
-&+y^\top u+y_x^\top u_x+y_z^\top u_z.
-\label{eq:energy}
-\end{align}
-The last three terms are port powers, not prescribed sources or
-sinks. Their values depend on how the ports are connected.
+No interconnection law is assumed between the environmental
+ports. A possible self-feedback is $u=\mathbf Q(x)y$; we impose
+no skew-symmetry or dissipativity condition on $\mathbf Q$.
+More general feedback laws can be used without changing the
+open-system description.
 
 \begin{figure}[htb!]
 \centering
@@ -90,231 +71,93 @@ sinks. Their values depend on how the ports are connected.
     node[lab,below] {self-feedback $(u,y)$}
     ++(0.76,0) -- ([xshift=0.38cm]x.south);
 \end{tikzpicture}
-\caption{The system has a self-feedback port and a separate
-connection to its environment. The latter consists of two conjugate
-port pairs whose interconnection law is not specified. The diagram
-does not assume a particular exchange or dissipation mechanism.}
+\caption{The system exchanges power with its environment and
+has a separate self-feedback port. Neither connection is assumed
+lossless or specified by a particular constitutive law.}
 \label{fig:scheme}
 \end{figure}
 
-\section{The constraint and available actuation}
+The total energy balance is
+\begin{align}
+\dot H={}&
+-(\nabla_x H)^\top\mathbf R_x\nabla_x H
+-(\nabla_z H)^\top\mathbf R_z\nabla_z H \nonumber\\
+&+y^\top u+y_x^\top u_x+y_z^\top u_z.
+\label{eq:power}
+\end{align}
+Thus feedback may inject or dissipate power. Its physical
+realization must account for that power through the actual
+connection or another explicitly represented source.
 
-Let $g:\mathbb R^n\to\mathbb R^r$ describe regulated observables
-relative to their target values. The operating surface is
-\begin{equation}
-M=\{x:g(x)=0\}.
-\end{equation}
-We assume that $\partial_x g(x)$ has full row rank near $M$, so the surface
-is locally smooth. Invariance of $M$ requires $\dot g=0$ for
-every initial condition on it. Define the drift of $x$ without self-feedback, for a given
-environmental input $u_x$, and the map from the self-feedback port
-to the observables,
-\begin{equation}
-f(x,u_x)=(\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf B_x u_x,\qquad
-\mathbf A(x)=\partial_x g(x)\mathbf G(x).
-\label{eq:drift}
-\end{equation}
-Substitution into Eq.~\eqref{eq:x} gives the exact tangency condition
-\begin{equation}
-\mathbf A(x)u=-\partial_x g(x)f(x,u_x),\qquad x\in M.
-\label{eq:tangency}
-\end{equation}
-A regulating input exists at a given $(x,z)$ precisely when
-$-\partial_x g\,f$ belongs to the image of $\mathbf A$. Full row rank of $\mathbf A$ guarantees
-solvability for any transverse drift. Under this assumption the
-inputs have the form
-\begin{equation}
-u=-\mathbf A^\dagger \partial_x g\,f+(\mathbf I-\mathbf A^\dagger \mathbf A)w,
-\label{eq:controls}
-\end{equation}
-where $\mathbf A^\dagger$ is the Moore--Penrose inverse. The first term is
-the minimum Euclidean-norm correction; the second changes the motion
-without changing $\dot g$. This is instantaneous invariance, not
-attraction to $M$ or a stability result for the coupled system.
+\section{Viable motion}
 
-\section{Feedback and power}
+We do not prescribe viability by an equality such as $g(x)=0$.
+Instead, let $V\subset\mathbb R^{n+m}$ be a closed set of
+system--environment states where the mechanisms needed for the
+motion remain functional. Depending on the model, $V$ may
+express operating ranges, available resources, or the existence
+of active exchange pathways. Its physical definition is an input
+to the theory, rather than a consequence of the port-Hamiltonian
+notation.
 
-To describe an algebraic feedback through the measured port, write
+Once the feedback and the environmental connection are fixed,
+Eqs.~\eqref{eq:x}--\eqref{eq:z} define a vector field.
+For the entire set $V$ to remain viable, that field must satisfy
 \begin{equation}
-u=\mathbf Q(x)y,\qquad y=\mathbf G^\top \nabla_x H.
-\label{eq:feedback}
+(\dot x,\dot z)\in T_V(x,z),
+\qquad (x,z)\in V,
+\label{eq:viability}
 \end{equation}
-Combining Eqs.~\eqref{eq:tangency} and \eqref{eq:feedback},
-the feedback must satisfy
+where $T_V$ is the contingent tangent cone of $V$.
+For a locally Lipschitz vector field with forward solutions,
+this condition is also sufficient for forward invariance
+under the usual Nagumo hypotheses \cite{aubin2009}.
+Requiring it on all of $V$ is stronger than demanding a single
+trajectory remain viable.
+
+The former manifold construction is a special case. If
+$V$ includes a regular equality $g(x)=0$, its tangent
+condition reads
 \begin{equation}
-\mathbf A\mathbf Q y=-\partial_x g\,f.
-\label{eq:qconstraint}
+\partial_x g\left[
+(\mathbf J_x-\mathbf R_x)\nabla_x H
++\mathbf B_xu_x+\mathbf G u
+\right]=0.
+\label{eq:constraint}
 \end{equation}
-For $y\ne0$, any feasible input $u$ can be represented pointwise by
-$\mathbf Q=u y^\top/(y^\top y)$. This does not construct a single
-$x$-dependent feedback law valid for every environmental input,
-nor establish physical realizability. Its power is
+For a viable region specified instead by a smooth inequality,
+the velocity must point inward or tangent at its boundary.
+Neither form requires lossless feedback.
+
+The Hamiltonian structure makes viability a physical
+restriction, rather than only a geometric one. For example,
+suppose continued operation requires $H_x(x)\ge E_*$.
+At a viable state where $H_x=E_*$, Eq.~\eqref{eq:viability}
+requires $\dot H_x\ge0$. Equation~\eqref{eq:x} then yields
 \begin{equation}
-y^\top u=y^\top \mathbf Q_s y,\qquad
-\mathbf Q_s=\tfrac12(\mathbf Q+\mathbf Q^\top).
-\label{eq:feedbackpower}
+y^\top u+y_x^\top u_x
+\ge
+(\nabla_x H)^\top\mathbf R_x\nabla_x H.
+\label{eq:energetic}
 \end{equation}
-The skew part of $\mathbf Q$ transfers power between port components but
-cannot inject energy. An input requiring $y^\top u>0$ cannot be
-realized by skew feedback alone. If $y=0$, the law $u=\mathbf Q y$ cannot
-produce any nonzero correction, even when Eq.~\eqref{eq:tangency}
-admits one.
+The environmental exchange and self-feedback must jointly
+compensate the system's dissipation at this boundary.
+This inequality is necessary, not sufficient: the
+same motion must also respect every other active constraint.
+Other physically defined viable sets give other conditions.
 
-The two requirements can conflict even when the actuation matrix
-has full row rank. Let $u_c=-\mathbf A^\dagger \partial_x g\,f$. A power-neutral
-correction requires both $\mathbf A u=-\partial_x g\,f$ and $y^\top u=0$. When
-$y^\top(\mathbf I-\mathbf A^\dagger \mathbf A)\ne0$, the free term in
-Eq.~\eqref{eq:controls} can make the correction power-neutral.
-Otherwise its power is fixed at $y^\top u_c$, so a lossless
-correction exists only if this quantity vanishes. For $y\ne0$
-and $y^\top u=0$, the skew map
-\begin{equation}
-\mathbf Q=\frac{u y^\top-y u^\top}{y^\top y}
-\label{eq:skew}
-\end{equation}
-indeed satisfies $\mathbf Q y=u$. These are algebraic feasibility
-statements; they do not imply that $\mathbf Q$ can be implemented by
-an autonomous regulator.
-
-Closing the ports requires a physical connection law. The
-self-feedback contributes $y^\top u$ and the environmental connection
-contributes $y_x^\top u_x+y_z^\top u_z$. If these connections have
-no unmodeled energy supply or storage and are passive as a whole,
-their combined power must satisfy
-\begin{equation}
-y^\top u+y_x^\top u_x+y_z^\top u_z\leq0.
-\label{eq:closure}
-\end{equation}
-This is a conditional energy requirement, not a definition of the
-connections. Positive power entering through the self-feedback
-port must be accounted for by another physical process; choosing
-$\mathbf Q$ alone does not supply it.
-
-If $H$ is bounded below by $H_{\min}$, Eq.~\eqref{eq:closure}
-also gives the finite-energy restriction
-\begin{equation}
-\int_0^T \left[
-(\nabla_x H)^\top \mathbf R_x\nabla_x H
-+(\nabla_z H)^\top \mathbf R_z\nabla_z H
-\right]\,dt
-\leq H(0)-H_{\min}.
-\label{eq:budget}
-\end{equation}
-Thus an isolated, finite-energy regulator cannot support strictly
-positive dissipation indefinitely. Sustained homeostasis against
-persistent losses requires an energy supply represented in the
-model, rather than hidden in the feedback matrix.
-
-\section{Self-maintaining regulation}
-
-Preserving $g(x)=0$ at one instant does not guarantee that
-self-feedback will remain possible later. We impose a minimal
-self-maintenance requirement: the actual motion must preserve both
-the constraint and the existence of an admissible self-feedback
-that can continue to enforce it. This distinguishes the motion
-from the physical conditions that permit that motion
-\cite{montevil2015}.
-
-To obtain a definite restriction, first consider a lossless
-self-feedback, $\mathbf Q^\top=-\mathbf Q$. The $x$ dynamics can
-then be written as
-\begin{equation}
-\dot x=(\mathbf P-\mathbf R_x)\nabla_x H+\mathbf B_x u_x,
-\qquad
-\mathbf P=\mathbf J_x+\mathbf G\mathbf Q\mathbf G^\top.
-\label{eq:structure}
-\end{equation}
-The matrix $\mathbf P$ is skew-symmetric and defines the
-reversible part of the closed $x$ dynamics. It defines a
-Poisson bracket only if it also satisfies the Jacobi identity;
-skew symmetry alone does not suffice. With the bracket notation
-$\{a,H\}_{\mathbf P}=\partial_x a\,\mathbf P\nabla_x H$,
-preservation of the operating surface requires
-\begin{equation}
-\{g,H\}_{\mathbf P}
-=
-\partial_x g\,(\mathbf R_x\nabla_x H-\mathbf B_xu_x).
-\label{eq:poissonconstraint}
-\end{equation}
-The reversible motion must cancel the transverse drift
-caused by dissipation and environmental exchange.
-
-Not every such cancellation can be produced by lossless
-self-feedback. At a state with $y\ne0$, skew symmetry of
-$\mathbf Q$ implies $y^\top u=0$. Conversely, every input
-orthogonal to $y$ can be written as $u=\mathbf Qy$ for some
-skew-symmetric matrix. Define
-\begin{equation}
-\mathbf L(x)
-=\mathbf A(x)\left(\mathbf I-\frac{yy^\top}{y^\top y}\right),
-\qquad
-c(x,z)=(\mathbf I-\mathbf L\mathbf L^\dagger)
-\partial_x g\,f(x,u_x).
-\label{eq:obstruction}
-\end{equation}
-Here we assume that the environmental connection supplies
-smooth inputs $u_x(x,z)$, without choosing a particular
-connection law. The condition $c(x,z)=0$ is necessary and
-sufficient for the existence of a \emph{pointwise} lossless
-self-feedback input satisfying Eq.~\eqref{eq:tangency}.
-It does not guarantee a single smooth law $\mathbf Q(x)$
-that works across different environmental states. In
-particular, if $y=0$, algebraic self-feedback cannot produce
-a nonzero input, and feasibility instead requires
-$\partial_x g\,f=0$.
-
-The states where the constraint and the lossless correction
-are simultaneously feasible form
-\begin{equation}
-K=\{(x,z):g(x)=0,\ c(x,z)=0\}.
-\label{eq:capacity}
-\end{equation}
-For $y\ne0$ and constant rank of $\mathbf L$, the obstruction
-$c$ is smooth. A self-maintaining closed dynamics must leave
-$K$ invariant, not merely start inside it. Writing its
-vector field as $(F_x,F_z)$, a necessary condition is
-\begin{equation}
-\partial_x c\,F_x+\partial_z c\,F_z=0,
-\qquad (x,z)\in K.
-\label{eq:selfmaintenance}
-\end{equation}
-Together with $\dot g=0$, this is the tangency condition
-for the continued feasibility of regulation. When $K$ is a
-regular submanifold and the closed vector field is smooth,
-tangency everywhere on $K$ also gives local invariance
-\cite{aubin2009}. The second condition is not automatic
-from the first: dynamics can preserve the regulated
-observable while leaving the set where future corrections
-are available.
-
-Equations~\eqref{eq:obstruction} and
-\eqref{eq:selfmaintenance} supply an algebraic obstruction
-and a dynamical compatibility condition. They express a
-minimal form of self-maintenance, not yet the preservation
-of every admissible motion or a general theorem of
-organizational closure. The obstruction may vanish
-identically when the available self-port directions are
-sufficient; in that case this criterion imposes no further
-restriction beyond constraint invariance.
-
-\section{Interpretation}
-
-The operating surface $M$ is a local representation of the
-essential variables in Ashby's account of regulation
-\cite{ashby1956}. The good regulator theorem links effective
-regulation to an internal model under its own assumptions
-\cite{conant1970}. Here $x$ has a self-feedback mechanism and $z$ represents its
-environment. Neither the feedback matrix $\mathbf Q$ nor the state
-$z$ by itself establishes an internal model in the sense of the
-theorem or of the internal model principle \cite{francis1976}.
-
-The immediate problem is to determine whether a closed $x$--$z$
-dynamics can satisfy both the tangency condition
-\eqref{eq:tangency} and the power condition \eqref{eq:closure},
-and whether the resulting trajectories remain near $M$ under
-perturbations. The present equations identify the geometric and
-energetic requirements, but do not yet provide a dynamical
-regulation theorem or a new physical mechanism.
+We use \emph{self-maintaining} to describe a closed dynamics
+that keeps the system in a domain where its own regulating
+mechanisms remain available. This corresponds to invariance
+of a physically justified viable set, not simply to the
+existence of a feasible correction at one instant.
+The distinction is related to organizational closure
+\cite{montevil2015}, but Eqs.~\eqref{eq:viability} and
+\eqref{eq:energetic} are established viability and energy
+conditions, not a new theorem of self-organization.
+A specific mechanism is still needed to show how the
+processes supported by the system maintain the constraints
+that support those processes.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
