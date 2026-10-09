@@ -12,7 +12,7 @@
 
 \begin{document}
 
-\title{Persistence of constrained motion in port-Hamiltonian systems}
+\title{Constrained flow in port-Hamiltonian systems}
 \maketitle
 
 \section{System and environment}
@@ -121,112 +121,6 @@ exactly when
 Thus the constraint fixes the admissible directions, while
 the self-feedback port determines which transverse motions
 can be corrected.
-
-\section{Persistence of feedback capacity}
-
-A finite feedback gain provides a physical restriction
-beyond instantaneous tangency. Suppose a collocated
-feedback $u=\mathbf Qy$ satisfies
-$\|\mathbf Q\|_2\le\kappa$, where $\kappa>0$ is fixed.
-Under the full-row-rank assumption above, a matrix
-$\mathbf Q$ satisfying both the gain bound and
-Eq.~\eqref{eq:tangency} exists at a given state precisely when
-\begin{equation}
-\|u_*\|^2\le\kappa^2\|y\|^2.
-\label{eq:gain}
-\end{equation}
-Indeed, $u_*$ is the smallest input satisfying tangency,
-and $\|\mathbf Qy\|\le\kappa\|y\|$.
-Conversely, for $y\ne0$ the choice
-$\mathbf Q=u_*y^\top/(y^\top y)$ achieves the correction
-with the smallest possible operator norm; when $y=0$,
-feasibility requires $u_*=0$. This criterion is
-pointwise: an $x$-only feedback law may face additional
-restrictions if $u_x$ depends on the unobserved environment.
-
-The available feedback margin can be written without
-introducing another matrix,
-\begin{equation}
-\phi(x,z)=\kappa^2 y^\top y-u_*^\top u_*.
-\label{eq:margin}
-\end{equation}
-Here the environmental connection is assumed to specify
-smooth inputs $u_x(x,z)$ and $u_z(x,z)$.
-On the full-row-rank region, $\phi\ge0$ characterizes
-states where a bounded collocated correction is available.
-At $\phi=0$, every input preserving the constraint obeys
-$u=u_*+w$ with $w\in\ker(\mathbf A\mathbf B)$ and
-$u_*^\top w=0$. The gain bound forces $w=0$.
-Consequently, all feasible feedback laws produce the
-same $x$-velocity $\mathbf P v$ at that boundary.
-
-A self-maintaining motion must also preserve the
-availability of this correction. At a regular boundary
-$\phi=0$, its necessary tangency condition is therefore
-\begin{equation}
-\partial_x\phi\,\mathbf P v
-+\partial_z\phi\,\dot z\ge0,
-\qquad c(x)=0,\quad\phi(x,z)=0.
-\label{eq:persistence}
-\end{equation}
-This relates the constrained flow to the evolution of its
-own control capacity. A negative left-hand side means
-that the system inevitably loses feasible feedback,
-even though it can preserve $c(x)=0$ at the current state.
-The condition is necessary, not sufficient, for indefinite
-persistence: the gain bound, rank, power balance, and
-all other viability boundaries must remain satisfied.
-Related recursive-feasibility conditions arise in
-constrained control \cite{xiao2022}.
-
-There is also a distinction between a correction chosen
-from the full state $(x,z)$ and an autonomous self-feedback
-$\mathbf Q(x)y(x)$. For the same $x$ and any two possible
-environmental states $z_1,z_2$, the latter requires
-\begin{equation}
-\mathbf A\mathbf E_x
-\left[u_x(x,z_1)-u_x(x,z_2)\right]=0.
-\label{eq:environment}
-\end{equation}
-An unobserved change in the environmental input cannot
-produce a change in transverse motion that an $x$-only
-feedback is expected to cancel. If $u_x$ can vary freely,
-Eq.~\eqref{eq:environment} reduces to
-$\mathbf A\mathbf E_x=0$. This is a structural restriction
-on the environmental port, independent of the chosen
-Hamiltonian.
-
-A two-state example makes the distinction explicit.
-Let $x=(q,a)$, $H_x=(q^2+a^2)/2$,
-$\mathbf J_x=0$, and
-$\mathbf R_x=\operatorname{diag}(0,\gamma)$ with
-$\gamma>0$. Choose the self-feedback port
-$\mathbf B=(a,0)^\top$ and environmental inputs
-$d>0$ and $j$, giving
-\begin{equation}
-\dot q=d+au,\qquad
-\dot a=-\gamma a+j,\qquad y=aq.
-\label{eq:example}
-\end{equation}
-For the constraint $q=1$ and $a>0$, the required
-feedback is $u_*=-d/a$, realized by the dissipative
-law $u=\mathbf Qy$ with $\mathbf Q=-d/a^2$
-on the constraint. The gain bound becomes
-$a^2\ge d/\kappa$. With $j=0$, the resource
-$a$ decreases and reaches this limit in finite
-time, even though $\dot q=0$ until that point.
-At this boundary,
-$\dot\phi=4\kappa^2 a(j-\gamma a)$, so persistence
-requires $j\ge\gamma a$. Thus preservation of the
-regulated variable does not imply preservation of
-the physical ability to regulate it.
-
-The preservation of feedback capacity is one possible
-mathematical expression of self-maintenance. Its link to
-organizational closure \cite{montevil2015} requires a
-physical model in which the mechanisms underlying
-$\mathbf B$, the environmental connection, and the
-available power are themselves sustained by the dynamics.
 
 \bibliographystyle{unsrtnat}
 \begingroup\footnotesize\bibliography{refs}\endgroup
