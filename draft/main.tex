@@ -60,10 +60,10 @@ or an explicitly modeled external source.
 \node[state] (x) at (-3,0) {regulated system\\$x,\ H_x$};
 \node[state] (z) at (3,0) {regulator / environment\\$z,\ H_z$};
 \node[state] (g) at (-3,-1.55) {target condition\\$g(x)=0$};
-\draw[<->,thick] (-1.55,0.42)--(1.55,0.42);
-\node[lab,above] at (0,0.42) {lossless exchange $C$};
-\draw[<->,thick] (-1.55,-0.40)--(1.55,-0.40);
-\node[lab,below] at (0,-0.40) {regulatory ports $(u,y)$, $(v,h)$};
+\draw[<->,thick] ([yshift=0.2cm]x.east) --
+  node[lab,above] {lossless exchange $C$} ([yshift=0.2cm]z.west);
+\draw[<->,thick] ([yshift=-0.2cm]x.east) --
+  node[lab,below] {ports $(u,y)$, $(v,h)$} ([yshift=-0.2cm]z.west);
 \draw[->,thick] (x.south)--(g.north);
 \end{tikzpicture}
 \caption{The system $x$ interacts with a dynamical regulator $z$.
