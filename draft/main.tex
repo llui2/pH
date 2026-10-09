@@ -21,7 +21,7 @@ Consider a physical system with state $x\in\mathbb R^n$ coupled to a
 regulator or environment with state $z\in\mathbb R^m$. They store
 energies $H_x(x)$ and $H_z(z)$. We assume that their connections have
 no independent energy storage, so that $H=H_x+H_z$. The gradients $\nabla_x H$ and $\nabla_z H$ are the generalized efforts.
-\mathbf A port-Hamiltonian description is
+A port-Hamiltonian description is
 \begin{align}
 \dot x &= (\mathbf J_x-\mathbf R_x)\nabla_x H+\mathbf C \nabla_z H+\mathbf G u, \label{eq:x}\\
 \dot z &= (\mathbf J_z-\mathbf R_z)\nabla_z H-\mathbf C^\top \nabla_x H+\mathbf B v, \label{eq:z}
@@ -42,10 +42,13 @@ y=\mathbf G^\top \nabla_x H,\qquad h=\mathbf B^\top \nabla_z H.
 \end{equation}
 The pairs $(u,y)$ and $(v,h)$ carry powers $y^\top u$ and $h^\top v$,
 respectively \cite{vanderschaft2014}. The energy balance is
-\begin{equation}
-\dot H=-\nabla_x H^\top \mathbf R_x\nabla_x H-\nabla_z H^\top \mathbf R_z\nabla_z H+y^\top u+h^\top v.
+\begin{align}
+\dot H ={}&
+-(\nabla_x H)^\top \mathbf R_x\nabla_x H
+-(\nabla_z H)^\top \mathbf R_z\nabla_z H \nonumber\\
+&+y^\top u+h^\top v.
 \label{eq:energy}
-\end{equation}
+\end{align}
 The terms involving $\mathbf C$ cancel exactly. Equation~\eqref{eq:energy}
 accounts for both sides of the regulatory connection: $u$ cannot
 supply energy to $x$ without a corresponding energetic cost in $z$
@@ -94,7 +97,7 @@ Substitution into Eq.~\eqref{eq:x} gives the exact tangency condition
 \mathbf A(x)u=-\partial_x g(x)f(x,z),\qquad x\in M.
 \label{eq:tangency}
 \end{equation}
-\mathbf A regulating input exists at a given $(x,z)$ precisely when
+A regulating input exists at a given $(x,z)$ precisely when
 $-\partial_x g\,f$ belongs to the image of $\mathbf A$. Full row rank of $\mathbf A$ guarantees
 solvability for any transverse drift. Under this assumption the
 inputs have the form
@@ -117,7 +120,7 @@ u=\mathbf Q(x,z)y,\qquad y=\mathbf G^\top \nabla_x H.
 Combining Eqs.~\eqref{eq:tangency} and \eqref{eq:feedback},
 the feedback must satisfy
 \begin{equation}
-AQy=-\partial_x g\,f.
+\mathbf A\mathbf Q y=-\partial_x g\,f.
 \label{eq:qconstraint}
 \end{equation}
 For $y\ne0$, any feasible input $u$ can be represented by
@@ -130,13 +133,13 @@ y^\top u=y^\top \mathbf Q_s y,\qquad
 \end{equation}
 The skew part of $\mathbf Q$ transfers power between port components but
 cannot inject energy. An input requiring $y^\top u>0$ cannot be
-realized by skew feedback alone. If $y=0$, the law $u=Qy$ cannot
+realized by skew feedback alone. If $y=0$, the law $u=\mathbf Q y$ cannot
 produce any nonzero correction, even when Eq.~\eqref{eq:tangency}
 admits one.
 
 The two requirements can conflict even when the actuation matrix
-has full row rank. Let $u_c=-\mathbf A^\dagger \partial_x g\,f$. \mathbf A power-neutral
-correction requires both $Au=-\partial_x g\,f$ and $y^\top u=0$. When
+has full row rank. Let $u_c=-\mathbf A^\dagger \partial_x g\,f$. A power-neutral
+correction requires both $\mathbf A u=-\partial_x g\,f$ and $y^\top u=0$. When
 $y^\top(\mathbf I-\mathbf A^\dagger \mathbf A)\ne0$, the free term in
 Eq.~\eqref{eq:controls} can make the correction power-neutral.
 Otherwise its power is fixed at $y^\top u_c$, so a lossless
@@ -146,7 +149,7 @@ and $y^\top u=0$, the skew map
 \mathbf Q=\frac{u y^\top-y u^\top}{y^\top y}
 \label{eq:skew}
 \end{equation}
-indeed satisfies $Qy=u$. These are algebraic feasibility
+indeed satisfies $\mathbf Q y=u$. These are algebraic feasibility
 statements; they do not imply that $\mathbf Q$ can be implemented by
 an autonomous regulator.
 
@@ -157,7 +160,7 @@ y^\top u+h^\top v\leq0.
 \label{eq:closure}
 \end{equation}
 Equality represents lossless exchange and a strict inequality
-allows dissipation in the connection. \mathbf A positive power demand
+allows dissipation in the connection. A positive power demand
 $y^\top u$ must therefore be paid for through the $z$ port.
 In particular, if $h=0$, an input with $y^\top u>0$ is
 impossible under this passive closure. The inequality is necessary
@@ -167,8 +170,10 @@ interconnection or stabilize $M$.
 If $H$ is bounded below by $H_{\min}$, Eq.~\eqref{eq:closure}
 also gives the finite-energy restriction
 \begin{equation}
-\int_0^T\!
-\left(\nabla_x H^\top \mathbf R_x\nabla_x H+\nabla_z H^\top \mathbf R_z\nabla_z H\right)dt
+\int_0^T \left[
+(\nabla_x H)^\top \mathbf R_x\nabla_x H
++(\nabla_z H)^\top \mathbf R_z\nabla_z H
+\right]\,dt
 \leq H(0)-H_{\min}.
 \label{eq:budget}
 \end{equation}
